@@ -1,0 +1,28 @@
+# ---- dataset ----------------------------------------------------------
+# StepUP-P150 is ~103 GB. Download it separately from FRDR:
+# doi:10.20383/103.01285
+FRDR_dataset/
+FRDR_dataset.zip
+
+# ---- generated image sets ---------------------------------------------
+# All regenerable from the scripts; together they run to several hundred MB.
+#   Images/          48,147 barefoot peak-pressure PNGs  (215 MB)
+#   good_images/     34,553 that passed the completeness screen  (161 MB)
+#   *.gif            turntable animations, ~8.6 MB each
+Images/
+good_images/
+*.gif
+
+# ---- scratch renders --------------------------------------------------
+my_insole.*
+insole_3d.png
+
+# ---- python -----------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- logs -------------------------------------------------------------
+*.log
