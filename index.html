@@ -1001,6 +1001,8 @@ function s1draw(){
 }
 s1.E.oninput=s1.H.oninput=()=>{
   s1draw();
+  if(s2pick) s2pick=s2measure(s2pick.row, s2pick.col);   // A = p / k0 moved
+  s2draw();
   if(typeof pgSummarise==='function' && pgBumps) pgSummarise(pgLast.dmax, pgLast.vol);
 };
 
@@ -1011,7 +1013,8 @@ samples.forEach((s,i)=>{
   b.title=s.name; b.setAttribute('aria-pressed', i===0);
   b.onclick=()=>{ curSample=i;
     [...chips.children].forEach((c,j)=>c.setAttribute('aria-pressed', j===i));
-    s1draw(); s2auto(); };
+    s1draw(); s2auto();
+    if(upGrid && !upImage) upBuild(); };
   chips.appendChild(b);
 });
 
