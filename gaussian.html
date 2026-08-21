@@ -1,0 +1,1056 @@
+<meta charset="utf-8">
+<title>สมการเกาส์เซียน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#e9ecf0; --surface:#ffffff; --surface-2:#f3f5f8;
+  --ink:#0e141b; --ink-2:#39434e; --muted:#5f6b78;
+  --line:#d8dee6; --line-2:#c3ccd6;
+  --accent:#4b45c6; --accent-soft:#ecebfa; --accent-ink:#3b36a8;
+  --hot:#d8452a; --cool:#1f6f8b;
+  --shadow:0 1px 2px rgba(14,20,27,.06),0 8px 24px -12px rgba(14,20,27,.18);
+  --r:10px;
+  --step--1:.82rem; --step-0:1rem; --step-1:1.18rem; --step-2:1.45rem;
+  --step-3:1.85rem; --step-4:2.4rem; --step-5:3.1rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0b1016; --surface:#141b23; --surface-2:#1b232d;
+    --ink:#e7edf4; --ink-2:#c0cbd7; --muted:#8c9aa9;
+    --line:#26313d; --line-2:#33404e;
+    --accent:#948dff; --accent-soft:#20213f; --accent-ink:#b3adff;
+    --hot:#ff7d5e; --cool:#5ec4e0;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0b1016; --surface:#141b23; --surface-2:#1b232d;
+  --ink:#e7edf4; --ink-2:#c0cbd7; --muted:#8c9aa9;
+  --line:#26313d; --line-2:#33404e;
+  --accent:#948dff; --accent-soft:#20213f; --accent-ink:#b3adff;
+  --hot:#ff7d5e; --cool:#5ec4e0;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans Thai","Bai Jamjuree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--step-0); line-height:1.72; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  line-height:1.25; text-wrap:balance; margin:0; font-weight:600}
+code,.mono,.num{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1180px; margin:0 auto; padding:0 clamp(16px,4vw,36px)}
+.prose{max-width:66ch}
+.prose p{margin:0 0 1em}
+.prose ul{margin:0 0 1em; padding-inline-start:1.25em}
+.prose li{margin:.3em 0}
+
+/* ---------- header ---------- */
+header.top{
+  background:linear-gradient(180deg,var(--surface) 0%,var(--ground) 100%);
+  border-bottom:1px solid var(--line);
+}
+.top-inner{padding:clamp(40px,7vw,84px) 0 clamp(28px,4vw,44px)}
+.eyebrow{font-size:var(--step--1); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; margin:0 0 14px}
+h1{font-size:clamp(2.1rem,5.4vw,3.4rem); font-weight:700; letter-spacing:-.015em}
+.lede{font-size:var(--step-1); color:var(--ink-2); max-width:60ch; margin:18px 0 0}
+.facts{display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:26px;
+  padding-top:22px; border-top:1px solid var(--line)}
+.fact{display:flex; flex-direction:column; gap:2px}
+.fact b{font-family:"IBM Plex Mono",monospace; font-size:var(--step-2); font-weight:500;
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.fact span{font-size:var(--step--1); color:var(--muted)}
+
+/* ---------- sections ---------- */
+section{padding:clamp(44px,6vw,76px) 0; border-bottom:1px solid var(--line)}
+.sec-head{display:flex; gap:16px; align-items:baseline; margin-bottom:8px}
+.sec-num{font-family:"IBM Plex Mono",monospace; font-size:var(--step--1); font-weight:500;
+  color:var(--accent); border:1px solid var(--line-2); border-radius:99px;
+  padding:2px 10px; flex:none; background:var(--surface)}
+h2{font-size:clamp(1.5rem,3.3vw,2.05rem); letter-spacing:-.01em}
+.sec-sub{color:var(--muted); margin:.35em 0 0; max-width:62ch}
+.sec-body{margin-top:28px}
+
+/* ---------- panels ---------- */
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow); overflow:hidden}
+.panel-head{display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+  justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--line);
+  background:var(--surface-2)}
+.panel-title{font-family:"Bai Jamjuree",sans-serif; font-weight:600; font-size:var(--step-0)}
+.panel-body{padding:16px}
+.split{display:grid; gap:18px; grid-template-columns:minmax(0,320px) minmax(0,1fr)}
+@media(max-width:860px){.split{grid-template-columns:1fr}}
+
+.rail{display:flex; flex-direction:column; gap:14px; min-width:0}
+.field{display:flex; flex-direction:column; gap:5px}
+.field-top{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.field label{font-size:var(--step--1); color:var(--muted); font-weight:500}
+.field .val{font-family:"IBM Plex Mono",monospace; font-size:var(--step--1);
+  color:var(--ink); font-variant-numeric:tabular-nums}
+input[type=range]{width:100%; accent-color:var(--accent); height:22px; margin:0}
+select,button,input[type=file]{font:inherit; font-size:var(--step--1)}
+select{background:var(--surface); color:var(--ink); border:1px solid var(--line-2);
+  border-radius:8px; padding:7px 10px; width:100%}
+.btn{background:var(--accent); color:#fff; border:0; border-radius:8px; padding:9px 15px;
+  cursor:pointer; font-weight:600; font-family:"Bai Jamjuree",sans-serif}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface); color:var(--ink); border:1px solid var(--line-2)}
+.btn.sm{padding:6px 11px; font-size:var(--step--1)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+canvas{display:block; max-width:100%; border-radius:8px; background:var(--surface-2)}
+.canvas-row{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start}
+.canvas-cell{display:flex; flex-direction:column; gap:7px; min-width:0}
+.cap{font-size:var(--step--1); color:var(--muted)}
+.cap b{color:var(--ink); font-weight:600}
+
+/* ---------- equation ---------- */
+.eq{background:var(--surface-2); border:1px solid var(--line); border-radius:8px;
+  padding:16px; overflow-x:auto; text-align:center;
+  font-family:"IBM Plex Mono",monospace; font-size:var(--step-1); line-height:2.1}
+.eq .sub{font-size:.72em; vertical-align:sub}
+.eq .sup{font-size:.72em; vertical-align:super}
+.eq .frac{display:inline-flex; flex-direction:column; text-align:center;
+  vertical-align:middle; font-size:.82em; margin:0 .18em}
+.eq .frac span:first-child{border-bottom:1px solid currentColor; padding:0 .35em}
+.eq .frac span:last-child{padding:0 .35em}
+.eq em{color:var(--accent); font-style:normal}
+
+table{border-collapse:collapse; width:100%; font-size:var(--step--1)}
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px}
+th,td{text-align:left; padding:7px 11px; border-bottom:1px solid var(--line); white-space:nowrap}
+th{background:var(--surface-2); font-weight:600; color:var(--muted); font-size:.86em;
+  letter-spacing:.03em; text-transform:uppercase}
+tbody tr:last-child td{border-bottom:0}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.swatch{display:inline-block; width:9px; height:9px; border-radius:2px; margin-inline-end:7px}
+
+.note{border-inline-start:3px solid var(--accent); background:var(--accent-soft);
+  padding:12px 16px; border-radius:0 8px 8px 0; font-size:var(--step--1); color:var(--ink-2)}
+.note b{color:var(--ink)}
+
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{border:1px solid var(--line-2); background:var(--surface); border-radius:99px;
+  padding:4px 12px; font-size:var(--step--1); cursor:pointer; color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600}
+
+/* ---------- pipeline ---------- */
+.pipe{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+.pipe-step{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:16px; position:relative}
+.pipe-step h4{font-size:var(--step-0); margin-bottom:5px}
+.pipe-step p{margin:0; font-size:var(--step--1); color:var(--muted)}
+.pipe-step .k{font-family:"IBM Plex Mono",monospace; color:var(--accent);
+  font-size:var(--step--1); display:block; margin-bottom:9px}
+
+/* ---------- gallery ---------- */
+.gal{display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:16px}
+.gal figure{margin:0; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow)}
+.gal img{width:100%; display:block; cursor:zoom-in; background:#fff}
+.gal figcaption{padding:9px 13px; font-size:var(--step--1); color:var(--muted);
+  border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:10px}
+.gal figcaption b{color:var(--ink); font-family:"IBM Plex Mono",monospace; font-weight:500}
+dialog{border:0; padding:0; background:transparent; max-width:96vw; max-height:96vh}
+dialog::backdrop{background:rgba(6,10,14,.86)}
+dialog img{max-width:96vw; max-height:90vh; border-radius:8px; display:block}
+
+.drop{border:2px dashed var(--line-2); border-radius:var(--r); padding:26px 18px;
+  text-align:center; color:var(--muted); background:var(--surface-2); cursor:pointer}
+.drop.over{border-color:var(--accent); background:var(--accent-soft); color:var(--ink)}
+
+footer{padding:44px 0 64px; color:var(--muted); font-size:var(--step--1)}
+footer h3{font-size:var(--step-0); color:var(--ink); margin-bottom:8px}
+footer ul{padding-inline-start:1.2em; margin:0}
+
+.theme-btn{position:fixed; right:14px; top:14px; z-index:50; border-radius:99px;
+  width:38px; height:38px; display:grid; place-items:center; padding:0;
+  background:var(--surface); border:1px solid var(--line-2); color:var(--ink); cursor:pointer}
+
+a{color:var(--accent-ink); text-underline-offset:3px; text-decoration-color:var(--line-2)}
+a:hover{text-decoration-color:currentColor}
+.pagelink{display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+  background:var(--surface); border:1px solid var(--line-2); border-radius:99px;
+  padding:9px 17px; font-family:"Bai Jamjuree",sans-serif; font-weight:600;
+  font-size:var(--step--1); color:var(--ink); box-shadow:var(--shadow)}
+.pagelink:hover{border-color:var(--accent); color:var(--accent-ink)}
+.pagelink .arw{color:var(--accent); font-size:1.1em}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<button class="theme-btn" id="themeBtn" title="สลับธีม" aria-label="สลับธีมสว่าง/มืด">◐</button>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <p class="eyebrow">คณิตศาสตร์เบื้องหลังแผ่นรองเท้า</p>
+    <h1>สมการเกาส์เซียน</h1>
+    <p class="lede">
+      สมการเดียว สามหน้าตา — เส้นโค้งระฆังบนเส้นตรง, เนินกลมบนระนาบ,
+      และผลรวมของเนินหลายลูกที่กลายเป็นผิวแผ่นรองเท้า
+      หน้านี้แยกออกมาเพื่ออธิบายตัวสมการล้วน ๆ ปรับได้ทุกตัวแปร
+    </p>
+    <p style="margin:22px 0 0">
+      <a class="pagelink" href="index.html"><span class="arw">←</span> กลับไปหน้า แผ่นรองเท้าจากแรงกด</a>
+    </p>
+    <div class="facts">
+      <div class="fact"><b>3</b><span>ตัวแปรของเกาส์เซียน 1 มิติ</span></div>
+      <div class="fact"><b>5</b><span>ตัวแปรเมื่อขึ้นเป็น 2 มิติ</span></div>
+      <div class="fact"><b>2.3548</b><span>ความกว้างครึ่งความสูง ÷ σ</span></div>
+      <div class="fact"><b>0.6065</b><span>ค่าที่เหลือเมื่อห่างไป 1σ</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════ overview ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">ภาพรวม</span>
+      <h2>จากเส้นโค้ง สู่ผิวสามมิติ</h2></div>
+    <p class="sec-sub">เนื้อในเหมือนกันทุกขั้น เปลี่ยนแค่จำนวนแกนกับจำนวนก้อน</p>
+    <div class="sec-body pipe">
+      <div class="pipe-step"><span class="k">f(x)</span><h4>1 มิติ</h4>
+        <p>ระฆังหนึ่งใบบนเส้นจำนวน คุมด้วยยอด A ตำแหน่ง μ และความกว้าง σ</p></div>
+      <div class="pipe-step"><span class="k">f(x, y)</span><h4>2 มิติ</h4>
+        <p>คูณระฆังสองใบเข้าด้วยกัน ได้เนินกลมหรือเนินรี บนระนาบ x–y</p></div>
+      <div class="pipe-step"><span class="k">Σ f<sub>k</sub>(x, y)</span><h4>ผลรวม K ก้อน</h4>
+        <p>วางเนินหลายลูกแล้วบวกกัน ได้ผิวที่ซับซ้อนแต่ยังคุมได้ทีละจุด</p></div>
+      <div class="pipe-step"><span class="k">c(u, v)</span><h4>ผิวแผ่นรองเท้า</h4>
+        <p>ผลรวมชุดเดียวกันนี้ เมื่อวางบนขอบแผ่นจริง คือรูปทรงที่ส่งไปผลิต</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 1. one dimension ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">1</span>
+      <h2>เกาส์เซียน 1 มิติ</h2></div>
+    <p class="sec-sub">ระฆังใบเดียว — ลากสไลเดอร์แล้วดูว่าตัวแปรแต่ละตัวทำอะไรกับรูปทรง</p>
+
+    <div class="sec-body">
+      <div class="eq" style="margin-bottom:20px">
+        f(x) = <em>A</em> · exp
+        [ − <span class="frac"><span>(x − <em>μ</em>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sup">2</span></span></span> ]
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">แบบจำลองเชิงโต้ตอบ · เส้นโค้งระฆัง</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="btn ghost sm" id="g1Ref">ซ่อนเส้นอ้างอิง</button>
+            <button class="btn ghost sm" id="g1Reset">รีเซ็ต</button>
+          </div>
+        </div>
+        <div class="panel-body split">
+          <div class="rail">
+            <div class="field">
+              <div class="field-top"><label for="g1A">A — ความสูงของยอด</label>
+                <span class="val" id="g1Av">1.00</span></div>
+              <input type="range" id="g1A" min="0.1" max="3" step="0.05" value="1">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="g1M">μ — ตำแหน่งของยอด</label>
+                <span class="val" id="g1Mv">0.00</span></div>
+              <input type="range" id="g1M" min="-2" max="2" step="0.05" value="0">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="g1S">σ — ความกว้าง</label>
+                <span class="val" id="g1Sv">0.50</span></div>
+              <input type="range" id="g1S" min="0.08" max="1.5" step="0.01" value="0.5">
+            </div>
+            <p class="cap" style="margin:0">
+              เส้นประจาง ๆ คือเส้นอ้างอิงที่ค่าเริ่มต้น (A = 1, μ = 0, σ = 0.5)
+              ไว้เทียบว่าที่ปรับไปเปลี่ยนอะไรบ้าง
+            </p>
+            <div class="tbl-wrap"><table><tbody id="g1Tbl"></tbody></table></div>
+          </div>
+          <div class="canvas-row">
+            <div class="canvas-cell">
+              <canvas id="g1C" width="720" height="400"></canvas>
+              <span class="cap"><b>เส้นทึบ</b> = เส้นโค้งปัจจุบัน · <b>เส้นประแดง</b> = ระดับครึ่งความสูง
+                และช่วง FWHM · <b>เส้นประเทา</b> = ตำแหน่ง μ ± σ</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <div class="eq" id="g1Eq" style="text-align:left; font-size:var(--step-0)"></div>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:22px">
+        <p><b>อ่านสมการทีละส่วน</b> ใจกลางคือ exp(−t²/2) ซึ่งมีค่าสูงสุดเท่ากับ 1 ที่ t = 0
+          แล้วตกลงเร็วมากเมื่อ t ห่างออกไป ส่วน t ในที่นี้คือ (x − μ)/σ นั่นคือ
+          <b>ระยะห่างจากยอด วัดเป็นกี่เท่าของ σ</b> ดังนั้น σ จึงเป็นไม้บรรทัดของเส้นโค้ง
+          ไม่ใช่ความกว้างโดยตรง</p>
+        <p><b>ทำไมต้อง 1.1774</b> ที่ x = μ ± σ ค่าเหลือ exp(−0.5) = 0.6065 ของยอด
+          ยังไม่ถึงครึ่ง ต้องออกไปถึง x = μ ± σ√(2 ln 2) = μ ± 1.1774 σ ค่าจึงเหลือครึ่งพอดี
+          กลับกัน ถ้าวัดจากภาพจริงได้ว่าครึ่งความสูงกว้างเท่าไร ก็หารด้วย 1.1774 แล้วได้ σ ทันที
+          — นี่คือวิธีที่หน้าแผ่นรองเท้าใช้แปลงจุดกดหนึ่งจุดให้เป็นพารามิเตอร์</p>
+        <p><b>ความกว้างเต็มที่ครึ่งความสูง (FWHM)</b> = 2 × 1.1774 σ = 2.3548 σ
+          และพื้นที่ใต้เส้นโค้งทั้งเส้น = A · σ · √(2π) — สูงขึ้นหรือกว้างขึ้น พื้นที่ก็โตขึ้นเป็นสัดส่วนตรง</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 2. two dimensions ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">2</span>
+      <h2>เกาส์เซียน 2 มิติ</h2></div>
+    <p class="sec-sub">เอาระฆังสองใบมาคูณกัน ได้เนินหนึ่งลูกบนระนาบ — σ แยกกันคนละแกนได้</p>
+
+    <div class="sec-body">
+      <div class="eq" style="margin-bottom:20px">
+        f(x, y) = <em>A</em> · exp
+        [ − <span class="frac"><span>(x − <em>μ</em><span class="sub">x</span>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sub">x</span><span class="sup">2</span></span></span>
+        − <span class="frac"><span>(y − <em>μ</em><span class="sub">y</span>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sub">y</span><span class="sup">2</span></span></span> ]
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">แบบจำลองเชิงโต้ตอบ · เนินหนึ่งลูก</span>
+          <button class="btn ghost sm" id="g2Reset">รีเซ็ต</button>
+        </div>
+        <div class="panel-body split">
+          <div class="rail">
+            <div class="field">
+              <div class="field-top"><label for="g2A">A — ความสูงของยอด</label>
+                <span class="val" id="g2Av">1.00</span></div>
+              <input type="range" id="g2A" min="0.1" max="3" step="0.05" value="1">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="g2X">μₓ — ตำแหน่งตามแกน x</label>
+                <span class="val" id="g2Xv">0.00</span></div>
+              <input type="range" id="g2X" min="-1" max="1" step="0.02" value="0">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="g2Y">μᵧ — ตำแหน่งตามแกน y</label>
+                <span class="val" id="g2Yv">0.00</span></div>
+              <input type="range" id="g2Y" min="-1" max="1" step="0.02" value="0">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="g2SX">σₓ — ความกว้างตามแกน x</label>
+                <span class="val" id="g2SXv">0.30</span></div>
+              <input type="range" id="g2SX" min="0.05" max="1" step="0.01" value="0.3">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="g2SY">σᵧ — ความกว้างตามแกน y</label>
+                <span class="val" id="g2SYv">0.18</span></div>
+              <input type="range" id="g2SY" min="0.05" max="1" step="0.01" value="0.18">
+            </div>
+            <div class="tbl-wrap"><table><tbody id="g2Tbl"></tbody></table></div>
+          </div>
+          <div class="canvas-row">
+            <div class="canvas-cell">
+              <canvas id="g2Map" width="380" height="380"></canvas>
+              <span class="cap"><b>มองจากด้านบน</b> · วงรีคือระดับ 1σ และ 2σ
+                <br>เส้นกากบาทคือแนวที่ตัดออกมาเป็นกราฟด้านขวา</span>
+            </div>
+            <div class="canvas-cell">
+              <canvas id="g2Cx" width="330" height="185"></canvas>
+              <span class="cap"><b>ตัดตามแกน x</b> ที่ y = μᵧ</span>
+              <canvas id="g2Cy" width="330" height="185" style="margin-top:9px"></canvas>
+              <span class="cap"><b>ตัดตามแกน y</b> ที่ x = μₓ</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <div class="eq" id="g2Eq" style="text-align:left; font-size:var(--step-0)"></div>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:22px">
+        <p><b>แยกแกนได้</b> สังเกตว่าสมการ 2 มิติคือ f(x)·f(y) เขียนรวมกันเป็น exp ตัวเดียว
+          ผลคือ<b>ตัดตามแกนไหนก็ยังได้ระฆัง 1 มิติเสมอ</b> ที่มี σ ของแกนนั้น
+          ทำให้ทุกอย่างที่เรียนจากหัวข้อ 1 ใช้ต่อได้ทันที</p>
+        <p><b>เส้นชั้นความสูงเป็นวงรี</b> ที่ σₓ ≠ σᵧ เนินจะรีตามแกนที่ σ ใหญ่กว่า
+          วงรี 1σ คือขอบที่ค่าเหลือ 60.65% ของยอด ส่วน 2σ เหลือ 13.5%
+          — เกินจากนั้นแทบไม่เหลืออะไรแล้ว ซึ่งคือคุณสมบัติ<b>คุมเฉพาะที่</b>
+          ที่ทำให้เกาส์เซียนเหมาะกับงานนี้</p>
+        <p><b>ปริมาตรใต้ผิว</b> = 2π · A · σₓ · σᵧ ในงานแผ่นรองเท้าคือเนื้อวัสดุที่ต้องเพิ่มขึ้นมาจากฐานเรียบ</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 3. sum on a plain plane ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">3</span>
+      <h2>ผลรวมเกาส์เซียนบนระนาบ x, y, z</h2></div>
+    <p class="sec-sub">เนิน 1–5 ลูกบวกกันบนแกนตั้งฉาก ยังไม่มีรูปเท้า ไม่มีขอบแผ่น · ลากหมุนได้ด้วยเมาส์</p>
+
+    <div class="sec-body">
+      <div class="eq" style="margin-bottom:20px">
+        z = c(x, y) = <span style="font-size:1.5em; vertical-align:-.18em">Σ</span><span class="sub" style="margin-inline-end:.4em">k=1..K</span>
+        <em>A</em><span class="sub">k</span> · exp
+        [ − <span class="frac"><span>(x − <em>u</em><span class="sub">k</span>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sub">u,k</span><span class="sup">2</span></span></span>
+        − <span class="frac"><span>(y − <em>v</em><span class="sub">k</span>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sub">v,k</span><span class="sup">2</span></span></span> ]
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">แบบจำลองเชิงโต้ตอบ · ระนาบ x, y, z</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="btn ghost sm" id="plWire">ซ่อนเส้นตาราง</button>
+            <button class="btn ghost sm" id="plSpin">หยุดหมุน</button>
+            <button class="btn ghost sm" id="plHome">มุมมาตรฐาน</button>
+            <button class="btn ghost sm" id="plReset">รีเซ็ต</button>
+          </div>
+        </div>
+        <div class="panel-body split">
+          <div class="rail">
+            <div class="field">
+              <div class="field-top"><label for="plK">K — จำนวนหลุม</label>
+                <span class="val" id="plKv">3</span></div>
+              <input type="range" id="plK" min="1" max="5" step="1" value="3">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="plSel">เลือกหลุมที่จะปรับ</label></div>
+              <select id="plSel"></select>
+            </div>
+            <div id="plParams"></div>
+            <div class="field">
+              <div class="field-top"><label for="plView">มุมมอง</label></div>
+              <select id="plView">
+                <option value="iso">สามมิติ (ลากหมุนเองได้)</option>
+                <option value="top">มองจากด้านบน — ระนาบ x–y</option>
+                <option value="front">มองจากด้านหน้า — ระนาบ x–z</option>
+                <option value="side">มองจากด้านข้าง — ระนาบ y–z</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="plZ">สัดส่วนแกน z</label>
+                <span class="val" id="plZv">0.75</span></div>
+              <input type="range" id="plZ" min="0.25" max="1.6" step="0.05" value="0.75">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="plN">ความละเอียดกริด</label>
+                <span class="val" id="plNv">49 × 49</span></div>
+              <input type="range" id="plN" min="17" max="81" step="8" value="49">
+            </div>
+            <p class="cap" id="plStat" style="margin:0"></p>
+          </div>
+          <div class="canvas-row">
+            <div class="canvas-cell">
+              <canvas id="pl3D" width="700" height="540" style="cursor:grab"></canvas>
+              <span class="cap"><b>z = c(x, y)</b> — พื้นผิวคณิตศาสตร์ล้วน ๆ · สีไล่ตามความสูง z
+                <br>เส้นตั้งสีม่วงคือยอดของแต่ละหลุม k · ลากเพื่อหมุน
+                <br>x, y ไม่มีหน่วย (−1 ถึง 1) ส่วน z อ่านเป็นมิลลิเมตร ให้ตรงกับหน้าแผ่นรองเท้า</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <h3 style="font-size:var(--step-0); margin-bottom:10px">ฟังก์ชันที่กำลังแสดงอยู่</h3>
+          <div class="eq" id="plEq"
+               style="text-align:left; font-size:var(--step--1); line-height:2.2"></div>
+          <div class="tbl-wrap" style="margin-top:14px"><table>
+            <thead><tr>
+              <th>k</th><th>A</th><th>u<sub>k</sub></th><th>v<sub>k</sub></th>
+              <th>σ<sub>u</sub></th><th>σ<sub>v</sub></th><th>ปริมาตร 2πAσᵤσᵥ</th>
+            </tr></thead>
+            <tbody id="plTbl"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:22px">
+        <p><b>ทำไมบวกกันแล้วยังคุมได้</b> เพราะแต่ละก้อนมีอิทธิพลอยู่แค่รัศมีราว 2–3 σ ของตัวเอง
+          ขยับ A ของก้อนที่ 1 ผิวตรงก้อนที่ 3 แทบไม่ขยับเลย
+          ต่างจากพหุนามที่แก้สัมประสิทธิ์ตัวเดียวแล้วรูปทรงเปลี่ยนทั้งแผ่น</p>
+        <p><b>นับพารามิเตอร์</b> หนึ่งก้อนใช้ 5 ตัวเลข (A, uₖ, vₖ, σᵤ, σᵥ)
+          ดังนั้น K ก้อนใช้ 5K ตัวเลข — ผิวทั้งผืนที่เห็นอยู่นี้ ถ้า K = 3 ก็คือตัวเลขเพียง 15 ตัว</p>
+        <p>ผิวเดียวกันนี้เมื่อวางลงบนขอบแผ่นรองเท้าจริง พร้อมความหนาฐานและหน่วยมิลลิเมตร
+          คือสิ่งที่อยู่ในหน้า <a href="index.html">แผ่นรองเท้าจากแรงกด</a>
+          หัวข้อ 4 — ค่าเริ่มต้นของทั้งสองหน้าเป็นชุดเดียวกัน (ส้นเท้า อุ้งเท้า และฝ่าเท้าหน้า)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="prose">
+    <h3>อ่านต่อ</h3>
+    <ul>
+      <li><a href="index.html">แผ่นรองเท้าจากแรงกด</a> — เอาสมการหน้านี้ไปใช้กับข้อมูลแรงกดจริง
+        ตั้งแต่แปลงแรงกดเป็นความลึก ฟิตพารามิเตอร์ ไปจนถึงไฟล์ STL ที่พิมพ์ได้</li>
+      <li>ที่มาของพารามิเตอร์แต่ละตัวจากภาพแรงกดจริง — พร้อมภาพอธิบายระบบพิกัด u, v —
+        อยู่ที่ <a href="index.html">หัวข้อ 2 ของหน้าแผ่นรองเท้า</a></li>
+      <li>ค่าคงที่ที่โผล่มาบ่อย: √(2 ln 2) = 1.1774 · FWHM = 2.3548 σ ·
+        exp(−0.5) = 0.6065 · exp(−2) = 0.1353</li>
+      <li>หน้านี้เป็นคณิตศาสตร์ล้วน ไม่มีข้อมูลผู้ป่วยหรือการวัดใด ๆ เกี่ยวข้อง</li>
+    </ul>
+  </div>
+</footer>
+</main>
+
+<script>
+"use strict";
+
+/* ══════════════ colour maps ══════════════ */
+function ramp(stops){
+  const lut = new Uint8Array(256*3);
+  for(let i=0;i<256;i++){
+    const t=i/255, x=t*(stops.length-1), j=Math.min(stops.length-2,Math.floor(x)), f=x-j;
+    for(let c=0;c<3;c++) lut[i*3+c]=Math.round(255*(stops[j][c]+(stops[j+1][c]-stops[j][c])*f));
+  }
+  return lut;
+}
+const CM = {
+  viridis: ramp([[.267,.005,.329],[.28,.17,.48],[.23,.32,.55],[.16,.47,.56],
+                 [.13,.6,.53],[.27,.75,.44],[.65,.85,.21],[.99,.91,.14]])
+};
+function cmColor(lut,t){ const i=Math.max(0,Math.min(255,Math.round(t*255)))*3;
+  return [lut[i],lut[i+1],lut[i+2]]; }
+
+/* ══════════════ the function itself ══════════════ */
+// one bump, in one dimension
+const gauss1 = (x,A,mu,s) => A*Math.exp(-(x-mu)*(x-mu)/(2*s*s));
+// a list of bumps, in two dimensions - the same call the insole page makes
+function gaussAt(u,v,bumps){
+  let s=0;
+  for(const b of bumps)
+    s += b.A*Math.exp(-((u-b.u)*(u-b.u)/(2*b.su*b.su) + (v-b.v)*(v-b.v)/(2*b.sv*b.sv)));
+  return s;
+}
+const K_HALF = Math.sqrt(2*Math.log(2));      // 1.1774 - sigma to half width
+const fmtNum = (v,d) => v.toFixed(d).replace('-','−');
+const sgn = x => (x<0?'−':'+') + Math.abs(x).toFixed(2);
+
+/* ══════════════ a small cartesian plotter ══════════════
+   Shared by the 1-D section and by the two cross-sections of the 2-D one, so a
+   cut through the surface is drawn by exactly the same code as the curve it is
+   supposed to be. */
+function plot(cv, o){
+  const ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+  const padL=o.padL||54, padR=o.padR||18, padT=o.padT||20, padB=o.padB||38;
+  const X=x=>padL+(W-padL-padR)*(x-o.x0)/(o.x1-o.x0);
+  const Y=y=>H-padB-(H-padT-padB)*y/o.yTop;
+  const grid=cssv('--line-2'), muted=cssv('--muted'), ink=cssv('--ink'),
+        accent=cssv('--accent'), hot=cssv('--hot');
+  ctx.clearRect(0,0,W,H);
+  ctx.lineJoin='round';
+  const seg=(x1,y1,x2,y2,col,w,dash)=>{
+    ctx.strokeStyle=col; ctx.lineWidth=w||1; ctx.setLineDash(dash||[]);
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.setLineDash([]);
+  };
+  // grid and ticks
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=muted;
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  for(const t of o.xticks){
+    seg(X(t),padT,X(t),H-padB,grid,1);
+    ctx.fillText(fmtNum(t,o.xdec===undefined?1:o.xdec), X(t), H-padB+7);
+  }
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  const ny=o.ny||4;
+  for(let s=0;s<=ny;s++){
+    const v=o.yTop*s/ny;
+    seg(padL,Y(v),W-padR,Y(v),grid,1);
+    ctx.fillText(v.toFixed(o.yTop<1?2:1), padL-8, Y(v));
+  }
+  seg(padL,H-padB,W-padR,H-padB,ink,1.4);
+  seg(padL,padT,padL,H-padB,ink,1.4);
+  // the curves themselves
+  const path=f=>{
+    ctx.beginPath();
+    const N=Math.max(160, W-padL-padR);
+    for(let i=0;i<=N;i++){
+      const x=o.x0+(o.x1-o.x0)*i/N, y=Math.min(f(x),o.yTop*1.02);
+      i?ctx.lineTo(X(x),Y(y)):ctx.moveTo(X(x),Y(y));
+    }
+  };
+  for(const c of o.curves){
+    if(c.fill){
+      path(c.f);
+      ctx.lineTo(X(o.x1),Y(0)); ctx.lineTo(X(o.x0),Y(0)); ctx.closePath();
+      ctx.fillStyle=cssv('--accent-soft'); ctx.fill();
+    }
+    path(c.f);
+    ctx.strokeStyle=c.col||accent; ctx.lineWidth=c.w||2.4;
+    ctx.setLineDash(c.dash||[]); ctx.stroke(); ctx.setLineDash([]);
+  }
+  // annotations
+  for(const m of (o.marks||[])){
+    if(m.t==='h'){ seg(X(o.x0),Y(m.y),X(o.x1),Y(m.y),hot,1.4,[6,4]); }
+    if(m.t==='v'){ seg(X(m.x),Y(0),X(m.x),Y(m.y),m.col||grid,1.4,[4,4]); }
+    if(m.t==='span'){
+      const y=Y(m.y);
+      seg(X(m.a),y,X(m.b),y,hot,2.2);
+      for(const x of [m.a,m.b]) seg(X(x),y-5,X(x),y+5,hot,2.2);
+    }
+    if(m.t==='dot'){
+      ctx.fillStyle=m.col||accent;
+      ctx.beginPath(); ctx.arc(X(m.x),Y(m.y),4.5,0,7); ctx.fill();
+    }
+    if(m.t==='text'){
+      ctx.fillStyle=m.col||ink;
+      ctx.font=m.font||'600 12px "IBM Plex Mono", monospace';
+      ctx.textAlign=m.align||'center'; ctx.textBaseline=m.base||'bottom';
+      ctx.fillText(m.s, X(m.x)+(m.dx||0), Y(m.y)+(m.dy||0));
+    }
+  }
+  ctx.fillStyle=ink; ctx.font='600 12px "Bai Jamjuree", sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  if(o.xlab) ctx.fillText(o.xlab, (padL+W-padR)/2, H-padB+22);
+  if(o.ylab){ ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText(o.ylab, 6, 4); }
+}
+
+/* ══════════════ section 1 : one dimension ══════════════ */
+const G1_DEF={A:1, mu:0, s:0.5};
+const g1={A:document.getElementById('g1A'), M:document.getElementById('g1M'),
+          S:document.getElementById('g1S'), C:document.getElementById('g1C')};
+let g1ref=true;
+function g1Draw(){
+  const A=+g1.A.value, mu=+g1.M.value, s=+g1.S.value;
+  document.getElementById('g1Av').textContent=A.toFixed(2);
+  document.getElementById('g1Mv').textContent=fmtNum(mu,2);
+  document.getElementById('g1Sv').textContent=s.toFixed(2);
+  const hw=K_HALF*s, yTop=Math.max(1, Math.ceil(A*4)/4);
+  const curves=[];
+  if(g1ref) curves.push({f:x=>gauss1(x,G1_DEF.A,G1_DEF.mu,G1_DEF.s),
+                         col:cssv('--muted'), w:1.4, dash:[5,4]});
+  curves.push({f:x=>gauss1(x,A,mu,s), fill:true});
+  plot(g1.C, {
+    x0:-3, x1:3, yTop, ny:4, xticks:[-3,-2,-1,0,1,2,3], xdec:0,
+    padT:34, xlab:'x', ylab:'f(x)', curves,
+    marks:[
+      {t:'h', y:A/2},
+      {t:'span', y:A/2, a:mu-hw, b:mu+hw},
+      {t:'text', s:'FWHM = 2.3548σ = '+(2*hw).toFixed(2), x:mu, y:A/2, dy:-9, col:cssv('--hot')},
+      {t:'v', x:mu-s, y:gauss1(mu-s,A,mu,s)},
+      {t:'v', x:mu+s, y:gauss1(mu+s,A,mu,s)},
+      {t:'text', s:'μ−σ', x:mu-s, y:0, dy:16, base:'middle', col:cssv('--muted'),
+       font:'11px "IBM Plex Mono", monospace'},
+      {t:'text', s:'μ+σ', x:mu+s, y:0, dy:16, base:'middle', col:cssv('--muted'),
+       font:'11px "IBM Plex Mono", monospace'},
+      {t:'dot', x:mu, y:A},
+      {t:'text', s:'A = '+A.toFixed(2), x:mu, y:A, dy:-10}
+    ]
+  });
+  document.getElementById('g1Eq').innerHTML =
+    `f(x) = <em>${A.toFixed(2)}</em> · exp[ −(x ${sgn(-mu)})<span class="sup">2</span>` +
+    ` / (2 · <em>${s.toFixed(2)}</em><span class="sup">2</span>) ]`;
+  const rows=[
+    ['ยอดสูงสุด f(μ)', A.toFixed(3)],
+    ['ครึ่งความสูง A/2', (A/2).toFixed(3)],
+    ['ค่าที่ μ ± σ (0.6065 A)', (0.606531*A).toFixed(3)],
+    ['ค่าที่ μ ± 2σ (0.1353 A)', (0.135335*A).toFixed(3)],
+    ['ครึ่งความกว้าง 1.1774 σ', hw.toFixed(3)],
+    ['FWHM = 2.3548 σ', (2*hw).toFixed(3)],
+    ['พื้นที่ใต้เส้นโค้ง Aσ√(2π)', (A*s*Math.sqrt(2*Math.PI)).toFixed(3)]
+  ];
+  document.getElementById('g1Tbl').innerHTML=rows.map(([a,b])=>
+    `<tr><td style="white-space:normal;color:var(--muted)">${a}</td><td class="n">${b}</td></tr>`).join('');
+}
+[g1.A,g1.M,g1.S].forEach(el=>el.oninput=g1Draw);
+document.getElementById('g1Ref').onclick=e=>{
+  g1ref=!g1ref; e.target.textContent=g1ref?'ซ่อนเส้นอ้างอิง':'แสดงเส้นอ้างอิง'; g1Draw(); };
+document.getElementById('g1Reset').onclick=()=>{
+  g1.A.value=G1_DEF.A; g1.M.value=G1_DEF.mu; g1.S.value=G1_DEF.s; g1Draw(); };
+
+/* ══════════════ section 2 : two dimensions ══════════════ */
+const G2_DEF={A:1, x:0, y:0, sx:0.3, sy:0.18};
+const g2={A:document.getElementById('g2A'), X:document.getElementById('g2X'),
+          Y:document.getElementById('g2Y'), SX:document.getElementById('g2SX'),
+          SY:document.getElementById('g2SY'), M:document.getElementById('g2Map'),
+          Cx:document.getElementById('g2Cx'), Cy:document.getElementById('g2Cy')};
+function g2Draw(){
+  const A=+g2.A.value, mx=+g2.X.value, my=+g2.Y.value, sx=+g2.SX.value, sy=+g2.SY.value;
+  document.getElementById('g2Av').textContent=A.toFixed(2);
+  document.getElementById('g2Xv').textContent=fmtNum(mx,2);
+  document.getElementById('g2Yv').textContent=fmtNum(my,2);
+  document.getElementById('g2SXv').textContent=sx.toFixed(2);
+  document.getElementById('g2SYv').textContent=sy.toFixed(2);
+  const f=(x,y)=>A*Math.exp(-((x-mx)*(x-mx)/(2*sx*sx) + (y-my)*(y-my)/(2*sy*sy)));
+
+  // top-down map
+  const cv=g2.M, ctx=cv.getContext('2d'), N=181;
+  const img=ctx.createImageData(N,N);
+  for(let i=0;i<N;i++) for(let j=0;j<N;j++){
+    const x=-1+2*j/(N-1), y=1-2*i/(N-1);
+    const [r,g,b]=cmColor(CM.viridis, f(x,y)/A);
+    const k=(i*N+j)*4;
+    img.data[k]=r; img.data[k+1]=g; img.data[k+2]=b; img.data[k+3]=255;
+  }
+  const tmp=document.createElement('canvas'); tmp.width=N; tmp.height=N;
+  tmp.getContext('2d').putImageData(img,0,0);
+  const pad=26, S=Math.min(cv.width,cv.height)-pad*2;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.imageSmoothingEnabled=true;
+  ctx.drawImage(tmp,pad,pad,S,S);
+  const px=x=>pad+(x+1)/2*S, py=y=>pad+(1-y)/2*S;
+  // contours at 1 and 2 sigma, plus the cut lines
+  ctx.setLineDash([]);
+  for(const [k,w,al] of [[1,1.8,'.95'],[2,1.3,'.55']]){
+    ctx.strokeStyle=`rgba(255,255,255,${al})`; ctx.lineWidth=w;
+    ctx.beginPath();
+    ctx.ellipse(px(mx),py(my), k*sx/2*S, k*sy/2*S, 0,0,Math.PI*2); ctx.stroke();
+  }
+  ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=1; ctx.setLineDash([5,4]);
+  ctx.beginPath(); ctx.moveTo(pad,py(my)); ctx.lineTo(pad+S,py(my));
+  ctx.moveTo(px(mx),pad); ctx.lineTo(px(mx),pad+S); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle=cssv('--line-2'); ctx.lineWidth=1.4;
+  ctx.strokeRect(pad,pad,S,S);
+  ctx.fillStyle=cssv('--muted'); ctx.font='11px "IBM Plex Mono", monospace';
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  for(const t of [-1,0,1]) ctx.fillText(fmtNum(t,0), px(t), pad+S+6);
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  for(const t of [-1,0,1]) ctx.fillText(fmtNum(t,0), pad-6, py(t));
+  ctx.fillStyle=cssv('--ink'); ctx.font='600 12px "Bai Jamjuree", sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText('x', pad+S/2, pad+S+20);
+  ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText('y', 4, 4);
+
+  // the two cuts, drawn by the 1-D plotter
+  const yTop=Math.max(1, Math.ceil(A*4)/4);
+  const cut=(canvas,f1,mu,s,lab)=>plot(canvas,{
+    x0:-1, x1:1, yTop, ny:2, xticks:[-1,-0.5,0,0.5,1], xdec:1,
+    padL:44, padT:14, padB:30, xlab:lab,
+    curves:[{f:f1, fill:true, w:2.2}],
+    marks:[{t:'h', y:A/2},
+           {t:'span', y:A/2, a:mu-K_HALF*s, b:mu+K_HALF*s},
+           {t:'dot', x:mu, y:A}]
+  });
+  cut(g2.Cx, x=>f(x,my), mx, sx, 'x');
+  cut(g2.Cy, y=>f(mx,y), my, sy, 'y');
+
+  document.getElementById('g2Eq').innerHTML =
+    `f(x, y) = <em>${A.toFixed(2)}</em> · exp[ −(x ${sgn(-mx)})<span class="sup">2</span>` +
+    ` / (2 · <em>${sx.toFixed(2)}</em><span class="sup">2</span>)` +
+    ` − (y ${sgn(-my)})<span class="sup">2</span>` +
+    ` / (2 · <em>${sy.toFixed(2)}</em><span class="sup">2</span>) ]`;
+  const rows=[
+    ['ยอดที่ (μₓ, μᵧ)', A.toFixed(3)],
+    ['FWHM ตามแกน x', (2*K_HALF*sx).toFixed(3)],
+    ['FWHM ตามแกน y', (2*K_HALF*sy).toFixed(3)],
+    ['ความรี σₓ : σᵧ', (sx/sy).toFixed(2)+' : 1'],
+    ['ปริมาตร 2πAσₓσᵧ', (2*Math.PI*A*sx*sy).toFixed(3)]
+  ];
+  document.getElementById('g2Tbl').innerHTML=rows.map(([a,b])=>
+    `<tr><td style="white-space:normal;color:var(--muted)">${a}</td><td class="n">${b}</td></tr>`).join('');
+}
+[g2.A,g2.X,g2.Y,g2.SX,g2.SY].forEach(el=>el.oninput=g2Draw);
+document.getElementById('g2Reset').onclick=()=>{
+  g2.A.value=G2_DEF.A; g2.X.value=G2_DEF.x; g2.Y.value=G2_DEF.y;
+  g2.SX.value=G2_DEF.sx; g2.SY.value=G2_DEF.sy; g2Draw(); };
+
+/* ══════════════ the surface, on ruled axes ══════════════
+   The model with nothing on top of it: a height field over the square domain,
+   drawn on plain x, y, z axes. The insole page takes this very same function,
+   drops it onto a plate outline and calls the result a shoe. */
+const cssv = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+// a readable tick step: 1, 2, 2.5 or 5 times a power of ten
+const niceStep = v => {
+  const e = Math.pow(10, Math.floor(Math.log10(v))), m = v/e;
+  return (m<=1?1 : m<=2?2 : m<=2.5?2.5 : m<=5?5 : 10) * e;
+};
+
+class PlanePlot3D{
+  constructor(cv){
+    this.cv=cv; this.ctx=cv.getContext('2d');
+    this.yaw=-0.62; this.pitch=0.52;
+    this.auto=true; this.wire=true; this.n=49; this.zs=0.75;
+    this.bumps=[]; this.sel=0; this.onUser=null;
+    this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let drag=null;
+    const at=e=>({x:e.clientX??e.touches[0].clientX, y:e.clientY??e.touches[0].clientY});
+    const down=e=>{ drag=at(e); this.auto=false; cv.style.cursor='grabbing';
+      if(this.onUser) this.onUser(); };
+    const move=e=>{ if(!drag) return;
+      const p=at(e);
+      this.yaw += (p.x-drag.x)*0.01;
+      // the floor has to stay the floor: seen from below the ruled plane reads
+      // inside out, so the camera is kept above it
+      this.pitch = Math.max(0.03, Math.min(1.52, this.pitch + (p.y-drag.y)*0.008));
+      drag=p; this.render(); if(e.cancelable) e.preventDefault(); };
+    const up=()=>{ drag=null; cv.style.cursor='grab'; };
+    cv.addEventListener('mousedown',down); addEventListener('mousemove',move);
+    addEventListener('mouseup',up);
+    cv.addEventListener('touchstart',down,{passive:true});
+    cv.addEventListener('touchmove',move,{passive:false});
+    cv.addEventListener('touchend',up);
+    let last=0;
+    const tick=t=>{
+      if(this.auto && !this.reduced && t-last>32){ last=t; this.yaw+=0.009; this.render(); }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  view(name){
+    const V={iso:[-0.62,0.52], top:[0,0.03], front:[0,1.52], side:[-Math.PI/2,1.52]};
+    const v=V[name]||V.iso;
+    this.yaw=v[0]; this.pitch=v[1];
+    if(name!=='iso') this.auto=false;
+    this.render();
+  }
+  proj(x,y,z){
+    const cy=Math.cos(this.yaw), sy=Math.sin(this.yaw);
+    const cp=Math.cos(this.pitch), sp=Math.sin(this.pitch);
+    const X=x*cy - y*sy, Y=x*sy + y*cy;
+    return [X, Y*cp + z*sp, z*cp - Y*sp];
+  }
+  render(){
+    const ctx=this.ctx, cv=this.cv, N=this.n, B=this.bumps;
+    ctx.clearRect(0,0,cv.width,cv.height);
+
+    // sample the height field on the square domain
+    const Z=new Float32Array(N*N);
+    let zmax=0;
+    for(let i=0;i<N;i++) for(let j=0;j<N;j++){
+      const x=-1+2*j/(N-1), y=1-2*i/(N-1);
+      const z=gaussAt(x,y,B); Z[i*N+j]=z; if(z>zmax) zmax=z;
+    }
+    // ticks first, then the axis top - a ceiling picked on its own leaves the
+    // labels on ugly quarters (3 mm split four ways is 0.75 a step)
+    const zTick=niceStep(Math.max(zmax,0.2)/4);
+    const nTick=Math.max(1,Math.ceil(Math.max(zmax,0.2)/zTick));
+    const zTop=zTick*nTick, hz=this.zs;
+    const zw=z=>z/zTop*hz;
+
+    // fit the box on screen at any angle, keeping a margin for the tick labels
+    let mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;
+    for(const x of [-1,1]) for(const y of [-1,1]) for(const z of [0,hz]){
+      const p=this.proj(x,y,z);
+      mnx=Math.min(mnx,p[0]); mxx=Math.max(mxx,p[0]);
+      mny=Math.min(mny,p[1]); mxy=Math.max(mxy,p[1]);
+    }
+    const S=Math.min(cv.width*0.80/Math.max(1e-3,mxx-mnx),
+                     cv.height*0.78/Math.max(1e-3,mxy-mny));
+    const cxp=cv.width/2 - S*(mnx+mxx)/2, cyp=cv.height/2 + S*(mny+mxy)/2;
+    const P=(x,y,z)=>{ const p=this.proj(x,y,z);
+      return [cxp+p[0]*S, cyp-p[1]*S, p[2]]; };
+    const line=(a,b,col,w,dash)=>{
+      ctx.strokeStyle=col; ctx.lineWidth=w||1; ctx.setLineDash(dash||[]);
+      ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+      ctx.setLineDash([]);
+    };
+
+    /* ---- the ruled floor, drawn first so the surface sits over it ---- */
+    const grid=cssv('--line-2'), ink=cssv('--ink'), muted=cssv('--muted'),
+          accent=cssv('--accent');
+    ctx.globalAlpha=0.75;
+    for(let t=-1;t<=1.0001;t+=0.25){
+      line(P(t,-1,0), P(t,1,0), grid, 1);
+      line(P(-1,t,0), P(1,t,0), grid, 1);
+    }
+    ctx.globalAlpha=1;
+    const corners=[[-1,-1],[1,-1],[1,1],[-1,1]];
+    const floor=corners.map(([x,y])=>P(x,y,0));
+    for(let i=0;i<4;i++) line(floor[i], floor[(i+1)%4], grid, 1.6);
+    // faint uprights, so the height reads as height
+    for(const [x,y] of corners) line(P(x,y,0), P(x,y,hz), grid, 1, [3,4]);
+
+    /* ---- the surface ---- */
+    const V=new Float32Array(N*N*3);
+    for(let i=0;i<N;i++) for(let j=0;j<N;j++){
+      const k=i*N+j, p=P(-1+2*j/(N-1), 1-2*i/(N-1), zw(Z[k]));
+      V[k*3]=p[0]; V[k*3+1]=p[1]; V[k*3+2]=p[2];
+    }
+    const quads=[];
+    for(let i=0;i<N-1;i++) for(let j=0;j<N-1;j++){
+      const a=i*N+j, b=i*N+j+1, c=(i+1)*N+j+1, e=(i+1)*N+j;
+      quads.push({a,b,c,e,
+        d:(V[a*3+2]+V[b*3+2]+V[c*3+2]+V[e*3+2])/4,
+        val:(Z[a]+Z[b]+Z[c]+Z[e])/4/zTop});
+    }
+    quads.sort((m,n)=>m.d-n.d);          // far to near
+    const wire=this.wire && N<=57;
+    for(const q of quads){
+      const x1=V[q.a*3], y1=V[q.a*3+1], x2=V[q.b*3], y2=V[q.b*3+1],
+            x3=V[q.c*3], y3=V[q.c*3+1], x4=V[q.e*3], y4=V[q.e*3+1];
+      const ax=x2-x1, ay=y2-y1, bx=x4-x1, by=y4-y1;
+      const len=Math.hypot(ax,ay)*Math.hypot(bx,by);
+      const shade=0.6+0.4*(len ? Math.min(1,Math.abs(ax*by-bx*ay)/len) : 1);
+      const [r,g,bb]=cmColor(CM.viridis, Math.max(0,Math.min(1,q.val)));
+      ctx.fillStyle=`rgb(${r*shade|0},${g*shade|0},${bb*shade|0})`;
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+      ctx.lineTo(x3,y3); ctx.lineTo(x4,y4); ctx.closePath();
+      ctx.fill();
+      if(wire){ ctx.strokeStyle='rgba(0,0,0,.20)'; ctx.lineWidth=0.6; ctx.stroke(); }
+    }
+
+    /* ---- one stalk per bump, so every slider has something to point at ---- */
+    ctx.font='600 12px "IBM Plex Mono", monospace';
+    B.forEach((b,i)=>{
+      const z=gaussAt(b.u,b.v,B);
+      const foot=P(b.u,b.v,0), tip=P(b.u,b.v,zw(z));
+      const on = i===this.sel;
+      line(foot, tip, on?accent:'rgba(148,141,255,.6)', on?2.2:1.4, on?[]:[4,3]);
+      ctx.fillStyle = on?accent:'rgba(148,141,255,.8)';
+      ctx.beginPath(); ctx.arc(tip[0],tip[1], on?5:3.4, 0, 7); ctx.fill();
+      ctx.fillStyle=ink;
+      ctx.fillText('k=' + (i+1), tip[0]+8, tip[1]-6);
+    });
+
+    /* ---- ticks on the two near floor edges, plus one upright in mm ---- */
+    // labels are pushed along the outward normal of their own edge, away from
+    // the middle of the box - radially from the centre puts them on top of the
+    // surface as soon as the view goes edge-on
+    const mid=P(0,0,hz/2);
+    const norm=(A,B)=>{
+      let ex=B[0]-A[0], ey=B[1]-A[1];
+      const L=Math.hypot(ex,ey)||1; ex/=L; ey/=L;
+      let nx=ey, ny=-ex;
+      const dot=nx*((A[0]+B[0])/2-mid[0]) + ny*((A[1]+B[1])/2-mid[1]);
+      if(Math.abs(dot)<0.5){ if(ny<0){ nx=-nx; ny=-ny; } }   // edge-on: push down
+      else if(dot<0){ nx=-nx; ny=-ny; }
+      return [nx,ny];
+    };
+    const off=(p,n,d)=>[p[0]+n[0]*d, p[1]+n[1]*d];
+    let near=0, far=0;
+    corners.forEach((c,i)=>{
+      if(P(c[0],c[1],0)[1] > P(corners[near][0],corners[near][1],0)[1]) near=i;
+      if(P(c[0],c[1],0)[0] < P(corners[far][0],corners[far][1],0)[0]) far=i;
+    });
+    const xEdge=corners[near][0], yEdge=corners[near][1], zc=corners[far];
+    // an edge-on view squashes one axis to a point, and its ticks would then
+    // pile up on each other; drop the whole axis instead
+    const span=(a,b)=>Math.hypot(b[0]-a[0], b[1]-a[1]);
+    const showX=span(P(-1,yEdge,0), P(1,yEdge,0))>26;
+    const showY=span(P(xEdge,-1,0), P(xEdge,1,0))>26;
+    const showZ=span(P(zc[0],zc[1],0), P(zc[0],zc[1],hz))>26;
+    const nX=norm(P(-1,yEdge,0), P(1,yEdge,0)), nY=norm(P(xEdge,-1,0), P(xEdge,1,0));
+    ctx.font='12px "IBM Plex Mono", monospace';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle=muted;
+    for(const t of [-1,-0.5,0,0.5,1]){
+      const lab=t.toFixed(t%1?1:0).replace('-','−');
+      if(showX){ const px=P(t,yEdge,0), lx=off(px,nX,17);
+        line(px, off(px,nX,6), grid, 1.4); ctx.fillText(lab, lx[0], lx[1]); }
+      if(showY){ const py=P(xEdge,t,0), ly=off(py,nY,17);
+        line(py, off(py,nY,6), grid, 1.4); ctx.fillText(lab, ly[0], ly[1]); }
+    }
+    if(showZ){
+      line(P(zc[0],zc[1],0), P(zc[0],zc[1],hz), ink, 1.4);
+      ctx.textAlign='right';
+      for(let s=0;s<=nTick;s++){
+        const zv=zTick*s, p=P(zc[0],zc[1],zw(zv));
+        line(p, [p[0]-8,p[1]], grid, 1.4);
+        ctx.fillText(zv.toFixed(zTop<1?2:1), p[0]-12, p[1]);
+      }
+      ctx.textAlign='center';
+    }
+    ctx.fillStyle=ink; ctx.font='600 13px "Bai Jamjuree", sans-serif';
+    if(showX){ const mx=off(P(0,yEdge,0),nX,36); ctx.fillText('x = u', mx[0], mx[1]); }
+    if(showY){ const my=off(P(xEdge,0,0),nY,36); ctx.fillText('y = v', my[0], my[1]); }
+    if(showZ){ const zt=P(zc[0],zc[1],hz); ctx.fillText('z = c (mm)', zt[0]-4, zt[1]-16); }
+    ctx.textAlign='start'; ctx.textBaseline='alphabetic';
+    return {zmax, zTop};
+  }
+}
+
+const plPlot=new PlanePlot3D(document.getElementById('pl3D'));
+const plView=document.getElementById('plView'), plZ=document.getElementById('plZ'),
+      plN=document.getElementById('plN');
+plPlot.onUser=()=>{ plView.value='iso'; };
+function plDraw(){
+  plPlot.bumps=plBumps;
+  plPlot.sel=+plSel.value||0;
+  plPlot.n=+plN.value;
+  plPlot.zs=+plZ.value;
+  const r=plPlot.render();
+  document.getElementById('plStat').innerHTML =
+    '<b>z สูงสุด ' + r.zmax.toFixed(2) + ' mm</b> · แกน z ถึง ' + (+r.zTop.toFixed(2)) + ' mm · ' +
+    'โดเมน x, y ∈ [−1, 1] · ' + plBumps.length + ' หลุม = ' +
+    (plBumps.length*5) + ' พารามิเตอร์';
+}
+plView.onchange=e=>plPlot.view(e.target.value);
+plZ.oninput=e=>{ document.getElementById('plZv').textContent=(+e.target.value).toFixed(2);
+  plDraw(); };
+plN.oninput=e=>{ const n=+e.target.value;
+  document.getElementById('plNv').textContent=n+' × '+n; plDraw(); };
+document.getElementById('plSpin').onclick=e=>{
+  plPlot.auto=!plPlot.auto; e.target.textContent=plPlot.auto?'หยุดหมุน':'หมุนต่อ'; };
+document.getElementById('plWire').onclick=e=>{
+  plPlot.wire=!plPlot.wire;
+  e.target.textContent=plPlot.wire?'ซ่อนเส้นตาราง':'แสดงเส้นตาราง';
+  plPlot.render(); };
+document.getElementById('plHome').onclick=()=>{ plView.value='iso'; plPlot.view('iso'); };
+
+/* ══════════════ section 3 : the bumps this page owns ══════════════
+   Same starting five as the insole page, so the two pages open on the same
+   surface and the numbers can be compared side by side. */
+const PL_DEF=[
+  {A:1.78,u:-0.05,v:-0.59,su:0.28,sv:0.15},
+  {A:0.22,u:-0.48,v: 0.23,su:0.24,sv:0.29},
+  {A:0.28,u: 0.20,v: 0.76,su:0.48,sv:0.12},
+  {A:0.30,u: 0.45,v: 0.45,su:0.22,sv:0.16},
+  {A:0.25,u:-0.35,v:-0.15,su:0.20,sv:0.22}
+];
+const PLSPEC=[['A','A — ความสูงของยอด',0,3,0.01],['u','uₖ — ตำแหน่งตามแกน x',-1,1,0.01],
+  ['v','vₖ — ตำแหน่งตามแกน y',-1,1,0.01],['su','σᵤ — ความกว้างตามแกน x',0.05,1,0.01],
+  ['sv','σᵥ — ความกว้างตามแกน y',0.05,1,0.01]];
+let plBumps=PL_DEF.slice(0,3).map(b=>({...b}));
+const plSel=document.getElementById('plSel'), plParams=document.getElementById('plParams');
+
+function plSummarise(){
+  document.getElementById('plEq').innerHTML=plBumps.map((b,i)=>
+    `<div style="white-space:nowrap">${i?'&nbsp;&nbsp;+&nbsp;':'z =&nbsp;'}` +
+    `<em>${b.A.toFixed(3)}</em> · exp[ −(x ${sgn(-b.u)})<span class="sup">2</span>` +
+    ` / (2·<em>${b.su.toFixed(2)}</em><span class="sup">2</span>)` +
+    ` − (y ${sgn(-b.v)})<span class="sup">2</span>` +
+    ` / (2·<em>${b.sv.toFixed(2)}</em><span class="sup">2</span>) ]</div>`).join('');
+  const sel=+plSel.value;
+  document.getElementById('plTbl').innerHTML=plBumps.map((b,i)=>{
+    const on = i===sel ? ' style="background:var(--accent-soft)"' : '';
+    return `<tr${on}><td class="n">${i+1}</td><td class="n">${b.A.toFixed(3)}</td>` +
+      `<td class="n">${fmtNum(b.u,2)}</td><td class="n">${fmtNum(b.v,2)}</td>` +
+      `<td class="n">${b.su.toFixed(2)}</td><td class="n">${b.sv.toFixed(2)}</td>` +
+      `<td class="n">${(2*Math.PI*b.A*b.su*b.sv).toFixed(3)}</td></tr>`;
+  }).join('');
+}
+function plAll(){ plDraw(); plSummarise(); }
+function plFields(){
+  const b=plBumps[+plSel.value]||plBumps[0];
+  plParams.innerHTML=PLSPEC.map(([key,lab,mn,mx,st])=>`
+    <div class="field">
+      <div class="field-top"><label for="pl_${key}">${lab}</label>
+        <span class="val" id="plv_${key}">${b[key].toFixed(2)}</span></div>
+      <input type="range" id="pl_${key}" min="${mn}" max="${mx}" step="${st}" value="${b[key]}">
+    </div>`).join('');
+  PLSPEC.forEach(([key])=>{
+    const el=document.getElementById('pl_'+key);
+    el.oninput=()=>{ plBumps[+plSel.value][key]=+el.value;
+      document.getElementById('plv_'+key).textContent=(+el.value).toFixed(2); plAll(); };
+  });
+}
+function plSync(){
+  plSel.innerHTML=plBumps.map((b,i)=>`<option value="${i}">หลุมที่ ${i+1}</option>`).join('');
+  plFields();
+}
+document.getElementById('plK').oninput=e=>{
+  const k=+e.target.value; document.getElementById('plKv').textContent=k;
+  while(plBumps.length<k) plBumps.push({...PL_DEF[plBumps.length]});
+  plBumps.length=k; if(+plSel.value>=k) plSel.value=0;
+  plSync(); plAll();
+};
+plSel.onchange=()=>{ plFields(); plAll(); };
+document.getElementById('plReset').onclick=()=>{
+  plBumps=PL_DEF.slice(0,+document.getElementById('plK').value).map(b=>({...b}));
+  plSync(); plAll(); };
+
+/* ══════════════ theme ══════════════ */
+document.getElementById('themeBtn').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const dark=cur ? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark?'light':'dark');
+  g1Draw(); g2Draw(); plDraw();
+};
+
+/* ══════════════ go ══════════════ */
+g1Draw(); g2Draw(); plSync(); plAll();
+</script>
