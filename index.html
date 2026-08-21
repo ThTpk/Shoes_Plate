@@ -394,6 +394,26 @@ footer ul{padding-inline-start:1.2em; margin:0}
             </div>
           </div>
         </div>
+
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <h3 style="font-size:var(--step-0); margin-bottom:10px">ผลลัพธ์ที่ได้</h3>
+          <p class="cap" style="margin:0 0 10px">
+            ฟังก์ชันเต็มรูปของแผ่นที่กำลังแสดงอยู่ แทนค่าตัวเลขจริงทุกตัว —
+            คัดลอกไปใช้ต่อได้ทันที
+          </p>
+          <div class="eq" id="pgEq"
+               style="text-align:left; font-size:var(--step--1); line-height:2.2"></div>
+
+          <div class="tbl-wrap" style="margin-top:14px"><table>
+            <thead><tr>
+              <th>k</th><th>ชิ้นส่วน</th><th>A (mm)</th>
+              <th>u<sub>k</sub></th><th>v<sub>k</sub></th>
+              <th>σ<sub>u</sub></th><th>σ<sub>v</sub></th><th>เทียบเป็นแรงกด</th>
+            </tr></thead>
+            <tbody id="pgTbl"></tbody>
+          </table></div>
+          <p class="cap" id="pgSummary" style="margin-top:10px"></p>
+        </div>
       </div>
 
       <div class="prose" style="margin-top:22px">
@@ -817,7 +837,10 @@ function s1draw(){
     ['โฟมถูกกด', (100*cmax/hh).toFixed(0)+'% ของความหนา']
   ].map(([a,b])=>`<tr><td>${a}</td><td class="n">${b}</td></tr>`).join('');
 }
-s1.E.oninput=s1.H.oninput=s1draw;
+s1.E.oninput=s1.H.oninput=()=>{
+  s1draw();
+  if(typeof pgSummarise==='function' && pgBumps) pgSummarise(pgLast.dmax, pgLast.vol);
+};
 
 const chips=document.getElementById('sampleChips');
 samples.forEach((s,i)=>{
@@ -958,6 +981,44 @@ function pgDraw(){
   let vol=0; for(let k=0;k<w*h;k++) if(mask[k]) vol+=depth[k];
   document.getElementById('pgStat').textContent =
     `ความลึกสูงสุด ${dmax.toFixed(2)} mm · เนื้อวัสดุที่เพิ่ม ${(vol*25/1000).toFixed(1)} cm³ · พารามิเตอร์ ${pgBumps.length*5} ตัว`;
+  pgSummarise(dmax, vol);
+}
+
+const pgZone=v=> v>0.55?'รองนิ้วเท้า' : v>0.05?'met pad ฝ่าเท้าหน้า'
+               : v>-0.45?'รองอุ้งเท้า' : 'heel cup ส้นเท้า';
+
+// Writes the model out in full: the equation with every number substituted,
+// one row per bump, and the totals. This is the deliverable of the section -
+// the sliders are only how you get here.
+let pgLast={dmax:0, vol:0};
+function pgSummarise(dmax, volCells){
+  pgLast={dmax, vol:volCells};
+  const k0=k0now(+document.getElementById('s1E').value,
+                 +document.getElementById('s1H').value);
+  const sgn=x=> (x<0?'−':'+')+Math.abs(x).toFixed(2);   // real minus sign
+  const terms=pgBumps.map((b,i)=>
+    `<div style="white-space:nowrap">${i?'&nbsp;&nbsp;+&nbsp;':'c(u,v) =&nbsp;'}` +
+    `<em>${b.A.toFixed(3)}</em> · exp[ −(u ${sgn(-b.u)})<span class="sup">2</span>` +
+    ` / (2·<em>${b.su.toFixed(2)}</em><span class="sup">2</span>)` +
+    ` − (v ${sgn(-b.v)})<span class="sup">2</span>` +
+    ` / (2·<em>${b.sv.toFixed(2)}</em><span class="sup">2</span>) ]</div>`).join('');
+  document.getElementById('pgEq').innerHTML=terms;
+
+  const sel=+pgSel.value;
+  document.getElementById('pgTbl').innerHTML=pgBumps.map((b,i)=>{
+    const on = i===sel ? ' style="background:var(--accent-soft)"' : '';
+    return `<tr${on}><td class="n">${i+1}</td><td>${pgZone(b.v)}</td>` +
+      `<td class="n">${b.A.toFixed(3)}</td><td class="n">${b.u.toFixed(2)}</td>` +
+      `<td class="n">${b.v.toFixed(2)}</td><td class="n">${b.su.toFixed(2)}</td>` +
+      `<td class="n">${b.sv.toFixed(2)}</td><td class="n">${(b.A*k0).toFixed(0)} kPa</td></tr>`;
+  }).join('');
+
+  const h0=+document.getElementById('s1H').value;
+  document.getElementById('pgSummary').innerHTML =
+    `<b>${pgBumps.length} หลุม × 5 ค่า = ${pgBumps.length*5} พารามิเตอร์</b> ` +
+    `อธิบายแผ่นทั้งแผ่นได้ทั้งหมด · ความหนา ${h0.toFixed(0)}–${(h0+dmax).toFixed(1)} mm · ` +
+    `เนื้อวัสดุที่เพิ่มจากฐานเรียบ ${(volCells*25/1000).toFixed(1)} cm³ · ` +
+    `คอลัมน์แรงกดใช้ k₀ = ${k0.toFixed(0)} kPa/mm จากวัสดุที่ตั้งไว้ในหัวข้อ 1`;
 }
 function pgSync(){
   pgSel.innerHTML=pgBumps.map((b,i)=>`<option value="${i}">หลุมที่ ${i+1}</option>`).join('');
