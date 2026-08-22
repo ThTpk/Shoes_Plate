@@ -528,6 +528,19 @@ a:hover{text-decoration-color:currentColor}
         <div class="panel-body split">
           <div class="rail">
             <div class="field">
+              <div class="field-top"><label>ขอบของแผ่น</label></div>
+              <div class="chips" id="pgOutline">
+                <button class="chip" data-o="profile" aria-pressed="true">ตัวอย่างสำเร็จรูป</button>
+                <button class="chip" data-o="bezier" aria-pressed="false">เบซิเยร์ 9 ช่วง</button>
+              </div>
+              <p class="cap" style="margin:2px 0 0">
+                แบบแรกคือตารางความกว้างครึ่งหนึ่งเทียบกับ v ทั้งสองข้างจึงสมมาตรกันเสมอ ·
+                แบบที่สองเป็นเส้นโค้งปิด 9 ช่วง ใช้ค่าเริ่มต้นจากหน้า
+                <a href="bezier.html">เส้นโค้งเบซิเยร์</a> ซึ่งแต่ละข้างเป็นอิสระต่อกัน
+                ปรับรูปทรงที่นั่นแล้วคัดลอกจุดยึดกลับมาได้
+              </p>
+            </div>
+            <div class="field">
               <div class="field-top"><label for="pgK">K — จำนวนหลุม</label>
                 <span class="val" id="pgKv">3</span></div>
               <input type="range" id="pgK" min="1" max="5" step="1" value="3">
@@ -551,7 +564,8 @@ a:hover{text-decoration-color:currentColor}
             </div>
             <div class="canvas-cell">
               <canvas id="pgMap" width="230" height="540"></canvas>
-              <span class="cap"><b>c(u,v)</b> มองจากด้านบน · วงรี = 1σ</span>
+              <span class="cap"><b>c(u,v)</b> มองจากด้านบน · วงรี = 1σ ·
+                <b>เส้นขาว</b> = ขอบแผ่นที่เลือกไว้</span>
             </div>
           </div>
         </div>
@@ -583,6 +597,20 @@ a:hover{text-decoration-color:currentColor}
           ส่วนพหุนามแก้สัมประสิทธิ์ตัวเดียว รูปทรงเปลี่ยนทั้งแผ่น
           เทียบกับข้อมูลจริงชุดเดียวกัน เกาส์เซียน 3 ก้อน (15 ตัวเลข) ได้ R² = 0.972
           ขณะที่พหุนามดีกรี 5 (21 ตัวเลข) ได้เพียง 0.774</p>
+        <p><b>ขอบกับผิว เป็นคนละสมการกัน</b> ลองสลับปุ่ม <b>ขอบของแผ่น</b> ดู
+          จะเห็นว่าตัวเลขทั้ง 15 ตัวไม่ขยับเลยสักตัว ความลึกสูงสุดก็เท่าเดิม
+          เพราะทั้งขอบและผิววางอยู่บนพิกัด u, v ชุดเดียวกัน
+          เกาส์เซียนตอบว่า<b>ผิวนูนลึกแค่ไหน</b> ส่วนขอบตอบว่า<b>แผ่นจบตรงไหน</b>
+          แยกกันออกแบบได้ แยกกันแก้ได้ สิ่งเดียวที่เปลี่ยนคือพื้นที่แผ่นกับปริมาตรเนื้อวัสดุ</p>
+        <p><b>แล้วขอบสองแบบต่างกันตรงไหน</b> ตารางความกว้างครึ่งหนึ่งตอบได้แค่คำถามเดียวคือ
+          "ที่ v นี้แผ่นกว้างเท่าไร" ขอบซ้ายกับขวาจึงถูกบังคับให้สมมาตรกันรอบแนวกลางเสมอ
+          แต่เท้าจริงไม่สมมาตร — ขอบด้านนอกเกือบเป็นเส้นตรงจากส้นไปถึง MTH5
+          ส่วนด้านในเว้าเข้าลึกที่อุ้งเท้า เส้นโค้งปิดแบบเบซิเยร์ทำได้เพราะแต่ละข้าง
+          เป็นเส้นของตัวเอง: ที่ v = 0 ขอบเบซิเยร์อยู่ที่ u = +0.64 ด้านใน
+          แต่ −1.05 ด้านนอก ขณะที่ตารางให้ ±0.69 เท่ากันทั้งสองข้าง
+          รวมทั้งแผ่นแล้วมาสก์ต่างกันราว 19% ของเซลล์ ทั้งที่พื้นที่รวมต่างกันไม่ถึง 2%
+          — <a href="bezier.html">หน้าเส้นโค้งเบซิเยร์</a> อธิบายที่มาของจุดยึดทั้งเก้า
+          และวิธีฟิตขอบจากรอยเท้าจริง</p>
       </div>
     </div>
   </div>
@@ -647,6 +675,17 @@ a:hover{text-decoration-color:currentColor}
               <div class="field-top"><label for="upH">h₀ — ความหนาโฟม</label>
                 <span class="val" id="upHv">10 mm</span></div>
               <input type="range" id="upH" min="4" max="25" step="1" value="10">
+            </div>
+            <div class="field">
+              <div class="field-top"><label>ขอบของแผ่น</label></div>
+              <div class="chips" id="upOutline">
+                <button class="chip" data-o="profile" aria-pressed="true">ตัวอย่างสำเร็จรูป</button>
+                <button class="chip" data-o="bezier" aria-pressed="false">เบซิเยร์ 9 ช่วง</button>
+              </div>
+              <p class="cap" style="margin:2px 0 0">
+                ตัวเลือกเดียวกับหัวข้อ 4 — ขอบเปลี่ยนเฉพาะรูปทรงแผ่นในภาพ 3 มิติ
+                ส่วนการฟิตเกาส์เซียนอ่านจากภาพแรงกดล้วน ๆ จึงไม่ขยับตาม
+              </p>
             </div>
             <p class="cap" id="upStat">ยังไม่ได้เลือกภาพ — กำลังแสดงตัวอย่างจากชุดข้อมูล</p>
           </div>
@@ -915,6 +954,9 @@ function insoleOutline(src,w,h,pad){
   return out;
 }
 
+// the StepUP mat puts four sensors per square centimetre
+const PX_MM = 5;
+
 /* ---------- the plate outline ----------
    A footprint is not an insole. A real insole is a last-shaped plate: a rounded
    heel, a waist at the arch, the widest point across the ball of the foot, and
@@ -939,23 +981,105 @@ function insoleHalfWidth(v){
 // the toe box of a real insole leans towards the little toe
 const insoleCentre=(v,leftFoot)=> (leftFoot?-1:1)*0.13*Math.max(0,v)**2;
 
+/* ---------- the same outline, drawn as Bezier curves ----------
+   The profile table above can only say "how wide is the plate at this v",
+   so both edges are forced to be mirror images of one another about the
+   toe-box lean. A closed Bezier loop has no such restriction: each side is
+   its own curve. These are the nine anchors bezier.html opens with, in its
+   own normalised frame, rescaled here to the size the profile table gives
+   the plate so the two outlines can be swapped without resizing anything.
+   Design your own over there, then paste the anchors in. */
+const BEZ_ANCHORS=[[-0.36,1.00],[ 0.52,0.80],[ 0.95, 0.36],[ 0.80,-0.14],
+                   [ 0.58,-0.66],[ 0.00,-1.00],[-0.60,-0.66],[-0.50,-0.06],
+                   [-0.92, 0.40]];
+const BEZ_TAU=1;                       // handle length, as on the bezier page
+const BEZ_HALFW=1.16;                  // widest half-width, matching the profile
+const BEZ_V0=-1.10, BEZ_V1=1.12;       // heel and toe ends, matching the profile
+
+// anchors -> Bezier segments in this page's (u, v) frame
+function bezOutline(leftFoot){
+  // bezier.html puts the medial side at negative u; insoleCentre here leans
+  // the toe box towards the little toe, which puts medial at positive u for
+  // a left foot - so one of the two has to be mirrored
+  const mir = leftFoot ? -1 : 1;
+  let uMax=0, vMin=Infinity, vMax=-Infinity;
+  for(const a of BEZ_ANCHORS){
+    uMax=Math.max(uMax,Math.abs(a[0]));
+    vMin=Math.min(vMin,a[1]); vMax=Math.max(vMax,a[1]);
+  }
+  const A=BEZ_ANCHORS.map(a=>[ mir*a[0]/uMax*BEZ_HALFW,
+    BEZ_V0+(a[1]-vMin)/(vMax-vMin)*(BEZ_V1-BEZ_V0) ]);
+  const n=A.length, at=i=>A[(i%n+n)%n], segs=[];
+  // Catmull-Rom handles: the tangent at an anchor is shared by both segments
+  // touching it, which is the C1 condition written as a formula
+  for(let i=0;i<n;i++){
+    const P0=at(i), P3=at(i+1), pm=at(i-1), pp=at(i+2);
+    segs.push([P0,
+      [P0[0]+(P3[0]-pm[0])*BEZ_TAU/6, P0[1]+(P3[1]-pm[1])*BEZ_TAU/6],
+      [P3[0]-(pp[0]-P0[0])*BEZ_TAU/6, P3[1]-(pp[1]-P0[1])*BEZ_TAU/6],
+      P3]);
+  }
+  return segs;
+}
+// B(t) = (1-t)^3 P0 + 3(1-t)^2 t P1 + 3(1-t) t^2 P2 + t^3 P3, flattened once
+function bezPolygon(segs,per){
+  per=per||26;
+  const pts=[];
+  for(const P of segs) for(let k=0;k<per;k++){
+    const t=k/per, s=1-t;
+    const w=[s*s*s, 3*s*s*t, 3*s*t*t, t*t*t];
+    pts.push([P[0][0]*w[0]+P[1][0]*w[1]+P[2][0]*w[2]+P[3][0]*w[3],
+              P[0][1]*w[0]+P[1][1]*w[1]+P[2][1]*w[2]+P[3][1]*w[3]]);
+  }
+  return pts;
+}
+// the profile table written as a closed loop too, so the two can be compared
+function profilePolygon(leftFoot){
+  const right=[], left=[];
+  for(let k=0;k<=120;k++){
+    const v=INSOLE_PROFILE[0][0] +
+      (INSOLE_PROFILE[INSOLE_PROFILE.length-1][0]-INSOLE_PROFILE[0][0])*k/120;
+    const hw=insoleHalfWidth(v), c=insoleCentre(v,leftFoot);
+    right.push([c+hw,v]); left.push([c-hw,v]);
+  }
+  return right.concat(left.reverse());
+}
+// crossing count - odd means inside
+function inPoly(poly,u,v){
+  let inside=false;
+  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+    const a=poly[i], b=poly[j];
+    if((a[1]>v)!==(b[1]>v) &&
+       u < (b[0]-a[0])*(v-a[1])/(b[1]-a[1])+a[0]) inside=!inside;
+  }
+  return inside;
+}
+
 // A plate grid in the same (u,v) frame as the footprint, so the Gaussian pads
 // land on the same anatomy while the plate itself keeps its own outline.
 // ss supersamples the plate: at the sensor's own 5 mm pitch the waist and the
 // heel differ by a single cell and the outline reads as a rectangle.
-function insolePlate(fw,fh,bumps,leftFoot,ss){
+function insolePlate(fw,fh,bumps,leftFoot,ss,outline){
   ss = ss||2;
   const su=(fw-1)/2*ss, sv=(fh-1)/2*ss;
   const W=Math.round(2.36*su)+5, H=Math.round(2.24*sv)+5;
   const mask=new Uint8Array(W*H), depth=new Float32Array(W*H);
+  // 'bezier' swaps the profile table for a closed curve; everything else -
+  // the (u, v) frame, the grid, the Gaussians - stays exactly as it was
+  const poly = outline==='bezier' ? bezPolygon(bezOutline(leftFoot)) : null;
   for(let i=0;i<H;i++) for(let j=0;j<W;j++){
     const u=(j-(W-1)/2)/su, v=((H-1)/2-i)/sv;
-    const hw=insoleHalfWidth(v);
-    if(hw>0 && Math.abs(u-insoleCentre(v,leftFoot))<=hw){
+    const inside = poly ? inPoly(poly,u,v)
+      : (insoleHalfWidth(v)>0 &&
+         Math.abs(u-insoleCentre(v,leftFoot))<=insoleHalfWidth(v));
+    if(inside){
       mask[i*W+j]=1; depth[i*W+j]=gaussAt(u,v,bumps);
     }
   }
-  return {w:W,h:H,mask,depth,su,sv};
+  // one plate cell is one sensor pitch divided by the supersampling factor
+  const mm = PX_MM/ss;
+  return {w:W,h:H,mask,depth,su,sv,mm,
+          poly: poly || profilePolygon(leftFoot)};
 }
 
 // The 3-D views draw the flat base at a tenth of its real thickness. The base
@@ -1126,8 +1250,9 @@ function pgGrid(){
   return {w,h,mask:insoleOutline(contact,w,h,1)};
 }
 const PGG = pgGrid();
+let pgOutline='profile';
 function pgDraw(){
-  const P=insolePlate(PGG.w,PGG.h,pgBumps,true);
+  const P=insolePlate(PGG.w,PGG.h,pgBumps,true,2,pgOutline);
   const {w,h,mask,depth}=P;
   pg3d.ex=+document.getElementById('pgEx').value;
   pg3d.setData(buildFaces(w,h,mask,depth,10*BASE_3D_SCALE));
@@ -1135,6 +1260,14 @@ function pgDraw(){
   let dmax=0; for(let k=0;k<w*h;k++) if(mask[k]) dmax=Math.max(dmax,depth[k]);
   const g=drawField(pgMap,w,h,k=>mask[k]?depth[k]:0,CM.magma,{vmax:dmax||1});
   const ctx=pgMap.getContext('2d');
+  // (u, v) -> canvas, the same mapping insolePlate used to fill the mask
+  const UX=u=>g.ox+((w-1)/2+u*P.su+0.5)*g.cell;
+  const VY=v=>g.oy+((h-1)/2-v*P.sv+0.5)*g.cell;
+  ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=1.4;
+  ctx.beginPath();
+  P.poly.forEach((q,i)=>{ const x=UX(q[0]), y=VY(q[1]);
+    i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+  ctx.closePath(); ctx.stroke();
   ctx.lineWidth=1.6;
   const su2px=P.su*g.cell, sv2px=P.sv*g.cell;
   pgBumps.forEach((b,i)=>{
@@ -1144,10 +1277,13 @@ function pgDraw(){
     ctx.beginPath();
     ctx.ellipse(cx,cy,b.su*su2px,b.sv*sv2px,0,0,Math.PI*2); ctx.stroke();
   });
-  let vol=0; for(let k=0;k<w*h;k++) if(mask[k]) vol+=depth[k];
+  let vol=0, cells=0;
+  for(let k=0;k<w*h;k++) if(mask[k]){ vol+=depth[k]; cells++; }
+  const cellArea=P.mm*P.mm;                       // mm^2 of one plate cell
   document.getElementById('pgStat').textContent =
-    `ความลึกสูงสุด ${dmax.toFixed(2)} mm · เนื้อวัสดุที่เพิ่ม ${(vol*25/1000).toFixed(1)} cm³ · พารามิเตอร์ ${pgBumps.length*5} ตัว`;
-  pgSummarise(dmax, vol);
+    `ความลึกสูงสุด ${dmax.toFixed(2)} mm · เนื้อวัสดุที่เพิ่ม ${(vol*cellArea/1000).toFixed(1)} cm³ · ` +
+    `พื้นที่แผ่น ${(cells*cellArea/100).toFixed(1)} cm² · พารามิเตอร์ ${pgBumps.length*5} ตัว`;
+  pgSummarise(dmax, vol*cellArea);
 }
 
 const pgZone=v=> v>0.55?'รองนิ้วเท้า' : v>0.05?'met pad ฝ่าเท้าหน้า'
@@ -1157,8 +1293,8 @@ const pgZone=v=> v>0.55?'รองนิ้วเท้า' : v>0.05?'met pad �
 // one row per bump, and the totals. This is the deliverable of the section -
 // the sliders are only how you get here.
 let pgLast={dmax:0, vol:0};
-function pgSummarise(dmax, volCells){
-  pgLast={dmax, vol:volCells};
+function pgSummarise(dmax, volMM3){
+  pgLast={dmax, vol:volMM3};
   const k0=k0now(+document.getElementById('s1E').value,
                  +document.getElementById('s1H').value);
   const sgn=x=> (x<0?'−':'+')+Math.abs(x).toFixed(2);   // real minus sign
@@ -1183,7 +1319,7 @@ function pgSummarise(dmax, volCells){
   document.getElementById('pgSummary').innerHTML =
     `<b>${pgBumps.length} หลุม × 5 ค่า = ${pgBumps.length*5} พารามิเตอร์</b> ` +
     `อธิบายแผ่นทั้งแผ่นได้ทั้งหมด · ความหนา ${h0.toFixed(0)}–${(h0+dmax).toFixed(1)} mm · ` +
-    `เนื้อวัสดุที่เพิ่มจากฐานเรียบ ${(volCells*25/1000).toFixed(1)} cm³ · ` +
+    `เนื้อวัสดุที่เพิ่มจากฐานเรียบ ${(volMM3/1000).toFixed(1)} cm³ · ` +
     `คอลัมน์แรงกดใช้ k₀ = ${k0.toFixed(0)} kPa/mm จากวัสดุที่ตั้งไว้ในหัวข้อ 1`;
 }
 function pgSync(){
@@ -1213,6 +1349,13 @@ document.getElementById('pgK').oninput=e=>{
 document.getElementById('pgEx').oninput=e=>{
   document.getElementById('pgExv').textContent=e.target.value+'×'; pgDraw(); };
 pgSel.onchange=()=>{ pgFields(); pgDraw(); };
+for(const b of document.getElementById('pgOutline').querySelectorAll('.chip'))
+  b.onclick=()=>{
+    pgOutline=b.dataset.o;
+    for(const o of document.getElementById('pgOutline').querySelectorAll('.chip'))
+      o.setAttribute('aria-pressed', o===b?'true':'false');
+    pgDraw();
+  };
 document.getElementById('pgSpin').onclick=e=>{
   pg3d.auto=!pg3d.auto; e.target.textContent=pg3d.auto?'หยุดหมุน':'หมุนต่อ'; };
 document.getElementById('pgReset').onclick=()=>{
@@ -1263,6 +1406,7 @@ function gridFromImage(img){
   return {w,h,rgba:cx.getImageData(0,0,w,h).data};
 }
 let upImage=null;
+let upOutline='profile';
 function upBuild(){
   const mode=document.getElementById('upMode').value;
   const peak=+document.getElementById('upPeak').value;
@@ -1359,7 +1503,7 @@ function upFit(){
   });
   const leftFoot = upImage ? true
     : String(samples[curSample].side||'').toLowerCase().startsWith('l');
-  const plate=insolePlate(w,h,bumps,leftFoot);
+  const plate=insolePlate(w,h,bumps,leftFoot,2,upOutline);
   up3d.ex=18;
   up3d.setData(buildFaces(plate.w,plate.h,plate.mask,plate.depth,h0*BASE_3D_SCALE));
 
@@ -1369,13 +1513,22 @@ function upFit(){
     <td class="n">${b.v.toFixed(2)}</td><td class="n">${b.su.toFixed(2)}</td>
     <td class="n">${b.sv.toFixed(2)}</td><td class="n">${(b.A*upGrid.k0).toFixed(0)}</td>
     <td>${zone(b.v)}</td></tr>`).join('');
+  let cells=0; for(let k=0;k<plate.mask.length;k++) if(plate.mask[k]) cells++;
   up.stat.textContent = (upImage?'ภาพที่นำเข้า':'ตัวอย่างจากชุดข้อมูล')+
-    ` · ตาราง ${w}×${h} · R² = ${r2.toFixed(3)} · หนา ${upGrid.h0}–${(upGrid.h0+dmax).toFixed(1)} mm`;
+    ` · ตาราง ${w}×${h} · R² = ${r2.toFixed(3)} · หนา ${upGrid.h0}–${(upGrid.h0+dmax).toFixed(1)} mm`+
+    ` · พื้นที่แผ่น ${(cells*plate.mm*plate.mm/100).toFixed(1)} cm²`;
 }
 ['upMode','upPeak','upK','upThr','upE','upH'].forEach(id=>{
   document.getElementById(id).oninput=upBuild;
   document.getElementById(id).onchange=upBuild;
 });
+for(const b of document.getElementById('upOutline').querySelectorAll('.chip'))
+  b.onclick=()=>{
+    upOutline=b.dataset.o;
+    for(const o of document.getElementById('upOutline').querySelectorAll('.chip'))
+      o.setAttribute('aria-pressed', o===b?'true':'false');
+    upBuild();
+  };
 const drop=document.getElementById('upDrop'), fileIn=document.getElementById('upFile');
 drop.onclick=()=>fileIn.click();
 drop.ondragover=e=>{e.preventDefault(); drop.classList.add('over');};
