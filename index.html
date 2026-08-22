@@ -535,11 +535,12 @@ a:hover{text-decoration-color:currentColor}
               </div>
               <p class="cap" style="margin:2px 0 0">
                 แบบแรกคือตารางความกว้างครึ่งหนึ่งเทียบกับ v ทั้งสองข้างจึงสมมาตรกันเสมอ ·
-                แบบที่สองเป็นเส้นโค้งปิด 9 ช่วง ใช้ค่าเริ่มต้นจากหน้า
-                <a href="bezier.html">เส้นโค้งเบซิเยร์</a> ซึ่งแต่ละข้างเป็นอิสระต่อกัน
-                ปรับรูปทรงที่นั่นแล้วคัดลอกจุดยึดกลับมาได้
+                แบบที่สองเป็นเส้นโค้งปิด 9 ช่วง เริ่มจากค่าตั้งต้นของหน้า
+                <a href="bezier.html">เส้นโค้งเบซิเยร์</a> แล้วปรับต่อได้ที่นี่
+                ขอบที่ปรับใช้ร่วมกับหัวข้อ 6
               </p>
             </div>
+            <div id="pgBez" style="display:none; flex-direction:column; gap:14px"></div>
             <div class="field">
               <div class="field-top"><label for="pgK">K — จำนวนหลุม</label>
                 <span class="val" id="pgKv">3</span></div>
@@ -683,10 +684,12 @@ a:hover{text-decoration-color:currentColor}
                 <button class="chip" data-o="bezier" aria-pressed="false">เบซิเยร์ 9 ช่วง</button>
               </div>
               <p class="cap" style="margin:2px 0 0">
-                ตัวเลือกเดียวกับหัวข้อ 4 — ขอบเปลี่ยนเฉพาะรูปทรงแผ่นในภาพ 3 มิติ
-                ส่วนการฟิตเกาส์เซียนอ่านจากภาพแรงกดล้วน ๆ จึงไม่ขยับตาม
+                ขอบชุดเดียวกับหัวข้อ 4 ปรับที่ไหนก็เปลี่ยนทั้งคู่ ·
+                ขอบมีผลกับรูปทรงแผ่นเท่านั้น ส่วนการฟิตเกาส์เซียนอ่านจากภาพแรงกดล้วน ๆ
+                จึงไม่ขยับตาม
               </p>
             </div>
+            <div id="upBez" style="display:none; flex-direction:column; gap:14px"></div>
             <p class="cap" id="upStat">ยังไม่ได้เลือกภาพ — กำลังแสดงตัวอย่างจากชุดข้อมูล</p>
           </div>
 
@@ -957,6 +960,8 @@ function insoleOutline(src,w,h,pad){
 // the StepUP mat puts four sensors per square centimetre
 const PX_MM = 5;
 
+const cssv = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+
 /* ---------- the plate outline ----------
    A footprint is not an insole. A real insole is a last-shaped plate: a rounded
    heel, a waist at the arch, the widest point across the ball of the foot, and
@@ -992,31 +997,23 @@ const insoleCentre=(v,leftFoot)=> (leftFoot?-1:1)*0.13*Math.max(0,v)**2;
 const BEZ_ANCHORS=[[-0.36,1.00],[ 0.52,0.80],[ 0.95, 0.36],[ 0.80,-0.14],
                    [ 0.58,-0.66],[ 0.00,-1.00],[-0.60,-0.66],[-0.50,-0.06],
                    [-0.92, 0.40]];
-const BEZ_TAU=1;                       // handle length, as on the bezier page
-const BEZ_HALFW=1.16;                  // widest half-width, matching the profile
 const BEZ_V0=-1.10, BEZ_V1=1.12;       // heel and toe ends, matching the profile
 
-// anchors -> Bezier segments in this page's (u, v) frame
+// anchors -> Bezier segments in this page's (u, v) frame.
+// bezier.html puts the medial side at negative u; insoleCentre here leans the
+// toe box towards the little toe, which puts medial at positive u for a left
+// foot - so one of the two has to be mirrored. bezFrame owns that, and the
+// width and length sliders, so the editor can invert it for dragging.
 function bezOutline(leftFoot){
-  // bezier.html puts the medial side at negative u; insoleCentre here leans
-  // the toe box towards the little toe, which puts medial at positive u for
-  // a left foot - so one of the two has to be mirrored
-  const mir = leftFoot ? -1 : 1;
-  let uMax=0, vMin=Infinity, vMax=-Infinity;
-  for(const a of BEZ_ANCHORS){
-    uMax=Math.max(uMax,Math.abs(a[0]));
-    vMin=Math.min(vMin,a[1]); vMax=Math.max(vMax,a[1]);
-  }
-  const A=BEZ_ANCHORS.map(a=>[ mir*a[0]/uMax*BEZ_HALFW,
-    BEZ_V0+(a[1]-vMin)/(vMax-vMin)*(BEZ_V1-BEZ_V0) ]);
-  const n=A.length, at=i=>A[(i%n+n)%n], segs=[];
+  const A=bezA.map(bezFrame(leftFoot).fwd);
+  const n=A.length, at=i=>A[(i%n+n)%n], segs=[], tau=bezShape.tau;
   // Catmull-Rom handles: the tangent at an anchor is shared by both segments
   // touching it, which is the C1 condition written as a formula
   for(let i=0;i<n;i++){
     const P0=at(i), P3=at(i+1), pm=at(i-1), pp=at(i+2);
     segs.push([P0,
-      [P0[0]+(P3[0]-pm[0])*BEZ_TAU/6, P0[1]+(P3[1]-pm[1])*BEZ_TAU/6],
-      [P3[0]-(pp[0]-P0[0])*BEZ_TAU/6, P3[1]-(pp[1]-P0[1])*BEZ_TAU/6],
+      [P0[0]+(P3[0]-pm[0])*tau/6, P0[1]+(P3[1]-pm[1])*tau/6],
+      [P3[0]-(pp[0]-P0[0])*tau/6, P3[1]-(pp[1]-P0[1])*tau/6],
       P3]);
   }
   return segs;
@@ -1054,11 +1051,164 @@ function inPoly(poly,u,v){
   }
   return inside;
 }
+// Same even-odd rule, but one row at a time: collect the crossings for this v,
+// sort them, fill between pairs. Testing every cell against every edge is fine
+// for one redraw and far too slow once a handle is being dragged.
+function fillPoly(poly,W,H,su,sv,cb){
+  for(let i=0;i<H;i++){
+    const v=((H-1)/2-i)/sv, xs=[];
+    for(let a=0,b=poly.length-1;a<poly.length;b=a++){
+      const p=poly[a], q=poly[b];
+      if((p[1]>v)!==(q[1]>v)) xs.push((q[0]-p[0])*(v-p[1])/(q[1]-p[1])+p[0]);
+    }
+    if(xs.length<2) continue;
+    xs.sort((m,n)=>m-n);
+    for(let k=0;k+1<xs.length;k+=2){
+      const j0=Math.max(0,Math.ceil(xs[k]*su+(W-1)/2));
+      const j1=Math.min(W-1,Math.floor(xs[k+1]*su+(W-1)/2));
+      for(let j=j0;j<=j1;j++) cb(i,j);
+    }
+  }
+}
 
 // A plate grid in the same (u,v) frame as the footprint, so the Gaussian pads
 // land on the same anatomy while the plate itself keeps its own outline.
 // ss supersamples the plate: at the sensor's own 5 mm pitch the waist and the
 // heel differ by a single cell and the outline reads as a rectangle.
+
+/* ---------- editing that outline ----------
+   One outline, shared by both sections: whichever strip you touch, the other
+   one follows. Two kinds of control, matching how bezier.html works -
+   tau, width and length are transforms applied when the anchors are read,
+   while arch and heel write into the anchors themselves, which is also what
+   dragging a handle on the little editor does. */
+const BEZ_BASE = BEZ_ANCHORS.map(a=>a.slice());
+let bezA = BEZ_BASE.map(a=>a.slice());
+const BEZ_SHAPE_DEF = {tau:1, halfw:1.16, len:1, arch:0.55, heel:1};
+let bezShape = {...BEZ_SHAPE_DEF};
+const BEZ_ARCH_I = 7, BEZ_HEEL_I = [4,6];
+const BEZ_SPEC = [
+  ['tau',  'τ — ความยาวก้านควบคุม',      0,    1.60, 0.02],
+  ['halfw','ความกว้างสุดของแผ่น',        0.90, 1.45, 0.01],
+  ['len',  'ความยาวแผ่น',                0.90, 1.20, 0.01],
+  ['arch', 'ความเว้าของอุ้งเท้าด้านใน',  0,    1,    0.01],
+  ['heel', 'ความกว้างส้น',               0.70, 1.30, 0.01]
+];
+// the two sliders that move anchors are set from the base every time, never
+// accumulated, so sliding back and forth always lands on the same shape
+function bezApplyShape(){
+  bezA[BEZ_ARCH_I][0] = -0.72 + bezShape.arch*0.42;
+  for(const i of BEZ_HEEL_I) bezA[i][0] = BEZ_BASE[i][0]*bezShape.heel;
+}
+// anchors -> the (u, v) frame, and back again for the drag handler
+function bezFrame(leftFoot){
+  let uMax=0, vMin=Infinity, vMax=-Infinity;
+  for(const a of bezA){ uMax=Math.max(uMax,Math.abs(a[0]));
+    vMin=Math.min(vMin,a[1]); vMax=Math.max(vMax,a[1]); }
+  const mir=leftFoot?-1:1, v0=BEZ_V0*bezShape.len, v1=BEZ_V1*bezShape.len;
+  const span=Math.max(1e-6,vMax-vMin);
+  return {
+    fwd: a=>[ mir*a[0]/uMax*bezShape.halfw, v0+(a[1]-vMin)/span*(v1-v0) ],
+    inv: p=>[ p[0]*uMax/(mir*bezShape.halfw), vMin+(p[1]-v0)*span/(v1-v0) ]
+  };
+}
+
+/* ---------- a small editor, one per section ---------- */
+const bezHosts=[];
+function bezEditorDraw(cv, aspect, leftFoot){
+  const ctx=cv.getContext('2d'), W=cv.width, H=cv.height, pad=14;
+  const UMAX=1.55, VMAX=1.30;
+  const su=Math.min((W-2*pad)/(2*UMAX), (H-2*pad)/(2*VMAX)/aspect), sv=su*aspect;
+  const X=u=>W/2+u*su, Y=v=>H/2-v*sv;
+  const segs=bezOutline(leftFoot), A=bezA.map(bezFrame(leftFoot).fwd);
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=cssv('--surface-2'); ctx.fillRect(0,0,W,H);
+  ctx.beginPath();
+  ctx.moveTo(X(segs[0][0][0]), Y(segs[0][0][1]));
+  for(const P of segs) ctx.bezierCurveTo(X(P[1][0]),Y(P[1][1]),
+    X(P[2][0]),Y(P[2][1]), X(P[3][0]),Y(P[3][1]));
+  ctx.closePath();
+  ctx.fillStyle=cssv('--accent-soft'); ctx.fill();
+  ctx.strokeStyle=cssv('--accent'); ctx.lineWidth=2.2; ctx.stroke();
+  ctx.strokeStyle=cssv('--line-2'); ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  for(const P of segs){
+    ctx.beginPath(); ctx.moveTo(X(P[0][0]),Y(P[0][1])); ctx.lineTo(X(P[1][0]),Y(P[1][1]));
+    ctx.moveTo(X(P[3][0]),Y(P[3][1])); ctx.lineTo(X(P[2][0]),Y(P[2][1])); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  ctx.font='600 10px "IBM Plex Mono", monospace';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  A.forEach((p,i)=>{
+    ctx.beginPath(); ctx.arc(X(p[0]),Y(p[1]),6,0,7);
+    ctx.fillStyle=cssv('--accent'); ctx.fill();
+    ctx.strokeStyle=cssv('--surface'); ctx.lineWidth=1.5; ctx.stroke();
+    ctx.fillStyle=cssv('--surface'); ctx.fillText(String(i), X(p[0]), Y(p[1]));
+  });
+  ctx.fillStyle=cssv('--muted'); ctx.font='10px "IBM Plex Mono", monospace';
+  ctx.textBaseline='bottom';
+  ctx.fillText(leftFoot?'ด้านนอก ←  → ด้านใน':'ด้านใน ←  → ด้านนอก', W/2, H-4);
+  return {X,Y,su,sv,A};
+}
+// build one control strip; redraw() is that section's own re-render
+function bezStrip(hostId, aspect, leftFoot, redraw){
+  const host=document.getElementById(hostId);
+  host.innerHTML =
+    BEZ_SPEC.map(([k,label,mn,mx,st])=>`<div class="field">
+      <div class="field-top"><label for="${hostId}_${k}">${label}</label>
+        <span class="val" id="${hostId}v_${k}">${bezShape[k].toFixed(2)}</span></div>
+      <input type="range" id="${hostId}_${k}" min="${mn}" max="${mx}" step="${st}"
+             value="${bezShape[k]}"></div>`).join('') +
+    `<div class="canvas-cell" style="align-self:start; width:190px; max-width:100%">
+       <canvas id="${hostId}_C" width="190" height="410"></canvas>
+       <span class="cap">ลากจุดยึดทั้งเก้าได้โดยตรง · เส้นประคือก้านควบคุมที่คำนวณให้</span></div>
+     <p style="margin:0"><button class="btn ghost sm" id="${hostId}_reset">รีเซ็ตขอบ</button></p>`;
+  for(const [k] of BEZ_SPEC){
+    const el=document.getElementById(`${hostId}_${k}`);
+    el.oninput=()=>{ bezShape[k]=+el.value; bezApplyShape(); bezChanged(); };
+  }
+  document.getElementById(`${hostId}_reset`).onclick=()=>{
+    bezA=BEZ_BASE.map(a=>a.slice()); bezShape={...BEZ_SHAPE_DEF}; bezChanged();
+  };
+  const cv=document.getElementById(`${hostId}_C`);
+  let active=-1;
+  const at=e=>{ const r=cv.getBoundingClientRect();
+    return [(e.clientX-r.left)*cv.width/r.width, (e.clientY-r.top)*cv.height/r.height]; };
+  cv.style.touchAction='none';
+  cv.addEventListener('pointerdown',e=>{
+    const v=bezEditorDraw(cv,aspect(),leftFoot()), q=at(e);
+    let best=-1, bd=15;
+    v.A.forEach((p,i)=>{ const d=Math.hypot(v.X(p[0])-q[0], v.Y(p[1])-q[1]);
+      if(d<bd){ bd=d; best=i; } });
+    if(best<0) return;
+    active=best; cv.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  cv.addEventListener('pointermove',e=>{
+    if(active<0) return;
+    const v=bezEditorDraw(cv,aspect(),leftFoot()), q=at(e);
+    const u=(q[0]-cv.width/2)/v.su, vv=(cv.height/2-q[1])/v.sv;
+    const a=bezFrame(leftFoot()).inv([u,vv]);
+    bezA[active]=[Math.max(-1.2,Math.min(1.2,a[0])), Math.max(-1.2,Math.min(1.2,a[1]))];
+    bezChanged(); e.preventDefault();
+  });
+  const stop=()=>{ active=-1; };
+  cv.addEventListener('pointerup',stop);
+  cv.addEventListener('pointercancel',stop);
+  bezHosts.push({hostId, cv, aspect, leftFoot});
+}
+// push the shared state back into every strip, then redraw both plates
+function bezSync(){
+  for(const h of bezHosts){
+    for(const [k] of BEZ_SPEC){
+      const el=document.getElementById(`${h.hostId}_${k}`);
+      if(el) el.value=bezShape[k];
+      const lab=document.getElementById(`${h.hostId}v_${k}`);
+      if(lab) lab.textContent=bezShape[k].toFixed(2);
+    }
+    if(h.cv.offsetParent!==null) bezEditorDraw(h.cv, h.aspect(), h.leftFoot());
+  }
+}
+function bezChanged(){ bezSync(); pgDraw(); upBuild(); }
+
 function insolePlate(fw,fh,bumps,leftFoot,ss,outline){
   ss = ss||2;
   const su=(fw-1)/2*ss, sv=(fh-1)/2*ss;
@@ -1067,12 +1217,14 @@ function insolePlate(fw,fh,bumps,leftFoot,ss,outline){
   // 'bezier' swaps the profile table for a closed curve; everything else -
   // the (u, v) frame, the grid, the Gaussians - stays exactly as it was
   const poly = outline==='bezier' ? bezPolygon(bezOutline(leftFoot)) : null;
-  for(let i=0;i<H;i++) for(let j=0;j<W;j++){
-    const u=(j-(W-1)/2)/su, v=((H-1)/2-i)/sv;
-    const inside = poly ? inPoly(poly,u,v)
-      : (insoleHalfWidth(v)>0 &&
-         Math.abs(u-insoleCentre(v,leftFoot))<=insoleHalfWidth(v));
-    if(inside){
+  if(poly){
+    fillPoly(poly,W,H,su,sv,(i,j)=>{
+      mask[i*W+j]=1;
+      depth[i*W+j]=gaussAt((j-(W-1)/2)/su, ((H-1)/2-i)/sv, bumps);
+    });
+  } else for(let i=0;i<H;i++) for(let j=0;j<W;j++){
+    const u=(j-(W-1)/2)/su, v=((H-1)/2-i)/sv, hw=insoleHalfWidth(v);
+    if(hw>0 && Math.abs(u-insoleCentre(v,leftFoot))<=hw){
       mask[i*W+j]=1; depth[i*W+j]=gaussAt(u,v,bumps);
     }
   }
@@ -1268,6 +1420,12 @@ function pgDraw(){
   P.poly.forEach((q,i)=>{ const x=UX(q[0]), y=VY(q[1]);
     i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
   ctx.closePath(); ctx.stroke();
+  if(pgOutline==='bezier'){
+    const fwd=bezFrame(true).fwd;
+    ctx.fillStyle='rgba(255,255,255,.9)';
+    for(const a of bezA){ const q=fwd(a);
+      ctx.beginPath(); ctx.arc(UX(q[0]),VY(q[1]),3,0,Math.PI*2); ctx.fill(); }
+  }
   ctx.lineWidth=1.6;
   const su2px=P.su*g.cell, sv2px=P.sv*g.cell;
   pgBumps.forEach((b,i)=>{
@@ -1354,7 +1512,9 @@ for(const b of document.getElementById('pgOutline').querySelectorAll('.chip'))
     pgOutline=b.dataset.o;
     for(const o of document.getElementById('pgOutline').querySelectorAll('.chip'))
       o.setAttribute('aria-pressed', o===b?'true':'false');
-    pgDraw();
+    document.getElementById('pgBez').style.display =
+      pgOutline==='bezier' ? 'flex' : 'none';
+    bezSync(); pgDraw();
   };
 document.getElementById('pgSpin').onclick=e=>{
   pg3d.auto=!pg3d.auto; e.target.textContent=pg3d.auto?'หยุดหมุน':'หมุนต่อ'; };
@@ -1527,7 +1687,9 @@ for(const b of document.getElementById('upOutline').querySelectorAll('.chip'))
     upOutline=b.dataset.o;
     for(const o of document.getElementById('upOutline').querySelectorAll('.chip'))
       o.setAttribute('aria-pressed', o===b?'true':'false');
-    upBuild();
+    document.getElementById('upBez').style.display =
+      upOutline==='bezier' ? 'flex' : 'none';
+    bezSync(); upBuild();
   };
 const drop=document.getElementById('upDrop'), fileIn=document.getElementById('upFile');
 drop.onclick=()=>fileIn.click();
@@ -1584,5 +1746,10 @@ tb.onclick=()=>{
 };
 
 /* ══════════════ go ══════════════ */
-s1draw(); s2auto(); pgSync(); pgDraw(); upBuild();
+bezStrip('pgBez', ()=>(PGG.h-1)/(PGG.w-1), ()=>true, pgDraw);
+bezStrip('upBez', ()=>(upGrid&&upGrid.h>1)?(upGrid.h-1)/(upGrid.w-1):36/14,
+         ()=>upImage ? true
+             : String(samples[curSample].side||'').toLowerCase().startsWith('l'),
+         upBuild);
+s1draw(); s2auto(); pgSync(); pgDraw(); upBuild(); bezSync();
 </script>
