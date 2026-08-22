@@ -1,0 +1,937 @@
+<meta charset="utf-8">
+<title>อ่านสัญลักษณ์ — คำศัพท์และสัญลักษณ์ทั้งหมด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#e9ecf0; --surface:#ffffff; --surface-2:#f3f5f8;
+  --ink:#0e141b; --ink-2:#39434e; --muted:#5f6b78;
+  --line:#d8dee6; --line-2:#c3ccd6;
+  --accent:#4b45c6; --accent-soft:#ecebfa; --accent-ink:#3b36a8;
+  --hot:#d8452a; --cool:#1f6f8b;
+  --shadow:0 1px 2px rgba(14,20,27,.06),0 8px 24px -12px rgba(14,20,27,.18);
+  --r:10px;
+  --step--1:.82rem; --step-0:1rem; --step-1:1.18rem; --step-2:1.45rem;
+  --step-3:1.85rem; --step-4:2.4rem; --step-5:3.1rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0b1016; --surface:#141b23; --surface-2:#1b232d;
+    --ink:#e7edf4; --ink-2:#c0cbd7; --muted:#8c9aa9;
+    --line:#26313d; --line-2:#33404e;
+    --accent:#948dff; --accent-soft:#20213f; --accent-ink:#b3adff;
+    --hot:#ff7d5e; --cool:#5ec4e0;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0b1016; --surface:#141b23; --surface-2:#1b232d;
+  --ink:#e7edf4; --ink-2:#c0cbd7; --muted:#8c9aa9;
+  --line:#26313d; --line-2:#33404e;
+  --accent:#948dff; --accent-soft:#20213f; --accent-ink:#b3adff;
+  --hot:#ff7d5e; --cool:#5ec4e0;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans Thai","Bai Jamjuree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--step-0); line-height:1.72; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  line-height:1.25; text-wrap:balance; margin:0; font-weight:600}
+code,.mono,.num{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1180px; margin:0 auto; padding:0 clamp(16px,4vw,36px)}
+.prose{max-width:66ch}
+.prose p{margin:0 0 1em}
+.prose ul{margin:0 0 1em; padding-inline-start:1.25em}
+.prose li{margin:.3em 0}
+
+/* ---------- header ---------- */
+header.top{
+  background:linear-gradient(180deg,var(--surface) 0%,var(--ground) 100%);
+  border-bottom:1px solid var(--line);
+}
+.top-inner{padding:clamp(40px,7vw,84px) 0 clamp(28px,4vw,44px)}
+.eyebrow{font-size:var(--step--1); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; margin:0 0 14px}
+h1{font-size:clamp(2.1rem,5.4vw,3.4rem); font-weight:700; letter-spacing:-.015em}
+.lede{font-size:var(--step-1); color:var(--ink-2); max-width:60ch; margin:18px 0 0}
+.facts{display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:26px;
+  padding-top:22px; border-top:1px solid var(--line)}
+.fact{display:flex; flex-direction:column; gap:2px}
+.fact b{font-family:"IBM Plex Mono",monospace; font-size:var(--step-2); font-weight:500;
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.fact span{font-size:var(--step--1); color:var(--muted)}
+
+/* ---------- sections ---------- */
+section{padding:clamp(44px,6vw,76px) 0; border-bottom:1px solid var(--line)}
+.sec-head{display:flex; gap:16px; align-items:baseline; margin-bottom:8px}
+.sec-num{font-family:"IBM Plex Mono",monospace; font-size:var(--step--1); font-weight:500;
+  color:var(--accent); border:1px solid var(--line-2); border-radius:99px;
+  padding:2px 10px; flex:none; background:var(--surface)}
+h2{font-size:clamp(1.5rem,3.3vw,2.05rem); letter-spacing:-.01em}
+.sec-sub{color:var(--muted); margin:.35em 0 0; max-width:62ch}
+.sec-body{margin-top:28px}
+
+/* ---------- panels ---------- */
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow); overflow:hidden}
+.panel-head{display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+  justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--line);
+  background:var(--surface-2)}
+.panel-title{font-family:"Bai Jamjuree",sans-serif; font-weight:600; font-size:var(--step-0)}
+.panel-body{padding:16px}
+.split{display:grid; gap:18px; grid-template-columns:minmax(0,320px) minmax(0,1fr)}
+@media(max-width:860px){.split{grid-template-columns:1fr}}
+
+.rail{display:flex; flex-direction:column; gap:14px; min-width:0}
+.field{display:flex; flex-direction:column; gap:5px}
+.field-top{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.field label{font-size:var(--step--1); color:var(--muted); font-weight:500}
+.field .val{font-family:"IBM Plex Mono",monospace; font-size:var(--step--1);
+  color:var(--ink); font-variant-numeric:tabular-nums}
+input[type=range]{width:100%; accent-color:var(--accent); height:22px; margin:0}
+select,button,input[type=file]{font:inherit; font-size:var(--step--1)}
+select{background:var(--surface); color:var(--ink); border:1px solid var(--line-2);
+  border-radius:8px; padding:7px 10px; width:100%}
+.btn{background:var(--accent); color:#fff; border:0; border-radius:8px; padding:9px 15px;
+  cursor:pointer; font-weight:600; font-family:"Bai Jamjuree",sans-serif}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface); color:var(--ink); border:1px solid var(--line-2)}
+.btn.sm{padding:6px 11px; font-size:var(--step--1)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+canvas{display:block; max-width:100%; border-radius:8px; background:var(--surface-2)}
+.canvas-row{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start}
+.canvas-cell{display:flex; flex-direction:column; gap:7px; min-width:0}
+.cap{font-size:var(--step--1); color:var(--muted)}
+.cap b{color:var(--ink); font-weight:600}
+
+/* ---------- equation ---------- */
+.eq{background:var(--surface-2); border:1px solid var(--line); border-radius:8px;
+  padding:16px; overflow-x:auto; text-align:center;
+  font-family:"IBM Plex Mono",monospace; font-size:var(--step-1); line-height:2.1}
+.eq .sub{font-size:.72em; vertical-align:sub}
+.eq .sup{font-size:.72em; vertical-align:super}
+.eq .frac{display:inline-flex; flex-direction:column; text-align:center;
+  vertical-align:middle; font-size:.82em; margin:0 .18em}
+.eq .frac span:first-child{border-bottom:1px solid currentColor; padding:0 .35em}
+.eq .frac span:last-child{padding:0 .35em}
+.eq em{color:var(--accent); font-style:normal}
+
+table{border-collapse:collapse; width:100%; font-size:var(--step--1)}
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px}
+th,td{text-align:left; padding:7px 11px; border-bottom:1px solid var(--line); white-space:nowrap}
+th{background:var(--surface-2); font-weight:600; color:var(--muted); font-size:.86em;
+  letter-spacing:.03em; text-transform:uppercase}
+tbody tr:last-child td{border-bottom:0}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.swatch{display:inline-block; width:9px; height:9px; border-radius:2px; margin-inline-end:7px}
+
+.note{border-inline-start:3px solid var(--accent); background:var(--accent-soft);
+  padding:12px 16px; border-radius:0 8px 8px 0; font-size:var(--step--1); color:var(--ink-2)}
+.note b{color:var(--ink)}
+
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{border:1px solid var(--line-2); background:var(--surface); border-radius:99px;
+  padding:4px 12px; font-size:var(--step--1); cursor:pointer; color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600}
+
+/* ---------- pipeline ---------- */
+.pipe{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+.pipe-step{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:16px; position:relative}
+.pipe-step h4{font-size:var(--step-0); margin-bottom:5px}
+.pipe-step p{margin:0; font-size:var(--step--1); color:var(--muted)}
+.pipe-step .k{font-family:"IBM Plex Mono",monospace; color:var(--accent);
+  font-size:var(--step--1); display:block; margin-bottom:9px}
+
+/* ---------- gallery ---------- */
+.gal{display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:16px}
+.gal figure{margin:0; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow)}
+.gal img{width:100%; display:block; cursor:zoom-in; background:#fff}
+.gal figcaption{padding:9px 13px; font-size:var(--step--1); color:var(--muted);
+  border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:10px}
+.gal figcaption b{color:var(--ink); font-family:"IBM Plex Mono",monospace; font-weight:500}
+dialog{border:0; padding:0; background:transparent; max-width:96vw; max-height:96vh}
+dialog::backdrop{background:rgba(6,10,14,.86)}
+dialog img{max-width:96vw; max-height:90vh; border-radius:8px; display:block}
+
+.drop{border:2px dashed var(--line-2); border-radius:var(--r); padding:26px 18px;
+  text-align:center; color:var(--muted); background:var(--surface-2); cursor:pointer}
+.drop.over{border-color:var(--accent); background:var(--accent-soft); color:var(--ink)}
+
+footer{padding:44px 0 64px; color:var(--muted); font-size:var(--step--1)}
+footer h3{font-size:var(--step-0); color:var(--ink); margin-bottom:8px}
+footer ul{padding-inline-start:1.2em; margin:0}
+
+.theme-btn{position:fixed; right:14px; top:14px; z-index:50; border-radius:99px;
+  width:38px; height:38px; display:grid; place-items:center; padding:0;
+  background:var(--surface); border:1px solid var(--line-2); color:var(--ink); cursor:pointer}
+
+a{color:var(--accent-ink); text-underline-offset:3px; text-decoration-color:var(--line-2)}
+a:hover{text-decoration-color:currentColor}
+.pagelink{display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+  background:var(--surface); border:1px solid var(--line-2); border-radius:99px;
+  padding:9px 17px; font-family:"Bai Jamjuree",sans-serif; font-weight:600;
+  font-size:var(--step--1); color:var(--ink); box-shadow:var(--shadow)}
+.pagelink:hover{border-color:var(--accent); color:var(--accent-ink)}
+.pagelink .arw{color:var(--accent); font-size:1.1em}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* ---------- glossary ---------- */
+.gl-search{position:sticky; top:0; z-index:30; background:var(--ground);
+  padding:14px 0 12px; border-bottom:1px solid var(--line)}
+.gl-search input{width:100%; font:inherit; padding:11px 14px; border-radius:10px;
+  padding-inline-end:56px;
+  border:1px solid var(--line-2); background:var(--surface); color:var(--ink)}
+.gl-count{font-size:var(--step--1); color:var(--muted); margin:9px 0 0}
+.glh{font-size:var(--step-0); margin:26px 0 10px}
+.glblock:first-child .glh{margin-top:0}
+.gl table td{white-space:normal}
+.gl table td:first-child,.gl table td.keep{white-space:nowrap}
+.gl table td:first-child{width:1%}
+.sym{font-family:"IBM Plex Mono",monospace; font-size:var(--step-1);
+  color:var(--accent); font-weight:500}
+.say{font-family:"Bai Jamjuree",sans-serif; font-weight:600; color:var(--ink)}
+.en{color:var(--muted)}
+.terms{display:grid; grid-template-columns:repeat(auto-fit,minmax(288px,1fr)); gap:14px}
+.term{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:14px 16px; box-shadow:var(--shadow)}
+.term h4{font-size:var(--step-0); margin:0 0 1px}
+.term .rd{font-size:var(--step--1); color:var(--accent-ink); margin:0 0 7px;
+  font-family:"IBM Plex Mono",monospace}
+.term p{margin:0; font-size:var(--step--1); color:var(--ink-2); line-height:1.66}
+.read-list{counter-reset:rl; list-style:none; padding:0; margin:16px 0 0}
+.read-list li{counter-increment:rl; position:relative; padding-inline-start:34px;
+  margin:0 0 11px; font-size:var(--step--1); color:var(--ink-2)}
+.read-list li:last-child{margin-bottom:0}
+.read-list li::before{content:counter(rl); position:absolute; inset-inline-start:0; top:2px;
+  width:22px; height:22px; border-radius:99px; background:var(--accent-soft);
+  color:var(--accent-ink); font-family:"IBM Plex Mono",monospace; font-size:.7rem;
+  font-weight:700; display:grid; place-items:center}
+.read-list b{color:var(--ink)}
+.read-list .m{font-family:"IBM Plex Mono",monospace; color:var(--accent-ink)}
+.jump{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+a.chip{text-decoration:none}
+a.chip:hover{border-color:var(--accent); color:var(--accent-ink)}
+.gl-empty{display:none; color:var(--muted); padding:24px 0; font-size:var(--step--1)}
+</style>
+
+<button class="theme-btn" id="themeBtn" title="สลับธีม" aria-label="สลับธีมสว่าง/มืด">◐</button>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <p class="eyebrow">คณิตศาสตร์เบื้องหลังแผ่นรองเท้า</p>
+    <h1>อ่านสัญลักษณ์</h1>
+    <p class="lede">
+      ทุกตัวอักษร ทุกเครื่องหมาย และทุกคำศัพท์ที่โผล่มาในสามหน้าที่เหลือ
+      รวมไว้ที่เดียว พร้อมคำอ่านออกเสียง ความหมาย และตัวอย่างจากสมการจริง
+      ค้นด้วยช่องค้นหาด้านล่าง หรือกดปุ่ม <span class="mono">/</span> ที่แป้นพิมพ์
+    </p>
+    <p style="margin:22px 0 0; display:flex; flex-wrap:wrap; gap:10px">
+      <a class="pagelink" href="index.html"><span class="arw">←</span> แผ่นรองเท้าจากแรงกด</a>
+      <a class="pagelink" href="gaussian.html">สมการเกาส์เซียน <span class="arw">→</span></a>
+      <a class="pagelink" href="bezier.html">เส้นโค้งเบซิเยร์ <span class="arw">→</span></a>
+    </p>
+    <div class="facts">
+      <div class="fact"><b id="fSym">—</b><span>สัญลักษณ์ที่อธิบายไว้</span></div>
+      <div class="fact"><b id="fTerm">—</b><span>คำศัพท์ที่อธิบายไว้</span></div>
+      <div class="fact"><b>5</b><span>สมการหลักที่อ่านทีละบรรทัด</span></div>
+      <div class="fact"><b>12</b><span>ตัวอักษรที่ซ้ำกันคนละความหมาย</span></div>
+    </div>
+    <div class="jump">
+      <a class="chip" href="#s1">1 · สัญลักษณ์และเครื่องหมาย</a>
+      <a class="chip" href="#s2">2 · ตัวแปรในสมการ</a>
+      <a class="chip" href="#s3">3 · อ่านสมการทีละบรรทัด</a>
+      <a class="chip" href="#s4">4 · ตัวอักษรที่ซ้ำกัน</a>
+      <a class="chip" href="#s5">5 · คำศัพท์</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap gl-search">
+  <input id="glq" type="search" autocomplete="off" placeholder="ค้นหาสัญลักษณ์หรือคำศัพท์ — เช่น ซิกมา, sigma, HWHM, เบซิเยร์, โฟม">
+  <p class="gl-count" id="glcount"></p>
+</div>
+<p class="wrap gl-empty" id="glempty">ไม่พบรายการที่ตรงกับคำค้นนี้ — ลองพิมพ์สั้นลง หรือพิมพ์เป็นภาษาอังกฤษดู</p>
+
+<!-- ═══════════ 1. symbols ═══════════ -->
+<section id="s1" data-gl>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">1</span>
+      <h2>สัญลักษณ์และเครื่องหมาย</h2></div>
+    <p class="sec-sub">ตัวอักษรกรีก เครื่องหมายคณิตศาสตร์ และเครื่องหมายกำกับตัวแปร —
+      อ่านออกเสียงอย่างไร และในหน้าเหล่านี้แปลว่าอะไร</p>
+
+    <div class="sec-body">
+
+      <div class="glblock" data-block>
+        <h3 class="glh">ตัวอักษรกรีก</h3>
+        <div class="tbl-wrap gl"><table>
+          <thead><tr><th>สัญลักษณ์</th><th>อ่านว่า</th><th>ในเนื้อหานี้หมายถึง</th><th>ตัวอย่าง</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">σ</td>
+              <td><span class="say">ซิกมา</span> <span class="en">(sigma ตัวเล็ก)</span></td>
+              <td>ความกว้างของระฆังเกาส์เซียน เป็นไม้บรรทัดของเส้นโค้ง ไม่ใช่ความกว้างที่วัดได้ตรง ๆ ยิ่ง σ ใหญ่ หลุมยิ่งกว้าง</td>
+              <td class="n">σᵤ = 0.28</td></tr>
+            <tr><td class="sym">Σ</td>
+              <td><span class="say">ซิกมา</span> <span class="en">(sigma ตัวใหญ่)</span></td>
+              <td>เครื่องหมายผลรวม อ่านว่า ผลรวมของ — บวกทุกพจน์ตามดัชนีที่เขียนกำกับไว้ข้างล่างและข้างบน</td>
+              <td class="n">Σ<sub>k=1..K</sub></td></tr>
+            <tr><td class="sym">μ</td>
+              <td><span class="say">มิว</span> <span class="en">(mu)</span></td>
+              <td>ตำแหน่งของยอดระฆังบนแกน ใช้ในหน้าสมการเกาส์เซียน ส่วนหน้าแผ่นรองเท้าเปลี่ยนไปเรียกว่า u<sub>k</sub> กับ v<sub>k</sub></td>
+              <td class="n">μ = 0.00</td></tr>
+            <tr><td class="sym">τ</td>
+              <td><span class="say">เทา</span> <span class="en">(tau)</span></td>
+              <td>ความยาวก้านควบคุมของเส้นโค้งเบซิเยร์ — τ = 0 ได้รูปหลายเหลี่ยมตรง ๆ, τ ราว 1 ได้เส้นโค้งพอดี, τ มากเกินไปเส้นจะเหวี่ยงจนย้อนมาตัดตัวเอง</td>
+              <td class="n">τ = 1.00</td></tr>
+            <tr><td class="sym">κ</td>
+              <td><span class="say">แคปปา</span> <span class="en">(kappa)</span></td>
+              <td>ความโค้งของเส้น ณ จุดหนึ่ง ยิ่งมากยิ่งเลี้ยวแคบ ส่วนกลับของมันคือรัศมีความโค้ง R = 1/κ</td>
+              <td class="n">κ = 0.2480</td></tr>
+            <tr><td class="sym">α</td>
+              <td><span class="say">แอลฟา</span> <span class="en">(alpha)</span></td>
+              <td>ความยาวก้านควบคุมสองตัวที่ได้จากการฟิตขอบจากรอยเท้าจริง เป็นตัวไม่รู้ค่าที่ระบบสมการ 2×2 แก้ออกมาให้</td>
+              <td class="n">α₁, α₂</td></tr>
+            <tr><td class="sym">π</td>
+              <td><span class="say">พาย</span> <span class="en">(pi)</span></td>
+              <td>ค่าคงที่ 3.14159… โผล่ในพื้นที่ใต้เส้นโค้ง Aσ√(2π) และปริมาตรใต้เนิน 2πAσ<sub>u</sub>σ<sub>v</sub></td>
+              <td class="n">2πAσᵤσᵥ</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">เครื่องหมายดำเนินการและเปรียบเทียบ</h3>
+        <div class="tbl-wrap gl"><table>
+          <thead><tr><th>สัญลักษณ์</th><th>อ่านว่า</th><th>ในเนื้อหานี้หมายถึง</th><th>ตัวอย่าง</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">exp( )</td>
+              <td><span class="say">เอ็กซ์โพเนนเชียล</span> <span class="en">(exponential)</span></td>
+              <td>ยกกำลังด้วยฐาน e = 2.71828… — exp(x) กับ e<sup>x</sup> คือสิ่งเดียวกัน เขียนแบบนี้เพราะเลขชี้กำลังยาวจนอ่านลำบาก</td>
+              <td class="n">exp(−t²/2)</td></tr>
+            <tr><td class="sym">ln</td>
+              <td><span class="say">แอล-เอ็น</span> <span class="en">(natural log)</span></td>
+              <td>ลอการิทึมฐานธรรมชาติ เป็นตัวกลับของ exp ในหน้าเหล่านี้โผล่ที่เดียวคือ √(2 ln 2) = 1.1774</td>
+              <td class="n">√(2 ln 2)</td></tr>
+            <tr><td class="sym">√</td>
+              <td><span class="say">รากที่สองของ</span> <span class="en">(square root)</span></td>
+              <td>เลขที่ยกกำลังสองแล้วได้ค่าข้างใน</td>
+              <td class="n">√(2π)</td></tr>
+            <tr><td class="sym">· ×</td>
+              <td><span class="say">คูณ</span> / <span class="say">เท่าตัว</span></td>
+              <td>จุดกลางบรรทัดคือการคูณ ส่วน × ที่ตามหลังตัวเลขในแผงควบคุมอ่านว่า เท่า เช่น 18× คือขยายสิบแปดเท่า</td>
+              <td class="n">A · exp(…)</td></tr>
+            <tr><td class="sym">÷ /</td>
+              <td><span class="say">หารด้วย</span></td>
+              <td>เส้นแบ่งเศษส่วนก็อ่านว่าหารด้วยเหมือนกัน เศษอยู่บน ตัวหารอยู่ล่าง</td>
+              <td class="n">c = p / k₀</td></tr>
+            <tr><td class="sym">±</td>
+              <td><span class="say">บวกลบ</span></td>
+              <td>ทั้งสองข้างพร้อมกัน — μ ± σ คือทั้งจุดที่ห่างไปทางซ้ายหนึ่ง σ และทางขวาหนึ่ง σ</td>
+              <td class="n">z = h₀ ± c/2</td></tr>
+            <tr><td class="sym">≤</td>
+              <td><span class="say">น้อยกว่าหรือเท่ากับ</span></td>
+              <td>0 ≤ t ≤ 1 อ่านว่า t อยู่ระหว่าง 0 ถึง 1 โดยรวมปลายทั้งสองด้วย</td>
+              <td class="n">0 ≤ t ≤ 1</td></tr>
+            <tr><td class="sym">≠</td>
+              <td><span class="say">ไม่เท่ากับ</span></td>
+              <td>ใช้บอกว่าเนินไม่กลม เมื่อ σ<sub>x</sub> ≠ σ<sub>y</sub> เส้นชั้นความสูงจะเป็นวงรีไม่ใช่วงกลม</td>
+              <td class="n">σₓ ≠ σᵧ</td></tr>
+            <tr><td class="sym">∈</td>
+              <td><span class="say">เป็นสมาชิกของ</span> / <span class="say">อยู่ในช่วง</span></td>
+              <td>บอกช่วงของค่าที่ตัวแปรวิ่งได้ — x, y ∈ [−1, 1] อ่านว่า x และ y อยู่ในช่วง −1 ถึง 1</td>
+              <td class="n">x, y ∈ [−1, 1]</td></tr>
+            <tr><td class="sym">∝</td>
+              <td><span class="say">แปรผันตรงกับ</span></td>
+              <td>โตหรือลดตามกันเป็นสัดส่วนโดยไม่ระบุค่าคงที่ — คลาดเคลื่อน ∝ 1/N² แปลว่าเพิ่ม N สองเท่า ความคลาดลดลงสี่เท่า</td>
+              <td class="n">คลาดเคลื่อน ∝ 1/N²</td></tr>
+            <tr><td class="sym">⟹</td>
+              <td><span class="say">ดังนั้น</span> / <span class="say">นำไปสู่</span></td>
+              <td>ข้อความข้างซ้ายทำให้ข้างขวาเป็นจริง ใช้ในสูตรฟิตขอบเพื่อบอกว่าเมื่อตรึงปลายไว้แล้ว ปัญหาเหลือแค่การหาค่าต่ำสุด</td>
+              <td class="n">P₁ = … ⟹ min Σ‖…‖²</td></tr>
+            <tr><td class="sym">min</td>
+              <td><span class="say">มินิไมซ์</span> <span class="en">(minimize)</span></td>
+              <td>คำสั่งว่า หาค่าที่ทำให้สิ่งนี้น้อยที่สุด ไม่ใช่ค่าน้อยสุดในชุดข้อมูล แต่คือให้เลือกตัวแปรที่ทำให้ผลรวมความคลาดต่ำสุด</td>
+              <td class="n">min Σ‖B(tᵢ)−Qᵢ‖²</td></tr>
+            <tr><td class="sym">→</td>
+              <td><span class="say">กลายเป็น</span> / <span class="say">ไปเป็น</span></td>
+              <td>ใช้บอกลำดับการแปลง ไม่ใช่ลูกศรเวกเตอร์ — แรงกด → ความลึก → ผิวแผ่นรอง</td>
+              <td class="n">k₀ ต่ำ → ยุบลึกกว่า</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">เครื่องหมายกำกับตัวแปร</h3>
+        <div class="tbl-wrap gl"><table>
+          <thead><tr><th>สัญลักษณ์</th><th>อ่านว่า</th><th>ในเนื้อหานี้หมายถึง</th><th>ตัวอย่าง</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">x<sub>k</sub></td>
+              <td><span class="say">เอกซ์ ห้อย เค</span> <span class="en">(subscript)</span></td>
+              <td>ตัวห้อยคือ ของก้อนที่ k ไม่ใช่การคูณ — A<sub>k</sub> คือความลึกของหลุมที่ k ส่วน σ<sub>u,k</sub> คือ σ ตามแกน u ของหลุมที่ k</td>
+              <td class="n">Aₖ, uₖ, σᵤ,ₖ</td></tr>
+            <tr><td class="sym">x² x³</td>
+              <td><span class="say">กำลังสอง</span> / <span class="say">กำลังสาม</span> <span class="en">(superscript)</span></td>
+              <td>ตัวยกคือเลขชี้กำลัง — (x − μ)² อ่านว่า เอกซ์ ลบ มิว ทั้งหมดกำลังสอง การยกกำลังสองทำให้ระยะห่างเป็นบวกเสมอ เส้นโค้งจึงสมมาตรสองข้าง</td>
+              <td class="n">(1−t)³</td></tr>
+            <tr><td class="sym">B′</td>
+              <td><span class="say">บี ไพรม์</span> <span class="en">(prime)</span></td>
+              <td>อนุพันธ์อันดับหนึ่ง บอกทิศและอัตราเร็วที่จุดวิ่งไปตามเส้นโค้ง ทิศของ B′ คือเส้นสัมผัส</td>
+              <td class="n">B′(0) = 3(P₁−P₀)</td></tr>
+            <tr><td class="sym">B″</td>
+              <td><span class="say">บี ดับเบิลไพรม์</span></td>
+              <td>อนุพันธ์อันดับสอง บอกว่าทิศกำลังเปลี่ยนเร็วแค่ไหน ใช้คู่กับ B′ เพื่อคำนวณความโค้ง κ</td>
+              <td class="n">κ = |B′ × B″| / ‖B′‖³</td></tr>
+            <tr><td class="sym">t̂</td>
+              <td><span class="say">ที แฮต</span> <span class="en">(t hat)</span></td>
+              <td>หมวกบนตัวอักษรแปลว่าเวกเตอร์หนึ่งหน่วย บอกเฉพาะทิศ ความยาวเป็น 1 เสมอ ใช้ตรึงทิศสัมผัสตอนฟิตขอบ</td>
+              <td class="n">P₁ = P₀ + α₁ t̂₁</td></tr>
+            <tr><td class="sym">‖ ‖</td>
+              <td><span class="say">นอร์ม</span> <span class="en">(norm)</span></td>
+              <td>ความยาวของเวกเตอร์ — ‖B(tᵢ) − Qᵢ‖ คือระยะห่างระหว่างจุดบนเส้นโค้งกับจุดข้อมูลจริง ยกกำลังสองแล้วบวกกันได้ค่าที่จะทำให้น้อยที่สุด</td>
+              <td class="n">‖B′‖ = 9.74</td></tr>
+            <tr><td class="sym">| |</td>
+              <td><span class="say">ค่าสัมบูรณ์</span> <span class="en">(absolute value)</span></td>
+              <td>ตัดเครื่องหมายลบทิ้ง เหลือแต่ขนาด</td>
+              <td class="n">|B′ × B″|</td></tr>
+            <tr><td class="sym">×</td>
+              <td><span class="say">ครอสโปรดักต์</span> <span class="en">(cross product)</span></td>
+              <td>ในสูตรความโค้ง เครื่องหมายนี้ไม่ใช่การคูณธรรมดา แต่คือผลคูณไขว้ของเวกเตอร์สองตัว บอกว่าสองเวกเตอร์เบนออกจากกันแค่ไหน</td>
+              <td class="n">B′ × B″</td></tr>
+            <tr><td class="sym">[ ]</td>
+              <td><span class="say">วงเล็บเหลี่ยม</span></td>
+              <td>ในสมการเกาส์เซียนใช้แทนวงเล็บธรรมดาเพื่อให้อ่านง่าย ส่วนใน x ∈ [−1, 1] หมายถึงช่วงที่รวมปลายทั้งสอง</td>
+              <td class="n">exp [ − … ]</td></tr>
+            <tr><td class="sym">f(x)</td>
+              <td><span class="say">เอฟ ของ เอกซ์</span></td>
+              <td>วงเล็บหลังชื่อฟังก์ชันคือ ที่ตำแหน่งนี้ ไม่ใช่การคูณ — c(u, v) อ่านว่า ซี ของ ยู วี คือความลึกที่พิกัด (u, v)</td>
+              <td class="n">c(u, v)</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 2. variables ═══════════ -->
+<section id="s2" data-gl>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">2</span>
+      <h2>ตัวแปรทุกตัวในสมการ</h2></div>
+    <p class="sec-sub">ตัวไหนเป็นค่าที่วัดมา ตัวไหนเป็นค่าที่เลือกเอง ตัวไหนมีหน่วย
+      และตัวไหนไม่มีหน่วย</p>
+
+    <div class="sec-body">
+
+      <div class="glblock" data-block>
+        <h3 class="glh">แรงกด ความลึก และวัสดุ — หน้าแผ่นรองเท้าจากแรงกด หัวข้อ 1</h3>
+        <div class="tbl-wrap gl"><table>
+          <thead><tr><th>ตัวแปร</th><th>อ่านว่า</th><th>คือ</th><th>หน่วย</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">p(x, y)</td><td><span class="say">พี ของ เอกซ์ วาย</span></td>
+              <td>แรงกดต่อหน่วยพื้นที่ที่จุด (x, y) ใต้ฝ่าเท้า อ่านตรงจากเซนเซอร์</td><td class="n">kPa</td></tr>
+            <tr><td class="sym">c(x, y)</td><td><span class="say">ซี ของ เอกซ์ วาย</span></td>
+              <td>ความลึกที่โฟมจะยุบลงที่จุดนั้น คือแรงกดที่เปลี่ยนหน่วยแล้ว รูปร่างของสองภาพจึงเหมือนกันเป๊ะ</td><td class="n">mm</td></tr>
+            <tr><td class="sym">E</td><td><span class="say">อี</span> <span class="en">(Young&rsquo;s modulus)</span></td>
+              <td>ความแข็งของเนื้อโฟม เป็นสมบัติของวัสดุ ไม่ขึ้นกับว่าตัดมาหนาเท่าไร</td><td class="n">MPa</td></tr>
+            <tr><td class="sym">h₀</td><td><span class="say">เอช ศูนย์</span></td>
+              <td>ความหนาของแผ่นโฟมก่อนถูกกด</td><td class="n">mm</td></tr>
+            <tr><td class="sym">k₀</td><td><span class="say">เค ศูนย์</span></td>
+              <td>ความแข็งต่อหน่วยพื้นที่ของแผ่นทั้งแผ่น = E / h₀ — กดแรงเท่านี้ โฟมยุบเท่านี้ ตัวห้อยศูนย์บอกว่าเป็นค่าตั้งต้นของแผ่น ไม่เกี่ยวกับดัชนี k ของหลุม</td><td class="n">kPa/mm</td></tr>
+            <tr><td class="sym">z</td><td><span class="say">แซด</span></td>
+              <td>ความสูงของผิวแผ่น วัดจากระนาบฐาน ผิวบนกับผิวล่างคือ h₀ ± c/2</td><td class="n">mm</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">พิกัดของเท้าและพารามิเตอร์ของหลุม</h3>
+        <div class="tbl-wrap gl"><table>
+          <thead><tr><th>ตัวแปร</th><th>อ่านว่า</th><th>คือ</th><th>หน่วย</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">u</td><td><span class="say">ยู</span></td>
+              <td>พิกัดตามแนวขวางเท้า ปรับให้อยู่ในช่วง −1 ถึง +1 เสมอ ไม่ว่าเท้าจะยาวเท่าไร จึงเทียบข้ามคนได้</td><td>ไม่มีหน่วย</td></tr>
+            <tr><td class="sym">v</td><td><span class="say">วี</span></td>
+              <td>พิกัดตามแนวยาวเท้า −1 คือส้น +1 คือปลายนิ้ว จุด (0, 0) คือกลางภาพพอดี</td><td>ไม่มีหน่วย</td></tr>
+            <tr><td class="sym">K</td><td><span class="say">เค ใหญ่</span></td>
+              <td>จำนวนหลุมทั้งหมดที่ใช้อธิบายแผ่นหนึ่งแผ่น ในหน้าเหล่านี้เลือกได้ 1 ถึง 5</td><td>จำนวนนับ</td></tr>
+            <tr><td class="sym">k</td><td><span class="say">เค เล็ก</span></td>
+              <td>ดัชนีบอกว่ากำลังพูดถึงหลุมลูกที่เท่าไร วิ่งจาก 1 ถึง K — คนละตัวกับ k₀ ที่เป็นความแข็งของโฟม</td><td>ดัชนี</td></tr>
+            <tr><td class="sym">A<sub>k</sub></td><td><span class="say">เอ ห้อย เค</span></td>
+              <td>ความลึกที่ยอดของหลุมที่ k อ่านมาจากค่าความลึก c ที่จุดกดหนัก</td><td class="n">mm</td></tr>
+            <tr><td class="sym">u<sub>k</sub></td><td><span class="say">ยู ห้อย เค</span></td>
+              <td>ตำแหน่งของยอดหลุมตามแนวขวาง อ่านมาจากคอลัมน์ของพิกเซลที่กดหนักที่สุด</td><td>ไม่มีหน่วย</td></tr>
+            <tr><td class="sym">v<sub>k</sub></td><td><span class="say">วี ห้อย เค</span></td>
+              <td>ตำแหน่งของยอดหลุมตามแนวยาว อ่านมาจากแถวของพิกเซลที่กดหนักที่สุด</td><td>ไม่มีหน่วย</td></tr>
+            <tr><td class="sym">σ<sub>u</sub></td><td><span class="say">ซิกมา ยู</span></td>
+              <td>ความกว้างของหลุมตามแนวขวาง ได้จากครึ่งความกว้างที่ครึ่งความลึก หารด้วย 1.1774</td><td>หน่วยเดียวกับ u</td></tr>
+            <tr><td class="sym">σ<sub>v</sub></td><td><span class="say">ซิกมา วี</span></td>
+              <td>ความยาวของหลุมตามแนวยาว วัดแบบเดียวกับ σ<sub>u</sub> แต่คนละแกน</td><td>หน่วยเดียวกับ v</td></tr>
+            <tr><td class="sym">t</td><td><span class="say">ที</span></td>
+              <td>ในบริบทเกาส์เซียน t = (u − u<sub>k</sub>) / σ<sub>u</sub> คือระยะห่างจากยอดวัดเป็นกี่เท่าของ σ ไม่ใช่ระยะทางดิบ</td><td>ไม่มีหน่วย</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">เส้นโค้งเบซิเยร์และการฟิตขอบ</h3>
+        <div class="tbl-wrap gl"><table>
+          <thead><tr><th>ตัวแปร</th><th>อ่านว่า</th><th>คือ</th><th>หน่วย</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">B(t)</td><td><span class="say">บี ของ ที</span></td>
+              <td>จุดหนึ่งจุดบนเส้นโค้ง ให้ผลลัพธ์เป็นพิกัด (x, y) ไม่ใช่ความสูง — เบซิเยร์ไม่ใช่กราฟของ y เทียบ x แต่เป็นร่องรอยของจุดที่วิ่งตามเวลา t</td><td>พิกัด</td></tr>
+            <tr><td class="sym">t</td><td><span class="say">ที</span></td>
+              <td>ในบริบทเบซิเยร์คือพารามิเตอร์ที่เดินจาก 0 ถึง 1 ตลอดหนึ่งช่วงโค้ง เดิน t เท่ากันไม่ได้แปลว่าได้จุดที่ห่างเท่ากันบนเส้น</td><td>ไม่มีหน่วย</td></tr>
+            <tr><td class="sym">P₀ P₁ P₂ P₃</td><td><span class="say">พี ศูนย์ ถึง พี สาม</span></td>
+              <td>จุดควบคุมสี่จุดของหนึ่งช่วงโค้ง เส้นผ่าน P₀ กับ P₃ เสมอ ส่วน P₁ กับ P₂ แค่ดึง ไม่ได้อยู่บนเส้น</td><td class="n">mm</td></tr>
+            <tr><td class="sym">B₀ B₁ B₂ B₃</td><td><span class="say">พหุนามแบร์นชไตน์</span></td>
+              <td>น้ำหนักของจุดควบคุมแต่ละจุดที่ค่า t หนึ่ง ๆ ทั้งสี่ตัวบวกกันได้ 1 เสมอ เส้นโค้งจึงเป็นค่าเฉลี่ยถ่วงน้ำหนักของจุดสี่จุด</td><td>ไม่มีหน่วย</td></tr>
+            <tr><td class="sym">a b c d</td><td><span class="say">เอ บี ซี ดี</span></td>
+              <td>สัมประสิทธิ์ของพหุนามดีกรีสามหลังกระจายวงเล็บ x(t) = at³ + bt² + ct + d คำนวณครั้งเดียวต่อหนึ่งช่วง แล้วใช้ซ้ำได้ทุกค่า t</td><td class="n">mm</td></tr>
+            <tr><td class="sym">A<sub>i</sub></td><td><span class="say">เอ ห้อย ไอ</span> <span class="en">(anchor)</span></td>
+              <td>จุดยึดที่ผู้ใช้ลากได้ วางตามจุดสังเกตทางกายวิภาค 9 จุด — ตัวใหญ่ A ตัวนี้คนละตัวกับ A ที่เป็นความลึกของหลุม</td><td class="n">mm</td></tr>
+            <tr><td class="sym">Q<sub>i</sub></td><td><span class="say">คิว ห้อย ไอ</span></td>
+              <td>จุดบนขอบดิบที่ไล่มาจากเส้นระดับของแผนที่แรงกด มีหลายร้อยจุดและหยัก เป็นเป้าหมายที่เส้นโค้งพยายามเข้าใกล้</td><td class="n">mm</td></tr>
+            <tr><td class="sym">N</td><td><span class="say">เอ็น</span></td>
+              <td>จำนวนท่อนเส้นตรงที่ใช้แทนเส้นโค้งหนึ่งช่วง N เล็กเห็นเป็นเหลี่ยม N ใหญ่เนียนแต่เปลืองไฟล์ — คนละตัวกับ K ที่เป็นจำนวนหลุม</td><td>จำนวนนับ</td></tr>
+            <tr><td class="sym">R</td><td><span class="say">อาร์</span></td>
+              <td>รัศมีความโค้ง = 1/κ วงกลมรัศมีนี้แนบกับเส้นได้พอดีที่จุดนั้น — คนละตัวกับ R² ที่เป็นค่าความเข้ากันได้</td><td class="n">mm</td></tr>
+            <tr><td class="sym">M C Z</td><td><span class="say">เอ็ม ซี แซด</span> <span class="en">(SVG path)</span></td>
+              <td>คำสั่งในเส้นทางแบบ SVG — M คือยกปากกาไปวาง, C คือลากเบซิเยร์ดีกรีสามหนึ่งช่วง, Z คือปิดเส้นกลับไปจุดเริ่ม</td><td>คำสั่ง</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 3. reading equations ═══════════ -->
+<section id="s3" data-gl>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">3</span>
+      <h2>อ่านสมการทีละบรรทัด</h2></div>
+    <p class="sec-sub">สมการหลักห้าตัวของทั้งเว็บ แยกออกเป็นชิ้น ๆ
+      พร้อมคำอ่านที่พูดออกเสียงได้จริง</p>
+
+    <div class="sec-body">
+
+      <div class="glblock" data-block>
+        <h3 class="glh">สมการที่ 1 · แรงกดหารด้วยความแข็ง ได้ความลึก</h3>
+        <div class="panel glitem"><div class="panel-body">
+          <div class="eq">
+            <em>c</em>(x, y) = <span class="frac"><span><em>p</em>(x, y)</span><span><em>k</em><span class="sub">0</span></span></span>
+            <span style="margin-inline:1.2em">โดย</span>
+            <em>k</em><span class="sub">0</span> = <span class="frac"><span><em>E</em></span><span><em>h</em><span class="sub">0</span></span></span>
+          </div>
+          <ol class="read-list">
+            <li><b class="m">c(x, y)</b> อ่านว่า ซี ของ เอกซ์ วาย — ความลึกที่โฟมยุบลงที่จุดนั้น หน่วยมิลลิเมตร</li>
+            <li><b class="m">p(x, y)</b> พี ของ เอกซ์ วาย — แรงกดที่จุดเดียวกัน หน่วยกิโลปาสคาล อ่านตรงจากเซนเซอร์</li>
+            <li><b>เส้นแบ่งเศษส่วน</b> อ่านว่า หารด้วย เศษอยู่ข้างบน ตัวหารอยู่ข้างล่าง</li>
+            <li><b class="m">k₀</b> เค ศูนย์ — ความแข็งต่อหน่วยพื้นที่ หน่วยกิโลปาสคาลต่อมิลลิเมตร</li>
+            <li><b class="m">E</b> อี คือความแข็งของเนื้อวัสดุ และ <b class="m">h₀</b> เอช ศูนย์ คือความหนาของแผ่น</li>
+            <li><b>อ่านทั้งบรรทัด:</b> ความลึกที่จุดหนึ่ง เท่ากับ แรงกดที่จุดนั้น หารด้วย ความแข็งของโฟม
+              ซึ่งเท่ากับ ความแข็งของเนื้อวัสดุ หารด้วย ความหนา</li>
+            <li><b>ตรวจหน่วยได้:</b> kPa ÷ (kPa/mm) = mm — ตัวเลขที่ออกมาจึงเป็นมิลลิเมตรจริง ๆ ไม่ใช่บังเอิญ</li>
+          </ol>
+        </div></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">สมการที่ 2 · ระฆังเกาส์เซียนหนึ่งใบ</h3>
+        <div class="panel glitem"><div class="panel-body">
+          <div class="eq">
+            <em>f</em>(x) = <em>A</em> · exp [ −
+            <span class="frac"><span>(x − <em>μ</em>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sup">2</span></span></span> ]
+          </div>
+          <ol class="read-list">
+            <li><b class="m">f(x)</b> เอฟ ของ เอกซ์ — ความสูงของเส้นโค้งที่ตำแหน่ง x</li>
+            <li><b class="m">A</b> เอ — ความสูงของยอด คูณอยู่ข้างนอกทั้งก้อน จึงยืดเส้นโค้งขึ้นลงโดยไม่เปลี่ยนรูปทรง</li>
+            <li><b class="m">exp[ … ]</b> เอ็กซ์โพเนนเชียลของสิ่งที่อยู่ในวงเล็บ ใจกลางของสมการอยู่ตรงนี้</li>
+            <li><b>เครื่องหมายลบ</b> หน้าเศษส่วน คือเหตุผลที่ค่าลดลงเมื่อออกห่างจากยอด ถ้าไม่มีลบ เส้นจะพุ่งขึ้นแทน</li>
+            <li><b class="m">(x − μ)²</b> เอกซ์ ลบ มิว ทั้งหมดกำลังสอง — ระยะห่างจากยอดยกกำลังสอง ทำให้ซ้ายกับขวาให้ค่าเท่ากัน เส้นจึงสมมาตร</li>
+            <li><b class="m">2σ²</b> สอง ซิกมา กำลังสอง — ตัวหารที่ทำให้ระยะห่างถูกวัดเทียบกับ σ ไม่ใช่หน่วยดิบ</li>
+            <li><b>อ่านทั้งบรรทัด:</b> ค่าที่ตำแหน่ง x เท่ากับ ความสูงยอด A คูณ เอ็กซ์โพเนนเชียลของ ลบครึ่งหนึ่งของ
+              ระยะห่างจากยอดวัดเป็นกี่เท่าของซิกมา แล้วยกกำลังสอง</li>
+            <li><b>ค่าที่ควรจำ:</b> ที่ x = μ ± σ เหลือ 0.6065 ของยอด · ที่ μ ± 2σ เหลือ 0.1353 · ครึ่งความสูงอยู่ที่ μ ± 1.1774 σ</li>
+          </ol>
+        </div></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">สมการที่ 3 · ผลรวมเกาส์เซียนบนแผ่นรองเท้า</h3>
+        <div class="panel glitem"><div class="panel-body">
+          <div class="eq">
+            <em>c</em>(u, v) = <span style="font-size:1.5em; vertical-align:-.18em">Σ</span><span class="sub" style="margin-inline-end:.4em">k=1..K</span>
+            <em>A</em><span class="sub">k</span> · exp
+            [ − <span class="frac"><span>(u − <em>u</em><span class="sub">k</span>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sub">u,k</span><span class="sup">2</span></span></span>
+            − <span class="frac"><span>(v − <em>v</em><span class="sub">k</span>)<span class="sup">2</span></span><span>2<em>σ</em><span class="sub">v,k</span><span class="sup">2</span></span></span> ]
+          </div>
+          <ol class="read-list">
+            <li><b class="m">Σ</b> ซิกมาตัวใหญ่ อ่านว่า ผลรวมของ — ไม่ใช่ตัวแปร แต่เป็นคำสั่งให้บวก</li>
+            <li><b class="m">k = 1..K</b> เค เท่ากับ หนึ่ง ถึง เค ใหญ่ — ทำซ้ำทั้งก้อนที่อยู่ข้างหลัง K รอบ แล้วบวกผลทุกรอบเข้าด้วยกัน</li>
+            <li><b class="m">A<sub>k</sub></b> เอ ห้อย เค — ความลึกยอดของหลุมลูกที่ k แต่ละลูกมีค่าของตัวเอง</li>
+            <li><b>สองพจน์ในวงเล็บ</b> ลบกันคนละแกน แกน u หนึ่งพจน์ แกน v อีกหนึ่งพจน์ — มาจากการเอาระฆังสองใบคูณกัน พอเข้าไปอยู่ในเลขชี้กำลังจึงกลายเป็นบวกกัน</li>
+            <li><b class="m">σ<sub>u,k</sub></b> ซิกมา ยู ห้อย เค — ความกว้างตามแกน u ของหลุมที่ k ตัวห้อยสองตัวคั่นด้วยจุลภาค อ่านเรียงจากซ้าย</li>
+            <li><b>อ่านทั้งบรรทัด:</b> ความลึกที่พิกัด u, v เท่ากับ ผลรวมของทุกหลุม ตั้งแต่ลูกที่หนึ่งถึงลูกที่ K
+              โดยแต่ละลูกคือ ความลึกยอด คูณ เอ็กซ์โพเนนเชียลของ ลบระยะห่างตามแกน u และแกน v ที่วัดเทียบกับซิกมาของตัวเอง</li>
+            <li><b>นับพารามิเตอร์:</b> หนึ่งหลุมใช้ห้าตัวเลข (A, u<sub>k</sub>, v<sub>k</sub>, σ<sub>u</sub>, σ<sub>v</sub>) ดังนั้น K หลุมใช้ 5K ตัวเลข — K = 3 ก็คือ 15 ตัวเลขอธิบายทั้งแผ่น</li>
+          </ol>
+        </div></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">สมการที่ 4 · เส้นโค้งเบซิเยร์หนึ่งช่วง</h3>
+        <div class="panel glitem"><div class="panel-body">
+          <div class="eq">
+            <em>B</em>(t) = (1−t)<span class="sup">3</span><em>P</em><span class="sub">0</span>
+            + 3(1−t)<span class="sup">2</span>t <em>P</em><span class="sub">1</span>
+            + 3(1−t)t<span class="sup">2</span> <em>P</em><span class="sub">2</span>
+            + t<span class="sup">3</span><em>P</em><span class="sub">3</span>
+            <span style="margin-inline-start:1.4em">0 ≤ t ≤ 1</span>
+          </div>
+          <ol class="read-list">
+            <li><b class="m">B(t)</b> บี ของ ที — ผลลัพธ์เป็นจุดหนึ่งจุดบนระนาบ ไม่ใช่ความสูง สมการนี้จึงย้อนกลับ วน หรือตั้งฉากได้</li>
+            <li><b class="m">t</b> ที — พารามิเตอร์ที่เดินจาก 0 ถึง 1 ตลอดหนึ่งช่วงโค้ง คิดว่าเป็นเวลาก็ได้</li>
+            <li><b class="m">(1−t)³</b> หนึ่ง ลบ ที ทั้งหมดกำลังสาม — น้ำหนักของ P₀ ที่ t = 0 มีค่า 1 แล้วลดลงจนเป็น 0 ที่ t = 1</li>
+            <li><b class="m">P₀ P₁ P₂ P₃</b> พี ศูนย์ ถึง พี สาม — จุดควบคุมสี่จุด เส้นผ่านสองจุดปลายแน่นอน ส่วนสองจุดกลางแค่ดึง</li>
+            <li><b>เครื่องหมายบวก</b> ระหว่างพจน์คือการบวกเวกเตอร์ ทำแยกทีละแกน แกน x กับแกน y ต่างคนต่างคำนวณ</li>
+            <li><b>สัมประสิทธิ์ทั้งสี่</b> คือพหุนามแบร์นชไตน์ มาจากการกระจาย [(1−t) + t]³ = 1 จึงบวกกันได้ 1 เสมอ เส้นโค้งเลยอยู่ในกรอบนูนของจุดทั้งสี่ตลอด</li>
+            <li><b class="m">0 ≤ t ≤ 1</b> ศูนย์ น้อยกว่าหรือเท่ากับ ที น้อยกว่าหรือเท่ากับ หนึ่ง — นอกช่วงนี้สูตรยังคำนวณได้ แต่จะไม่ใช่ส่วนโค้งที่ต้องการแล้ว</li>
+            <li><b>อ่านทั้งบรรทัด:</b> จุดบนเส้นที่เวลา t เท่ากับ ค่าเฉลี่ยถ่วงน้ำหนักของจุดควบคุมทั้งสี่ โดยน้ำหนักเปลี่ยนไปตาม t</li>
+          </ol>
+        </div></div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">สมการที่ 5 · แปลงความกว้างที่วัดได้ให้เป็นซิกมา</h3>
+        <div class="panel glitem"><div class="panel-body">
+          <div class="eq">
+            <em>σ</em> = <span class="frac"><span>HWHM</span><span>√(2 ln 2)</span></span>
+            = <span class="frac"><span>HWHM</span><span>1.1774</span></span>
+          </div>
+          <ol class="read-list">
+            <li><b class="m">HWHM</b> อ่านว่า เอช ดับเบิลยู เอช เอ็ม ย่อจาก half width at half maximum — ครึ่งความกว้างที่ครึ่งความสูง วัดจากยอดออกไปจนค่าเหลือครึ่งหนึ่ง</li>
+            <li><b class="m">√(2 ln 2)</b> รากที่สองของ สอง คูณ ลอการิทึมธรรมชาติของสอง มีค่า 1.1774</li>
+            <li><b>ทำไมต้องหาร:</b> เกาส์เซียนตกลงเหลือครึ่งหนึ่งที่ระยะ σ√(2 ln 2) พอดี การหารกลับจึงได้ σ ที่ตรงตามนิยาม ไม่ใช่การประมาณ</li>
+            <li><b>ญาติของมันคือ FWHM</b> เอฟ ดับเบิลยู เอช เอ็ม คือความกว้างเต็มที่ครึ่งความสูง = 2 × HWHM = 2.3548 σ</li>
+            <li><b>อ่านทั้งบรรทัด:</b> ซิกมา เท่ากับ ครึ่งความกว้างที่ครึ่งความสูง หารด้วย หนึ่งจุดหนึ่งเจ็ดเจ็ดสี่</li>
+          </ol>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 4. clashes ═══════════ -->
+<section id="s4" data-gl>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">4</span>
+      <h2>ตัวอักษรที่ซ้ำกัน คนละความหมาย</h2></div>
+    <p class="sec-sub">ตัวอักษรมีจำกัด แต่ปริมาณที่ต้องตั้งชื่อมีเยอะกว่า
+      สิบสองรายการนี้คือจุดที่คนอ่านสับสนบ่อยที่สุด</p>
+
+    <div class="sec-body">
+      <div class="glblock" data-block>
+        <div class="tbl-wrap gl"><table>
+          <thead><tr><th>ตัวอักษร</th><th>ในบริบทหนึ่ง</th><th>ในอีกบริบทหนึ่ง</th><th>ดูยังไงว่าตัวไหน</th></tr></thead>
+          <tbody>
+            <tr><td class="sym">t</td>
+              <td>เกาส์เซียน — ระยะห่างจากยอดวัดเป็นกี่เท่าของ σ ค่าเป็นเท่าไรก็ได้</td>
+              <td>เบซิเยร์ — พารามิเตอร์ที่เดินตามเส้น จำกัดอยู่ที่ 0 ถึง 1</td>
+              <td>ถ้าเห็น 0 ≤ t ≤ 1 หรือ B(t) แปลว่าเป็นเบซิเยร์</td></tr>
+            <tr><td class="sym">σ กับ Σ</td>
+              <td>ตัวเล็ก σ คือความกว้างของระฆัง เป็นตัวเลขหนึ่งค่า</td>
+              <td>ตัวใหญ่ Σ คือคำสั่งบวก ไม่ใช่ตัวเลข</td>
+              <td>ตัวใหญ่จะมีดัชนีเขียนกำกับข้างล่างเสมอ</td></tr>
+            <tr><td class="sym">k กับ k₀</td>
+              <td>k เล็กเปล่า ๆ คือดัชนีของหลุม วิ่ง 1 ถึง K</td>
+              <td>k₀ คือความแข็งของโฟม หน่วย kPa/mm</td>
+              <td>ตัวห้อยเป็นเลขศูนย์เสมอเมื่อหมายถึงความแข็ง</td></tr>
+            <tr><td class="sym">K กับ N</td>
+              <td>K ใหญ่ คือจำนวนหลุมเกาส์เซียนบนแผ่น</td>
+              <td>N คือจำนวนท่อนเส้นตรงที่ใช้แทนเส้นโค้ง</td>
+              <td>K อยู่ในหน้าเกาส์เซียน N อยู่ในหน้าเบซิเยร์</td></tr>
+            <tr><td class="sym">B</td>
+              <td>B(t) คือเส้นโค้งเบซิเยร์ทั้งเส้น ให้ผลเป็นจุด</td>
+              <td>B₀ ถึง B₃ คือน้ำหนักแบร์นชไตน์ ให้ผลเป็นตัวเลขเดียว</td>
+              <td>ถ้ามีตัวห้อยเป็นเลข 0–3 คือน้ำหนัก</td></tr>
+            <tr><td class="sym">A</td>
+              <td>เกาส์เซียน — ความลึกที่ยอดของหลุม หน่วยมิลลิเมตร</td>
+              <td>เบซิเยร์หัวข้อ 3 — A<sub>i</sub> คือจุดยึดที่ลากได้ ให้ผลเป็นพิกัด</td>
+              <td>จุดยึดมีตัวห้อย i และอยู่คู่กับคำว่า จุดยึด เสมอ</td></tr>
+            <tr><td class="sym">c</td>
+              <td>c(u, v) คือความลึกของแผ่น หน่วยมิลลิเมตร</td>
+              <td>c ใน x(t) = at³ + bt² + ct + d คือสัมประสิทธิ์ตัวที่สาม</td>
+              <td>สัมประสิทธิ์จะไม่มีวงเล็บตามหลัง</td></tr>
+            <tr><td class="sym">p กับ P</td>
+              <td>p ตัวเล็ก คือแรงกด หน่วยกิโลปาสคาล</td>
+              <td>P ตัวใหญ่ คือจุดควบคุมของเบซิเยร์</td>
+              <td>ดูขนาดตัวอักษร ตัวใหญ่เป็นจุดเสมอ</td></tr>
+            <tr><td class="sym">E กับ e</td>
+              <td>E ตัวใหญ่ คือความแข็งของเนื้อวัสดุ หน่วยเมกะปาสคาล</td>
+              <td>e ตัวเล็ก คือค่าคงที่ 2.71828… ฐานของ exp</td>
+              <td>ในหน้าเหล่านี้เขียน exp( ) แทน e ยกกำลังเสมอ จึงแทบไม่เจอ e ตัวเล็ก</td></tr>
+            <tr><td class="sym">R</td>
+              <td>R² คือค่าบอกว่าแบบจำลองอธิบายข้อมูลได้ดีแค่ไหน 0 ถึง 1</td>
+              <td>R เปล่า ๆ คือรัศมีความโค้ง หน่วยมิลลิเมตร</td>
+              <td>มีกำลังสองหรือไม่</td></tr>
+            <tr><td class="sym">u, v กับ x, y</td>
+              <td>u, v คือพิกัดของเท้าที่ปรับให้อยู่ในช่วง −1 ถึง 1 ไม่มีหน่วย</td>
+              <td>x, y คือแกนคณิตศาสตร์ทั่วไปในหน้าสมการเกาส์เซียน หรือพิกัดมิลลิเมตรในหน้าเบซิเยร์</td>
+              <td>ถ้าอยู่ในกรอบ −1 ถึง 1 และพูดถึงเท้า คือ u, v</td></tr>
+            <tr><td class="sym">×</td>
+              <td>ระหว่างตัวเลขทั่วไป คือการคูณ หรืออ่านว่า เท่าตัว</td>
+              <td>ในสูตร |B′ × B″| คือผลคูณไขว้ของเวกเตอร์</td>
+              <td>ถ้าสองข้างเป็นเวกเตอร์ ก็คือผลคูณไขว้</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 5. terms ═══════════ -->
+<section id="s5" data-gl>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">5</span>
+      <h2>คำศัพท์</h2></div>
+    <p class="sec-sub">ชื่อเฉพาะและศัพท์เทคนิคทุกคำที่โผล่ในสามหน้าที่เหลือ
+      พร้อมคำอ่านสำหรับคำที่มาจากภาษาอื่น</p>
+
+    <div class="sec-body">
+
+      <div class="glblock" data-block>
+        <h3 class="glh">คณิตศาสตร์และเรขาคณิต</h3>
+        <div class="terms">
+          <div class="term"><h4>เกาส์เซียน <span class="en">(Gaussian)</span></h4>
+            <p class="rd">เกา-เซียน</p>
+            <p>ฟังก์ชันรูประฆังคว่ำ ตั้งชื่อตามคาร์ล ฟรีดริช เกาส์ คุณสมบัติที่ทำให้ถูกเลือกใช้ที่นี่คือมันเรียบทุกจุด ไม่มีมุม และมีอิทธิพลอยู่แค่รัศมีราว 2–3 σ ของตัวเอง ปรับก้อนหนึ่งจึงไม่กระทบก้อนอื่น</p></div>
+          <div class="term"><h4>พารามิเตอร์ <span class="en">(parameter)</span></h4>
+            <p class="rd">พา-รา-มิ-เตอร์</p>
+            <p>ตัวเลขที่ปรับได้ในสมการ เมื่อกำหนดครบทุกตัวก็ได้รูปทรงหนึ่งรูปที่แน่นอน แผ่นหนึ่งแผ่นที่มี 3 หลุมใช้ 15 พารามิเตอร์</p></div>
+          <div class="term"><h4>สัมประสิทธิ์ <span class="en">(coefficient)</span></h4>
+            <p class="rd">สำ-ปะ-สิด</p>
+            <p>ตัวเลขที่คูณอยู่หน้าพจน์หนึ่ง ๆ เช่น a, b, c, d ในพหุนาม at³ + bt² + ct + d</p></div>
+          <div class="term"><h4>เส้นโค้งเบซิเยร์ <span class="en">(Bezier curve)</span></h4>
+            <p class="rd">เบ-ซิ-เยร์</p>
+            <p>เส้นโค้งที่นิยามด้วยจุดควบคุม ไม่ใช่การลากเส้นด้วยมือ ตั้งชื่อตาม ปีแยร์ เบซิเยร์ วิศวกรของเรโน ที่ใช้ในเว็บนี้เป็นดีกรีสาม คือใช้จุดสี่จุดต่อหนึ่งช่วง เพราะเป็นดีกรีต่ำสุดที่โค้งกลับทิศได้ในช่วงเดียว ซึ่งขอบเท้าด้านในต้องการ</p></div>
+          <div class="term"><h4>พหุนาม <span class="en">(polynomial)</span></h4>
+            <p class="rd">พะ-หุ-นาม</p>
+            <p>นิพจน์ที่เป็นผลบวกของกำลังต่าง ๆ ของตัวแปร ดีกรีคือกำลังสูงสุด เบซิเยร์ที่ใช้ในเว็บนี้เป็นพหุนามดีกรีสาม</p></div>
+          <div class="term"><h4>อนุพันธ์ <span class="en">(derivative)</span></h4>
+            <p class="rd">อะ-นุ-พัน</p>
+            <p>อัตราการเปลี่ยนแปลง เขียนด้วยเครื่องหมายไพรม์ ในงานนี้ B′(t) บอกทิศที่จุดกำลังวิ่งไป จึงเป็นตัวกำหนดว่ารอยต่อระหว่างช่วงจะหักหรือเรียบ</p></div>
+          <div class="term"><h4>เส้นสัมผัส <span class="en">(tangent)</span></h4>
+            <p class="rd">เส้น-สำ-ผัด</p>
+            <p>เส้นตรงที่แตะเส้นโค้งที่จุดหนึ่งโดยไปทางเดียวกับเส้นพอดี ทิศของมันคือทิศของ B′</p></div>
+          <div class="term"><h4>ความโค้ง <span class="en">(curvature)</span></h4>
+            <p class="rd">ความ-โค้ง · κ</p>
+            <p>ตัววัดว่าเส้นเลี้ยวแคบแค่ไหนที่จุดนั้น เส้นตรงมีความโค้งเป็นศูนย์ วงกลมเล็กมีความโค้งสูง</p></div>
+          <div class="term"><h4>กรอบนูน <span class="en">(convex hull)</span></h4>
+            <p class="rd">คอน-เวกซ์ ฮัลล์</p>
+            <p>รูปที่เล็กที่สุดที่ครอบจุดทั้งหมดโดยไม่มีรอยเว้า เส้นเบซิเยร์รับประกันว่าจะไม่ออกนอกกรอบนูนของจุดควบคุม ขอบแผ่นจึงไม่เหวี่ยงไปไกลเกินคาด</p></div>
+          <div class="term"><h4>พหุนามแบร์นชไตน์ <span class="en">(Bernstein polynomial)</span></h4>
+            <p class="rd">แบร์น-ชไตน์</p>
+            <p>ชุดน้ำหนักสี่ตัวที่คูณอยู่หน้าจุดควบคุมแต่ละจุด ทั้งสี่ตัวบวกกันได้ 1 ที่ทุกค่า t</p></div>
+          <div class="term"><h4>เดอ กัสแตลโย <span class="en">(de Casteljau)</span></h4>
+            <p class="rd">เดอ กัส-แตล-โย</p>
+            <p>วิธีหาจุดบนเส้นโค้งโดยแบ่งด้านของรูปหลายเหลี่ยมควบคุมซ้ำ ๆ ที่อัตราส่วน t จนเหลือจุดเดียว เสถียรเชิงตัวเลขกว่าการแทนค่าในพหุนาม และแถมเส้นสัมผัสมาให้ฟรี</p></div>
+          <div class="term"><h4>คาร์ทมูล–รอม <span class="en">(Catmull–Rom)</span></h4>
+            <p class="rd">แคท-มูล-รอม</p>
+            <p>สูตรที่คำนวณก้านควบคุมให้อัตโนมัติจากจุดยึดข้างเคียง ทำให้ผู้ใช้ลากแค่จุดยึด แล้วรอยต่อเรียบระดับ C¹ เองโดยไม่ต้องจัดก้าน</p></div>
+          <div class="term"><h4>วิธีของฮอร์เนอร์ <span class="en">(Horner&rsquo;s method)</span></h4>
+            <p class="rd">ฮอร์-เนอร์</p>
+            <p>จัดพหุนามใหม่เป็น ((at + b)t + c)t + d เพื่อให้แทนค่าได้ด้วยการคูณ 3 ครั้ง บวก 3 ครั้ง โดยไม่ต้องยกกำลังเลย</p></div>
+          <div class="term"><h4>การแบ่งครึ่งแบบปรับตัว <span class="en">(adaptive subdivision)</span></h4>
+            <p class="rd">อะ-แดป-ทีฟ</p>
+            <p>แทนที่จะเดาว่าต้องซอยกี่ท่อน ให้ผ่าเส้นโค้งครึ่งหนึ่งซ้ำ ๆ จนแต่ละชิ้นตรงพอตามความคลาดที่ยอมได้ ประโยชน์ชัดที่สุดเมื่อเป็นสายหลายช่วงที่ยาวไม่เท่ากัน</p></div>
+          <div class="term"><h4>ความต่อเนื่อง C⁰ C¹ C² G¹</h4>
+            <p class="rd">ซี ศูนย์ · ซี หนึ่ง · ซี สอง · จี หนึ่ง</p>
+            <p>ระดับความเรียบของรอยต่อ — C⁰ คือปลายชนกันเฉย ๆ อาจหักเป็นมุม, C¹ คือทิศและความเร็วต่อกันพอดี, C² คือความโค้งต่อเนื่องด้วย, G¹ คือทิศเดียวกันแต่ความยาวก้านไม่เท่า ซึ่งตามองว่าเรียบเหมือนกัน</p></div>
+          <div class="term"><h4>กำลังสองน้อยสุด <span class="en">(least squares)</span></h4>
+            <p class="rd">ลีสต์ สแควร์</p>
+            <p>วิธีหาค่าพารามิเตอร์ที่ทำให้ผลรวมของระยะห่างยกกำลังสองน้อยที่สุด ใช้ทั้งตอนฟิตขอบเบซิเยร์และตอนปรับพารามิเตอร์ของหลุมพร้อมกันทุกตัว</p></div>
+          <div class="term"><h4>เส้นชั้นความสูง <span class="en">(contour)</span></h4>
+            <p class="rd">คอน-ทัวร์</p>
+            <p>เส้นที่ลากผ่านทุกจุดที่มีค่าเท่ากัน ในหน้าเกาส์เซียนคือวงรี 1σ กับ 2σ ส่วนในหน้าเบซิเยร์คือเส้นระดับของแผนที่แรงกดที่กลายมาเป็นขอบดิบ</p></div>
+          <div class="term"><h4>FWHM · HWHM</h4>
+            <p class="rd">เอฟ ดับเบิลยู เอช เอ็ม · เอช ดับเบิลยู เอช เอ็ม</p>
+            <p>ความกว้างเต็มที่ครึ่งความสูง และครึ่งหนึ่งของค่านั้น เป็นความกว้างที่วัดจากภาพจริงได้ ต่างจาก σ ที่เป็นค่าในสมการ — แปลงกันด้วยตัวคูณ 1.1774</p></div>
+          <div class="term"><h4>ระบบพิกัดไร้หน่วย <span class="en">(normalized coordinates)</span></h4>
+            <p class="rd">นอร์-มัล-ไลซ์</p>
+            <p>บีบทุกเท้าให้อยู่ในกรอบ −1 ถึง +1 เท่ากันหมด เท้ายาว 24 ซม. กับ 29 ซม. จึงเทียบกันได้ตรง ๆ อยากได้มิลลิเมตรจริงค่อยคูณกลับด้วยครึ่งความยาวของเท้าคนนั้น</p></div>
+          <div class="term"><h4>ความยาวส่วนโค้ง <span class="en">(arc length)</span></h4>
+            <p class="rd">อาร์ค เลงท์</p>
+            <p>ระยะทางจริงที่วัดไปตามเส้นโค้ง ไม่ใช่ค่า t — เดิน t เท่ากันได้จุดที่ห่างไม่เท่ากัน ตอนส่งเส้นทางให้หัวตัดจึงต้องสุ่มจุดใหม่ตามความยาวส่วนโค้ง</p></div>
+        </div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">วัสดุและกลศาสตร์</h3>
+        <div class="terms">
+          <div class="term"><h4>แบบจำลองวิงเคลอร์ <span class="en">(Winkler foundation)</span></h4>
+            <p class="rd">วิง-เค-ลอร์</p>
+            <p>มองแผ่นโฟมเป็นแผงสปริงที่แต่ละจุดกดลงได้อิสระ ไม่ดึงกัน ทำให้คำนวณง่ายมาก ข้อแลกคือรูปทรงที่ได้คมกว่าความจริงเล็กน้อย เพราะโฟมจริงดึงกันเอง</p></div>
+          <div class="term"><h4>มอดุลัสของยัง <span class="en">(Young&rsquo;s modulus)</span></h4>
+            <p class="rd">ยัง มอ-ดู-ลัส · E</p>
+            <p>ความแข็งของเนื้อวัสดุ บอกว่าดึงหรือกดด้วยความเค้นเท่าไรแล้วยืดหดไปกี่เปอร์เซ็นต์ เป็นสมบัติของวัสดุ ไม่ขึ้นกับความหนาของชิ้นงาน</p></div>
+          <div class="term"><h4>กฎของฮุก <span class="en">(Hooke&rsquo;s law)</span></h4>
+            <p class="rd">ฮุก</p>
+            <p>ยุบตัวเป็นสัดส่วนตรงกับแรงที่กด ใช้ได้จนโฟมถูกกดราว 30% ของความหนา เกินกว่านั้นต้องใช้แบบจำลองไม่เชิงเส้น</p></div>
+          <div class="term"><h4>กิโลปาสคาล · เมกะปาสคาล <span class="en">(kPa · MPa)</span></h4>
+            <p class="rd">ปาส-คาล</p>
+            <p>หน่วยของแรงต่อพื้นที่ 1 MPa = 1000 kPa แรงกดใต้ฝ่าเท้าอ่านเป็น kPa ส่วนความแข็งของโฟมอ่านเป็น MPa</p></div>
+          <div class="term"><h4>ความแข็งต่อหน่วยพื้นที่ <span class="en">(stiffness per area)</span></h4>
+            <p class="rd">k₀ · เค ศูนย์</p>
+            <p>E หารด้วย h₀ หน่วย kPa ต่อมิลลิเมตร โฟมนุ่มหรือหนาทำให้ k₀ ต่ำ แล้วยุบลึกกว่าที่แรงกดเท่าเดิม</p></div>
+          <div class="term"><h4>เชิงเส้น · ไม่เชิงเส้น <span class="en">(linear · nonlinear)</span></h4>
+            <p class="rd">เชิง-เส้น</p>
+            <p>เชิงเส้นคือผลลัพธ์แปรตามอินพุตเป็นสัดส่วนตรง กดสองเท่าก็ยุบสองเท่า ทั้งเว็บนี้ตั้งอยู่บนสมมติฐานเชิงเส้น</p></div>
+        </div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">ข้อมูลและสถิติ</h3>
+        <div class="terms">
+          <div class="term"><h4>R² <span class="en">(coefficient of determination)</span></h4>
+            <p class="rd">อาร์ กำลังสอง</p>
+            <p>บอกว่าแบบจำลองอธิบายความแปรปรวนของข้อมูลได้กี่ส่วน 1 คือพอดีเป๊ะ 0 คือไม่ดีกว่าการเดาค่าเฉลี่ย เกาส์เซียน 3 ก้อนได้ 0.972 ขณะที่พหุนามดีกรีห้าได้ 0.774</p></div>
+          <div class="term"><h4>RMS <span class="en">(root mean square)</span></h4>
+            <p class="rd">อาร์ เอ็ม เอส</p>
+            <p>รากที่สองของค่าเฉลี่ยกำลังสองของความคลาดเคลื่อน ใช้สรุปว่าเส้นโค้งที่ฟิตได้ห่างจากขอบดิบเฉลี่ยกี่มิลลิเมตร</p></div>
+          <div class="term"><h4>เฮิรตซ์ <span class="en">(Hz)</span></h4>
+            <p class="rd">เฮิรตซ์</p>
+            <p>จำนวนครั้งต่อวินาที เซนเซอร์ในชุดข้อมูลนี้อ่านค่าที่ 100 Hz คือ 100 เฟรมต่อวินาที</p></div>
+          <div class="term"><h4>เฟรม <span class="en">(frame)</span></h4>
+            <p class="rd">เฟรม</p>
+            <p>ภาพแรงกดหนึ่งภาพ ณ เวลาหนึ่ง ทั้งเว็บนี้ใช้เฉพาะเฟรมที่ลงน้ำหนักสูงสุดของแต่ละก้าว ไม่ได้จำลองการกลิ้งของเท้าตลอดช่วงก้าว</p></div>
+          <div class="term"><h4>StepUP-P150</h4>
+            <p class="rd">สเต็ป-อัพ พี หนึ่งห้าศูนย์</p>
+            <p>ชุดข้อมูลแรงกดใต้ฝ่าเท้าจาก 150 คน เดินเท้าเปล่าและใส่รองเท้า 4 แบบ 4 ความเร็ว เป็นที่มาของตัวอย่างทุกภาพในเว็บนี้</p></div>
+          <div class="term"><h4>DOI</h4>
+            <p class="rd">ดี โอ ไอ</p>
+            <p>รหัสถาวรที่ใช้อ้างอิงชุดข้อมูลหรือบทความ ของชุดนี้คือ 10.20383/103.01285 พิมพ์ต่อท้าย doi.org ก็เปิดถึงต้นทางได้</p></div>
+          <div class="term"><h4>กริด · เซลล์ · พิกเซล</h4>
+            <p class="rd">กริด · เซลล์ · พิก-เซล</p>
+            <p>ตารางที่แผนที่แรงกดถูกเก็บอยู่ ตัวอย่างในเว็บนี้เป็นตาราง 15×37 ช่อง แต่ละช่องกว้างราว 5 มิลลิเมตร</p></div>
+          <div class="term"><h4>มาสก์ <span class="en">(mask)</span></h4>
+            <p class="rd">มาสก์</p>
+            <p>ตารางบอกว่าเซลล์ไหนอยู่ในแผ่นและเซลล์ไหนอยู่นอกแผ่น เปลี่ยนขอบก็เปลี่ยนมาสก์ แต่ตัวเลขของหลุมทั้ง 15 ตัวไม่ขยับ</p></div>
+        </div>
+      </div>
+
+      <div class="glblock" data-block>
+        <h3 class="glh">กายวิภาคและงานผลิต</h3>
+        <div class="terms">
+          <div class="term"><h4>MTH1 · MTH5 <span class="en">(metatarsal head)</span></h4>
+            <p class="rd">เมท-ทา-ทาร์-ซัล เฮด</p>
+            <p>หัวกระดูกฝ่าเท้าชิ้นที่ 1 และที่ 5 คือปุ่มกระดูกที่นูนที่สุดใต้โคนนิ้วโป้งและโคนนิ้วก้อย เป็นจุดยึดสองจุดที่กำหนดความกว้างที่สุดของแผ่น</p></div>
+          <div class="term"><h4>ด้านใน · ด้านนอก <span class="en">(medial · lateral)</span></h4>
+            <p class="rd">มี-เดียล · แลท-เทอ-รัล</p>
+            <p>ด้านในคือฝั่งนิ้วโป้ง ซึ่งเป็นฝั่งที่เว้าลึกที่อุ้งเท้า ส่วนด้านนอกคือฝั่งนิ้วก้อย ซึ่งเกือบเป็นเส้นตรงจากส้นไปถึง MTH5 — เท้าจริงจึงไม่สมมาตร</p></div>
+          <div class="term"><h4>อุ้งเท้า <span class="en">(arch)</span></h4>
+            <p class="rd">อุ้ง-เท้า</p>
+            <p>ส่วนโค้งใต้กลางเท้าฝั่งด้านใน มักไม่แตะพื้นเลยในภาพแรงกด ทำให้แผนที่สัมผัสมีรูทะลุตรงกลาง ซึ่งเป็นเหตุผลที่ขอบแผ่นต้องคำนวณแยกจากรอยสัมผัส</p></div>
+          <div class="term"><h4>ส้น · กลางเท้า · ฝ่าเท้าหน้า</h4>
+            <p class="rd">rearfoot · midfoot · forefoot</p>
+            <p>สามส่วนหลักตามแนวยาวของเท้า ตรงกับค่า v ราว −1, 0 และ +0.5 ตามลำดับ</p></div>
+          <div class="term"><h4>heel cup · met pad</h4>
+            <p class="rd">ฮีล คัพ · เมท แพด</p>
+            <p>ชื่อเรียกหลุมสองตำแหน่งหลักบนแผ่นรองเท้า — หลุมส้นมักสูงและแคบ ส่วนหลุมฝ่าเท้าหน้ามักเตี้ยและกว้าง</p></div>
+          <div class="term"><h4>แผ่นรองเท้า <span class="en">(insole)</span></h4>
+            <p class="rd">อิน-โซล</p>
+            <p>แผ่นที่วางในรองเท้า ในเว็บนี้หมายถึงแผ่นที่มีความหนาฐาน h₀ แล้วผิวบนกับผิวล่างนูนสะท้อนกันตามความลึก c</p></div>
+          <div class="term"><h4>STL</h4>
+            <p class="rd">เอส ที แอล</p>
+            <p>รูปแบบไฟล์สามมิติที่เก็บผิวเป็นสามเหลี่ยมล้วน ๆ ไม่รู้จักเส้นโค้ง จึงต้องซอยเบซิเยร์เป็นท่อนก่อนส่งออก ค่าที่ยอมกันคือราว 0.05–0.1 มม.</p></div>
+          <div class="term"><h4>G-code · CNC</h4>
+            <p class="rd">จี โค้ด · ซี เอ็น ซี</p>
+            <p>ภาษาสั่งเดินหัวตัดหรือหัวฉีด และเครื่องที่รับคำสั่งนั้น ทั้งคู่รับได้แต่เส้นตรงกับส่วนโค้งวงกลม ไม่รู้จักเบซิเยร์</p></div>
+          <div class="term"><h4>SVG path</h4>
+            <p class="rd">เอส วี จี พาธ</p>
+            <p>ข้อความบรรทัดเดียวที่บรรยายเส้นทาง เปิดได้ทั้งในเบราว์เซอร์ Illustrator และ CAD หน้าเบซิเยร์คัดลอกขอบแผ่นออกมาในรูปแบบนี้</p></div>
+          <div class="term"><h4>แผนที่สี jet</h4>
+            <p class="rd">เจ็ต</p>
+            <p>แถบสีที่ไล่จากน้ำเงินไปแดงตามค่าที่เพิ่มขึ้น เป็นรูปแบบที่สคริปต์สร้างภาพแรงกดใช้ ถ้าภาพถูกบีบอัดแบบ JPEG สีจะเกลี่ยจนค่าที่อ่านกลับคลาดเคลื่อน ใช้ PNG จะแม่นกว่า</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="prose">
+    <h3>หน้านี้ใช้ยังไง</h3>
+    <ul>
+      <li>พิมพ์ในช่องค้นหาด้านบนเพื่อกรองทุกตารางและทุกการ์ดพร้อมกัน ค้นได้ทั้งภาษาไทยและอังกฤษ กดปุ่ม <span class="mono">/</span> เพื่อกระโดดไปที่ช่องค้นหา และกด <span class="mono">Esc</span> เพื่อล้างคำค้น</li>
+      <li>คำอ่านที่ให้ไว้เป็นการถอดเสียงเพื่อให้พูดคุยกันรู้เรื่อง ไม่ใช่การถอดเสียงตามหลักสัทศาสตร์</li>
+      <li>ที่มาของตัวเลขและภาพทั้งหมดอยู่ในสามหน้าหลัก — <a href="index.html">แผ่นรองเท้าจากแรงกด</a>,
+        <a href="gaussian.html">สมการเกาส์เซียน</a> และ <a href="bezier.html">เส้นโค้งเบซิเยร์</a></li>
+      <li>ค่าคงที่ที่โผล่บ่อย: √(2 ln 2) = 1.1774 · FWHM = 2.3548 σ · exp(−0.5) = 0.6065 · exp(−2) = 0.1353 · e = 2.71828 · π = 3.14159</li>
+    </ul>
+  </div>
+</footer>
+</main>
+
+<script>
+"use strict";
+const glq = document.getElementById('glq');
+const glItems = [...document.querySelectorAll('.gl tbody tr, .term, .glitem')];
+const glBlocks = [...document.querySelectorAll('[data-block]')];
+const glSecs = [...document.querySelectorAll('section[data-gl]')];
+const glCount = document.getElementById('glcount');
+const glEmpty = document.getElementById('glempty');
+
+const symCount = document.querySelectorAll('#s1 tbody tr, #s2 tbody tr').length;
+const termCount = document.querySelectorAll('.term').length;
+document.getElementById('fSym').textContent = symCount;
+document.getElementById('fTerm').textContent = termCount;
+
+function glFilter(){
+  const q = glq.value.trim().toLowerCase();
+  let hits = 0;
+  for(const el of glItems){
+    const on = !q || el.textContent.toLowerCase().includes(q);
+    el.style.display = on ? '' : 'none';
+    if(on) hits++;
+  }
+  const alive = el => [...el.querySelectorAll('.gl tbody tr, .term, .glitem')]
+                        .some(x => x.style.display !== 'none');
+  for(const b of glBlocks) b.style.display = alive(b) ? '' : 'none';
+  for(const s of glSecs)   s.style.display = alive(s) ? '' : 'none';
+  glCount.textContent = q
+    ? `พบ ${hits} รายการที่ตรงกับ “${glq.value.trim()}”`
+    : `ทั้งหมด ${glItems.length} รายการ — ${symCount} สัญลักษณ์ และ ${termCount} คำศัพท์`;
+  glEmpty.style.display = (q && hits === 0) ? 'block' : 'none';
+}
+glq.addEventListener('input', glFilter);
+glq.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ glq.value=''; glFilter(); } });
+document.addEventListener('keydown', e=>{
+  if(e.key === '/' && document.activeElement !== glq){ e.preventDefault(); glq.focus(); }
+});
+glFilter();
+
+/* ══════════════ theme ══════════════ */
+document.getElementById('themeBtn').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const dark=cur ? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark?'light':'dark');
+};
+</script>
