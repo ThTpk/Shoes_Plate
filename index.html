@@ -143,6 +143,21 @@ td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
   padding:4px 12px; font-size:var(--step--1); cursor:pointer; color:var(--ink-2)}
 .chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600}
 
+/* ---------- panels built in steps ---------- */
+.step-head{display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center;
+  justify-content:space-between; margin-bottom:16px}
+.step-title{display:flex; gap:9px; align-items:center; min-width:0}
+.step-title h3{font-family:"Bai Jamjuree",sans-serif; font-size:var(--step-0);
+  font-weight:600; margin:0}
+.step-num{display:inline-flex; align-items:center; justify-content:center; flex:none;
+  width:23px; height:23px; border-radius:99px; background:var(--accent); color:#fff;
+  font-family:"IBM Plex Mono",monospace; font-size:.78rem; font-weight:700}
+.bez-split{gap:18px; grid-template-columns:minmax(0,320px) minmax(0,1fr);
+  align-items:start}
+.bez-preview{display:flex; justify-content:flex-start}
+@media(max-width:860px){.bez-split{grid-template-columns:1fr}
+  .bez-preview{justify-content:center}}
+
 /* ---------- pipeline ---------- */
 .pipe{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
 .pipe-step{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
@@ -520,59 +535,80 @@ a:hover{text-decoration-color:currentColor}
       <div class="panel">
         <div class="panel-head">
           <span class="panel-title">แบบจำลองเชิงโต้ตอบ · แผ่นรองเท้า</span>
-          <div style="display:flex; gap:8px; flex-wrap:wrap">
-            <button class="btn ghost sm" id="pgSpin">หยุดหมุน</button>
-            <button class="btn ghost sm" id="pgReset">รีเซ็ต</button>
-          </div>
         </div>
-        <div class="panel-body split">
-          <div class="rail">
-            <div class="field">
-              <div class="field-top"><label>ขอบของแผ่น</label></div>
-              <div class="chips" id="pgOutline">
-                <button class="chip" data-o="profile" aria-pressed="true">ตัวอย่างสำเร็จรูป</button>
-                <button class="chip" data-o="bezier" aria-pressed="false">เบซิเยร์ 9 ช่วง</button>
-              </div>
-              <p class="cap" style="margin:2px 0 0">
-                แบบแรกคือตารางความกว้างครึ่งหนึ่งเทียบกับ v ทั้งสองข้างจึงสมมาตรกันเสมอ ·
-                แบบที่สองเป็นเส้นโค้งปิด 9 ช่วง เริ่มจากค่าตั้งต้นของหน้า
-                <a href="bezier.html">เส้นโค้งเบซิเยร์</a> แล้วปรับต่อได้ที่นี่
-                ขอบที่ปรับใช้ร่วมกับหัวข้อ 6
-              </p>
-            </div>
-            <div id="pgBez" style="display:none; flex-direction:column; gap:14px"></div>
-            <div class="field">
-              <div class="field-top"><label for="pgK">K — จำนวนหลุม</label>
-                <span class="val" id="pgKv">3</span></div>
-              <input type="range" id="pgK" min="1" max="5" step="1" value="3">
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="pgEx">ขยายแกน z (เพื่อให้มองเห็น)</label>
-                <span class="val" id="pgExv">18×</span></div>
-              <input type="range" id="pgEx" min="1" max="40" step="1" value="18">
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="pgSel">เลือกหลุมที่จะปรับ</label></div>
-              <select id="pgSel"></select>
-            </div>
-            <div id="pgParams"></div>
-            <p class="cap" id="pgStat"></p>
+
+        <!-- ขั้นที่ 1 · ขอบของแผ่น -->
+        <div class="panel-body" style="border-bottom:1px solid var(--line)">
+          <div class="step-head">
+            <div class="step-title"><span class="step-num">1</span>
+              <h3>ออกแบบขอบของแผ่น</h3></div>
+            <span class="cap">แผ่นจบตรงไหน — ยังไม่แตะความลึก</span>
           </div>
-          <div class="canvas-row">
-            <div class="canvas-cell">
-              <canvas id="pg3D" width="620" height="560" style="cursor:grab"></canvas>
-              <span class="cap"><b>ผิวแผ่นรองเท้า</b> — เขียว = ผิวบน · แดง = ผิวล่าง · ลากเพื่อหมุน<br>ฐานแบนวาดบางลง 10 เท่าเพื่อให้เห็นความนูน ส่วนความนูนเป็นสเกลจริง</span>
+          <div class="field">
+            <div class="field-top"><label>ขอบของแผ่น</label></div>
+            <div class="chips" id="pgOutline">
+              <button class="chip" data-o="profile" aria-pressed="true">ตัวอย่างสำเร็จรูป</button>
+              <button class="chip" data-o="bezier" aria-pressed="false">เบซิเยร์ 9 ช่วง</button>
             </div>
-            <div class="canvas-cell">
-              <canvas id="pgMap" width="230" height="540"></canvas>
-              <span class="cap"><b>c(u,v)</b> มองจากด้านบน · วงรี = 1σ ·
-                <b>เส้นขาว</b> = ขอบแผ่นที่เลือกไว้</span>
+            <p class="cap" style="margin:2px 0 0">
+              แบบแรกคือตารางความกว้างครึ่งหนึ่งเทียบกับ v ทั้งสองข้างจึงสมมาตรกันเสมอ ·
+              แบบที่สองเป็นเส้นโค้งปิด 9 ช่วง เริ่มจากค่าตั้งต้นของหน้า
+              <a href="bezier.html">เส้นโค้งเบซิเยร์</a> แล้วปรับต่อได้ที่นี่
+              ขอบที่ปรับใช้ร่วมกับหัวข้อ 6
+            </p>
+          </div>
+          <div id="pgBez" class="bez-split" style="display:none"></div>
+        </div>
+
+        <!-- ขั้นที่ 2 · หลุมบนแผ่น -->
+        <div class="panel-body">
+          <div class="step-head">
+            <div class="step-title"><span class="step-num">2</span>
+              <h3>ออกแบบหลุมด้วยผลรวมเกาส์เซียน</h3></div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap">
+              <button class="btn ghost sm" id="pgSpin">หยุดหมุน</button>
+              <button class="btn ghost sm" id="pgReset">รีเซ็ตหลุม</button>
+            </div>
+          </div>
+          <div class="split">
+            <div class="rail">
+              <div class="field">
+                <div class="field-top"><label for="pgK">K — จำนวนหลุม</label>
+                  <span class="val" id="pgKv">3</span></div>
+                <input type="range" id="pgK" min="1" max="5" step="1" value="3">
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="pgEx">ขยายแกน z (เพื่อให้มองเห็น)</label>
+                  <span class="val" id="pgExv">18×</span></div>
+                <input type="range" id="pgEx" min="1" max="40" step="1" value="18">
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="pgSel">เลือกหลุมที่จะปรับ</label></div>
+                <select id="pgSel"></select>
+              </div>
+              <div id="pgParams"></div>
+              <p class="cap" id="pgStat"></p>
+            </div>
+
+            <div class="canvas-row">
+              <div class="canvas-cell">
+                <canvas id="pg3D" width="620" height="560" style="cursor:grab"></canvas>
+                <span class="cap"><b>ผิวแผ่นรองเท้า</b> — เขียว = ผิวบน · แดง = ผิวล่าง · ลากเพื่อหมุน<br>ฐานแบนวาดบางลง 10 เท่าเพื่อให้เห็นความนูน ส่วนความนูนเป็นสเกลจริง</span>
+              </div>
+              <div class="canvas-cell">
+                <canvas id="pgMap" width="230" height="540"></canvas>
+                <span class="cap"><b>c(u,v)</b> มองจากด้านบน · วงรี = 1σ ·
+                  <b>เส้นขาว</b> = ขอบแผ่นที่เลือกไว้</span>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="panel-body" style="border-top:1px solid var(--line)">
-          <h3 style="font-size:var(--step-0); margin-bottom:10px">ผลลัพธ์ที่ได้</h3>
+          <div class="step-head">
+            <div class="step-title"><span class="step-num">3</span>
+              <h3>ผลลัพธ์ที่ได้</h3></div>
+          </div>
           <p class="cap" style="margin:0 0 10px">
             ฟังก์ชันเต็มรูปของแผ่นที่กำลังแสดงอยู่ แทนค่าตัวเลขจริงทุกตัว —
             คัดลอกไปใช้ต่อได้ทันที
@@ -636,78 +672,97 @@ a:hover{text-decoration-color:currentColor}
 
     <div class="sec-body">
       <div class="panel">
-        <div class="panel-head"><span class="panel-title">สร้างแผ่นรองเท้าจากภาพ</span>
-          <button class="btn sm" id="upDl">ดาวน์โหลดภาพผลลัพธ์</button></div>
-        <div class="panel-body split">
-          <div class="rail">
-            <div class="drop" id="upDrop">
-              <b>ลากภาพมาวาง</b><br>หรือคลิกเพื่อเลือกไฟล์
-              <input type="file" id="upFile" accept="image/*" hidden>
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="upMode">ชนิดภาพ</label></div>
-              <select id="upMode">
-                <option value="jet">ภาพสี jet (น้ำเงิน→แดง) เช่นที่ได้จากสคริปต์</option>
-                <option value="gray">ภาพเฉดเทา — ยิ่งสว่างยิ่งกดแรง</option>
-                <option value="grayinv">ภาพเฉดเทากลับด้าน — ยิ่งเข้มยิ่งกดแรง</option>
-              </select>
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="upPeak">แรงกดสูงสุดของภาพ</label>
-                <span class="val" id="upPeakv">700 kPa</span></div>
-              <input type="range" id="upPeak" min="100" max="1200" step="10" value="700">
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="upK">จำนวนหลุมที่จะฟิต</label>
-                <span class="val" id="upKv">3</span></div>
-              <input type="range" id="upK" min="1" max="5" step="1" value="3">
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="upThr">เกณฑ์ตัดพื้นหลัง</label>
-                <span class="val" id="upThrv">8%</span></div>
-              <input type="range" id="upThr" min="1" max="40" step="1" value="8">
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="upE">E — ความแข็งโฟม</label>
-                <span class="val" id="upEv">2.00 MPa</span></div>
-              <input type="range" id="upE" min="0.5" max="6" step="0.1" value="2">
-            </div>
-            <div class="field">
-              <div class="field-top"><label for="upH">h₀ — ความหนาโฟม</label>
-                <span class="val" id="upHv">10 mm</span></div>
-              <input type="range" id="upH" min="4" max="25" step="1" value="10">
-            </div>
-            <div class="field">
-              <div class="field-top"><label>ขอบของแผ่น</label></div>
-              <div class="chips" id="upOutline">
-                <button class="chip" data-o="profile" aria-pressed="true">ตัวอย่างสำเร็จรูป</button>
-                <button class="chip" data-o="bezier" aria-pressed="false">เบซิเยร์ 9 ช่วง</button>
-              </div>
-              <p class="cap" style="margin:2px 0 0">
-                ขอบชุดเดียวกับหัวข้อ 4 ปรับที่ไหนก็เปลี่ยนทั้งคู่ ·
-                ขอบมีผลกับรูปทรงแผ่นเท่านั้น ส่วนการฟิตเกาส์เซียนอ่านจากภาพแรงกดล้วน ๆ
-                จึงไม่ขยับตาม
-              </p>
-            </div>
-            <div id="upBez" style="display:none; flex-direction:column; gap:14px"></div>
-            <p class="cap" id="upStat">ยังไม่ได้เลือกภาพ — กำลังแสดงตัวอย่างจากชุดข้อมูล</p>
-          </div>
+        <div class="panel-head">
+          <span class="panel-title">สร้างแผ่นรองเท้าจากภาพ</span>
+        </div>
 
-          <div style="display:flex; flex-direction:column; gap:16px; min-width:0">
-            <div class="canvas-row">
-              <div class="canvas-cell"><canvas id="upSrc" width="220" height="470"></canvas>
-                <span class="cap"><b>แรงกดที่อ่านได้</b></span></div>
-              <div class="canvas-cell"><canvas id="upDepth" width="220" height="470"></canvas>
-                <span class="cap"><b>ความลึก + หลุมที่ฟิตได้</b></span></div>
-              <div class="canvas-cell" style="flex:1; min-width:280px">
-                <canvas id="up3D" width="560" height="470" style="cursor:grab"></canvas>
-                <span class="cap"><b>แผ่นรองเท้า</b> — ลากเพื่อหมุน · ฐานวาดบางลง 10 เท่า</span></div>
+        <!-- ขั้นที่ 1 · ขอบของแผ่น -->
+        <div class="panel-body" style="border-bottom:1px solid var(--line)">
+          <div class="step-head">
+            <div class="step-title"><span class="step-num">1</span>
+              <h3>ออกแบบขอบของแผ่น</h3></div>
+            <span class="cap">รูปทรงของแผ่น — ยังไม่เกี่ยวกับภาพแรงกด</span>
+          </div>
+          <div class="field">
+            <div class="field-top"><label>ขอบของแผ่น</label></div>
+            <div class="chips" id="upOutline">
+              <button class="chip" data-o="profile" aria-pressed="true">ตัวอย่างสำเร็จรูป</button>
+              <button class="chip" data-o="bezier" aria-pressed="false">เบซิเยร์ 9 ช่วง</button>
             </div>
-            <div class="tbl-wrap"><table>
-              <thead><tr><th>k</th><th>A (mm)</th><th>u<sub>k</sub></th><th>v<sub>k</sub></th>
-                <th>σ<sub>u</sub></th><th>σ<sub>v</sub></th><th>แรงกด (kPa)</th><th>ตำแหน่ง</th></tr></thead>
-              <tbody id="upTbl"></tbody>
-            </table></div>
+            <p class="cap" style="margin:2px 0 0">
+              ขอบชุดเดียวกับหัวข้อ 4 ปรับที่ไหนก็เปลี่ยนทั้งคู่ ·
+              ขอบมีผลกับรูปทรงแผ่นเท่านั้น ส่วนการฟิตเกาส์เซียนอ่านจากภาพแรงกดล้วน ๆ
+              จึงไม่ขยับตาม
+            </p>
+          </div>
+          <div id="upBez" class="bez-split" style="display:none"></div>
+        </div>
+
+        <!-- ขั้นที่ 2 · ภาพแรงกด แล้วฟิตหลุม -->
+        <div class="panel-body">
+          <div class="step-head">
+            <div class="step-title"><span class="step-num">2</span>
+              <h3>ใส่ภาพฝ่าเท้า แล้วฟิตหลุมจากแรงกด</h3></div>
+            <button class="btn sm" id="upDl">ดาวน์โหลดภาพผลลัพธ์</button>
+          </div>
+          <div class="split">
+            <div class="rail">
+              <div class="drop" id="upDrop">
+                <b>ลากภาพมาวาง</b><br>หรือคลิกเพื่อเลือกไฟล์
+                <input type="file" id="upFile" accept="image/*" hidden>
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="upMode">ชนิดภาพ</label></div>
+                <select id="upMode">
+                  <option value="jet">ภาพสี jet (น้ำเงิน→แดง) เช่นที่ได้จากสคริปต์</option>
+                  <option value="gray">ภาพเฉดเทา — ยิ่งสว่างยิ่งกดแรง</option>
+                  <option value="grayinv">ภาพเฉดเทากลับด้าน — ยิ่งเข้มยิ่งกดแรง</option>
+                </select>
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="upPeak">แรงกดสูงสุดของภาพ</label>
+                  <span class="val" id="upPeakv">700 kPa</span></div>
+                <input type="range" id="upPeak" min="100" max="1200" step="10" value="700">
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="upK">จำนวนหลุมที่จะฟิต</label>
+                  <span class="val" id="upKv">3</span></div>
+                <input type="range" id="upK" min="1" max="5" step="1" value="3">
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="upThr">เกณฑ์ตัดพื้นหลัง</label>
+                  <span class="val" id="upThrv">8%</span></div>
+                <input type="range" id="upThr" min="1" max="40" step="1" value="8">
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="upE">E — ความแข็งโฟม</label>
+                  <span class="val" id="upEv">2.00 MPa</span></div>
+                <input type="range" id="upE" min="0.5" max="6" step="0.1" value="2">
+              </div>
+              <div class="field">
+                <div class="field-top"><label for="upH">h₀ — ความหนาโฟม</label>
+                  <span class="val" id="upHv">10 mm</span></div>
+                <input type="range" id="upH" min="4" max="25" step="1" value="10">
+              </div>
+              <p class="cap" id="upStat">ยังไม่ได้เลือกภาพ — กำลังแสดงตัวอย่างจากชุดข้อมูล</p>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:16px; min-width:0">
+              <div class="canvas-row">
+                <div class="canvas-cell"><canvas id="upSrc" width="220" height="470"></canvas>
+                  <span class="cap"><b>แรงกดที่อ่านได้</b></span></div>
+                <div class="canvas-cell"><canvas id="upDepth" width="220" height="470"></canvas>
+                  <span class="cap"><b>ความลึก + หลุมที่ฟิตได้</b></span></div>
+                <div class="canvas-cell" style="flex:1; min-width:280px">
+                  <canvas id="up3D" width="560" height="470" style="cursor:grab"></canvas>
+                  <span class="cap"><b>แผ่นรองเท้า</b> — ลากเพื่อหมุน · ฐานวาดบางลง 10 เท่า</span></div>
+              </div>
+              <div class="tbl-wrap"><table>
+                <thead><tr><th>k</th><th>A (mm)</th><th>u<sub>k</sub></th><th>v<sub>k</sub></th>
+                  <th>σ<sub>u</sub></th><th>σ<sub>v</sub></th><th>แรงกด (kPa)</th><th>ตำแหน่ง</th></tr></thead>
+                <tbody id="upTbl"></tbody>
+              </table></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1153,15 +1208,20 @@ function bezEditorDraw(cv, aspect, leftFoot){
 function bezStrip(hostId, aspect, leftFoot, redraw){
   const host=document.getElementById(hostId);
   host.innerHTML =
+    `<div class="rail">` +
     BEZ_SPEC.map(([k,label,mn,mx,st])=>`<div class="field">
       <div class="field-top"><label for="${hostId}_${k}">${label}</label>
         <span class="val" id="${hostId}v_${k}">${bezShape[k].toFixed(2)}</span></div>
       <input type="range" id="${hostId}_${k}" min="${mn}" max="${mx}" step="${st}"
              value="${bezShape[k]}"></div>`).join('') +
-    `<div class="canvas-cell" style="align-self:start; width:190px; max-width:100%">
-       <canvas id="${hostId}_C" width="190" height="410"></canvas>
-       <span class="cap">ลากจุดยึดทั้งเก้าได้โดยตรง · เส้นประคือก้านควบคุมที่คำนวณให้</span></div>
-     <p style="margin:0"><button class="btn ghost sm" id="${hostId}_reset">รีเซ็ตขอบ</button></p>`;
+    `<p style="margin:0"><button class="btn ghost sm" id="${hostId}_reset">รีเซ็ตขอบ</button></p>
+     </div>
+     <div class="bez-preview">
+       <div class="canvas-cell" style="width:250px; max-width:100%">
+         <canvas id="${hostId}_C" width="250" height="520"></canvas>
+         <span class="cap">ลากจุดยึดทั้งเก้าได้โดยตรง · เส้นประคือก้านควบคุมที่คำนวณให้</span>
+       </div>
+     </div>`;
   for(const [k] of BEZ_SPEC){
     const el=document.getElementById(`${hostId}_${k}`);
     el.oninput=()=>{ bezShape[k]=+el.value; bezApplyShape(); bezChanged(); };
@@ -1513,7 +1573,7 @@ for(const b of document.getElementById('pgOutline').querySelectorAll('.chip'))
     for(const o of document.getElementById('pgOutline').querySelectorAll('.chip'))
       o.setAttribute('aria-pressed', o===b?'true':'false');
     document.getElementById('pgBez').style.display =
-      pgOutline==='bezier' ? 'flex' : 'none';
+      pgOutline==='bezier' ? 'grid' : 'none';
     bezSync(); pgDraw();
   };
 document.getElementById('pgSpin').onclick=e=>{
@@ -1688,7 +1748,7 @@ for(const b of document.getElementById('upOutline').querySelectorAll('.chip'))
     for(const o of document.getElementById('upOutline').querySelectorAll('.chip'))
       o.setAttribute('aria-pressed', o===b?'true':'false');
     document.getElementById('upBez').style.display =
-      upOutline==='bezier' ? 'flex' : 'none';
+      upOutline==='bezier' ? 'grid' : 'none';
     bezSync(); upBuild();
   };
 const drop=document.getElementById('upDrop'), fileIn=document.getElementById('upFile');
