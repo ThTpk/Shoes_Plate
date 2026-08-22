@@ -1,0 +1,1828 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เส้นโค้งเบซิเยร์ — ขอบของแผ่นรองเท้า</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#e9ecf0; --surface:#ffffff; --surface-2:#f3f5f8;
+  --ink:#0e141b; --ink-2:#39434e; --muted:#5f6b78;
+  --line:#d8dee6; --line-2:#c3ccd6;
+  --accent:#4b45c6; --accent-soft:#ecebfa; --accent-ink:#3b36a8;
+  --hot:#d8452a; --cool:#1f6f8b;
+  --shadow:0 1px 2px rgba(14,20,27,.06),0 8px 24px -12px rgba(14,20,27,.18);
+  --r:10px;
+  --step--1:.82rem; --step-0:1rem; --step-1:1.18rem; --step-2:1.45rem;
+  --step-3:1.85rem; --step-4:2.4rem; --step-5:3.1rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0b1016; --surface:#141b23; --surface-2:#1b232d;
+    --ink:#e7edf4; --ink-2:#c0cbd7; --muted:#8c9aa9;
+    --line:#26313d; --line-2:#33404e;
+    --accent:#948dff; --accent-soft:#20213f; --accent-ink:#b3adff;
+    --hot:#ff7d5e; --cool:#5ec4e0;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0b1016; --surface:#141b23; --surface-2:#1b232d;
+  --ink:#e7edf4; --ink-2:#c0cbd7; --muted:#8c9aa9;
+  --line:#26313d; --line-2:#33404e;
+  --accent:#948dff; --accent-soft:#20213f; --accent-ink:#b3adff;
+  --hot:#ff7d5e; --cool:#5ec4e0;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans Thai","Bai Jamjuree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--step-0); line-height:1.72; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  line-height:1.25; text-wrap:balance; margin:0; font-weight:600}
+code,.mono,.num{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+
+.wrap{max-width:1180px; margin:0 auto; padding:0 clamp(16px,4vw,36px)}
+.prose{max-width:66ch}
+.prose p{margin:0 0 1em}
+.prose ul{margin:0 0 1em; padding-inline-start:1.25em}
+.prose li{margin:.3em 0}
+
+/* ---------- header ---------- */
+header.top{
+  background:linear-gradient(180deg,var(--surface) 0%,var(--ground) 100%);
+  border-bottom:1px solid var(--line);
+}
+.top-inner{padding:clamp(40px,7vw,84px) 0 clamp(28px,4vw,44px)}
+.eyebrow{font-size:var(--step--1); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; margin:0 0 14px}
+h1{font-size:clamp(2.1rem,5.4vw,3.4rem); font-weight:700; letter-spacing:-.015em}
+.lede{font-size:var(--step-1); color:var(--ink-2); max-width:60ch; margin:18px 0 0}
+.facts{display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:26px;
+  padding-top:22px; border-top:1px solid var(--line)}
+.fact{display:flex; flex-direction:column; gap:2px}
+.fact b{font-family:"IBM Plex Mono",monospace; font-size:var(--step-2); font-weight:500;
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.fact span{font-size:var(--step--1); color:var(--muted)}
+
+/* ---------- sections ---------- */
+section{padding:clamp(44px,6vw,76px) 0; border-bottom:1px solid var(--line)}
+.sec-head{display:flex; gap:16px; align-items:baseline; margin-bottom:8px}
+.sec-num{font-family:"IBM Plex Mono",monospace; font-size:var(--step--1); font-weight:500;
+  color:var(--accent); border:1px solid var(--line-2); border-radius:99px;
+  padding:2px 10px; flex:none; background:var(--surface)}
+h2{font-size:clamp(1.5rem,3.3vw,2.05rem); letter-spacing:-.01em}
+.sec-sub{color:var(--muted); margin:.35em 0 0; max-width:62ch}
+.sec-body{margin-top:28px}
+
+/* ---------- panels ---------- */
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow); overflow:hidden}
+.panel-head{display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+  justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--line);
+  background:var(--surface-2)}
+.panel-title{font-family:"Bai Jamjuree",sans-serif; font-weight:600; font-size:var(--step-0)}
+.panel-body{padding:16px}
+.split{display:grid; gap:18px; grid-template-columns:minmax(0,320px) minmax(0,1fr)}
+@media(max-width:860px){.split{grid-template-columns:1fr}}
+
+.rail{display:flex; flex-direction:column; gap:14px; min-width:0}
+.field{display:flex; flex-direction:column; gap:5px}
+.field-top{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.field label{font-size:var(--step--1); color:var(--muted); font-weight:500}
+.field .val{font-family:"IBM Plex Mono",monospace; font-size:var(--step--1);
+  color:var(--ink); font-variant-numeric:tabular-nums}
+input[type=range]{width:100%; accent-color:var(--accent); height:22px; margin:0}
+select,button,input[type=file]{font:inherit; font-size:var(--step--1)}
+select{background:var(--surface); color:var(--ink); border:1px solid var(--line-2);
+  border-radius:8px; padding:7px 10px; width:100%}
+.btn{background:var(--accent); color:#fff; border:0; border-radius:8px; padding:9px 15px;
+  cursor:pointer; font-weight:600; font-family:"Bai Jamjuree",sans-serif}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface); color:var(--ink); border:1px solid var(--line-2)}
+.btn.sm{padding:6px 11px; font-size:var(--step--1)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+canvas{display:block; max-width:100%; border-radius:8px; background:var(--surface-2)}
+.canvas-row{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start}
+.canvas-cell{display:flex; flex-direction:column; gap:7px; min-width:0}
+.cap{font-size:var(--step--1); color:var(--muted)}
+.cap b{color:var(--ink); font-weight:600}
+
+/* ---------- equation ---------- */
+.eq{background:var(--surface-2); border:1px solid var(--line); border-radius:8px;
+  padding:16px; overflow-x:auto; text-align:center;
+  font-family:"IBM Plex Mono",monospace; font-size:var(--step-1); line-height:2.1}
+.eq .sub{font-size:.72em; vertical-align:sub}
+.eq .sup{font-size:.72em; vertical-align:super}
+.eq .frac{display:inline-flex; flex-direction:column; text-align:center;
+  vertical-align:middle; font-size:.82em; margin:0 .18em}
+.eq .frac span:first-child{border-bottom:1px solid currentColor; padding:0 .35em}
+.eq .frac span:last-child{padding:0 .35em}
+.eq em{color:var(--accent); font-style:normal}
+
+table{border-collapse:collapse; width:100%; font-size:var(--step--1)}
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:8px}
+th,td{text-align:left; padding:7px 11px; border-bottom:1px solid var(--line); white-space:nowrap}
+th{background:var(--surface-2); font-weight:600; color:var(--muted); font-size:.86em;
+  letter-spacing:.03em; text-transform:uppercase}
+tbody tr:last-child td{border-bottom:0}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.swatch{display:inline-block; width:9px; height:9px; border-radius:2px; margin-inline-end:7px}
+
+.note{border-inline-start:3px solid var(--accent); background:var(--accent-soft);
+  padding:12px 16px; border-radius:0 8px 8px 0; font-size:var(--step--1); color:var(--ink-2)}
+.note b{color:var(--ink)}
+
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{border:1px solid var(--line-2); background:var(--surface); border-radius:99px;
+  padding:4px 12px; font-size:var(--step--1); cursor:pointer; color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600}
+
+/* ---------- pipeline ---------- */
+.pipe{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+.pipe-step{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:16px; position:relative}
+.pipe-step h4{font-size:var(--step-0); margin-bottom:5px}
+.pipe-step p{margin:0; font-size:var(--step--1); color:var(--muted)}
+.pipe-step .k{font-family:"IBM Plex Mono",monospace; color:var(--accent);
+  font-size:var(--step--1); display:block; margin-bottom:9px}
+
+/* ---------- gallery ---------- */
+.gal{display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:16px}
+.gal figure{margin:0; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow)}
+.gal img{width:100%; display:block; cursor:zoom-in; background:#fff}
+.gal figcaption{padding:9px 13px; font-size:var(--step--1); color:var(--muted);
+  border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:10px}
+.gal figcaption b{color:var(--ink); font-family:"IBM Plex Mono",monospace; font-weight:500}
+dialog{border:0; padding:0; background:transparent; max-width:96vw; max-height:96vh}
+dialog::backdrop{background:rgba(6,10,14,.86)}
+dialog img{max-width:96vw; max-height:90vh; border-radius:8px; display:block}
+
+.drop{border:2px dashed var(--line-2); border-radius:var(--r); padding:26px 18px;
+  text-align:center; color:var(--muted); background:var(--surface-2); cursor:pointer}
+.drop.over{border-color:var(--accent); background:var(--accent-soft); color:var(--ink)}
+
+footer{padding:44px 0 64px; color:var(--muted); font-size:var(--step--1)}
+footer h3{font-size:var(--step-0); color:var(--ink); margin-bottom:8px}
+footer ul{padding-inline-start:1.2em; margin:0}
+
+.theme-btn{position:fixed; right:14px; top:14px; z-index:50; border-radius:99px;
+  width:38px; height:38px; display:grid; place-items:center; padding:0;
+  background:var(--surface); border:1px solid var(--line-2); color:var(--ink); cursor:pointer}
+
+a{color:var(--accent-ink); text-underline-offset:3px; text-decoration-color:var(--line-2)}
+a:hover{text-decoration-color:currentColor}
+.pagelink{display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+  background:var(--surface); border:1px solid var(--line-2); border-radius:99px;
+  padding:9px 17px; font-family:"Bai Jamjuree",sans-serif; font-weight:600;
+  font-size:var(--step--1); color:var(--ink); box-shadow:var(--shadow)}
+.pagelink:hover{border-color:var(--accent); color:var(--accent-ink)}
+.pagelink .arw{color:var(--accent); font-size:1.1em}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<style>
+.pathbox{font-family:"IBM Plex Mono",monospace; font-size:.78rem; line-height:1.65;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:8px;
+  padding:12px 14px; max-height:190px; overflow:auto; white-space:pre-wrap;
+  word-break:break-all; color:var(--ink-2)}
+.legend{display:flex; flex-wrap:wrap; gap:5px 18px; font-size:var(--step--1); color:var(--muted)}
+.legend span{display:inline-flex; align-items:center}
+</style>
+
+<button class="theme-btn" id="themeBtn" title="สลับธีม" aria-label="สลับธีมสว่าง/มืด">◐</button>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <p class="eyebrow">คณิตศาสตร์เบื้องหลังแผ่นรองเท้า</p>
+    <h1>เส้นโค้งเบซิเยร์ — ขอบของแผ่นรองเท้า</h1>
+    <p class="lede">
+      เกาส์เซียนบอกว่าผิวแผ่นควรนูนลึกแค่ไหน แต่ยังไม่ได้บอกว่าแผ่นสิ้นสุดตรงไหน
+      หน้านี้คือส่วนที่ขาดไป — พหุนามดีกรีสามที่ลากขอบรอบรูปเท้า
+      ตั้งแต่จุดควบคุมสี่จุด ไปจนถึงการฟิตขอบจากรอยเท้าจริงด้วยสมการเชิงเส้น
+    </p>
+    <p style="margin:22px 0 0; display:flex; flex-wrap:wrap; gap:10px">
+      <a class="pagelink" href="index.html"><span class="arw">←</span> แผ่นรองเท้าจากแรงกด</a>
+      <a class="pagelink" href="gaussian.html">สมการเกาส์เซียน <span class="arw">→</span></a>
+    </p>
+    <div class="facts">
+      <div class="fact"><b>4</b><span>จุดควบคุมต่อหนึ่งช่วงโค้ง</span></div>
+      <div class="fact"><b>3</b><span>ดีกรีของพหุนาม</span></div>
+      <div class="fact"><b>2×2</b><span>ระบบสมการที่ต้องแก้ตอนฟิต</span></div>
+      <div class="fact"><b>≈1</b><span>ขอบที่ฟิตได้เพี้ยนจากขอบดิบ (mm)</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════ overview ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">ภาพรวม</span>
+      <h2>ห้าขั้น จากจุดสี่จุด ถึงขอบที่ตัดได้จริง</h2></div>
+    <p class="sec-sub">โครงเหมือนกับหน้าเกาส์เซียน — เริ่มจากสมการเดียว แล้วค่อยเอาไปวางบนข้อมูลจริง</p>
+    <div class="sec-body pipe">
+      <div class="pipe-step"><span class="k">B(t)</span><h4>หนึ่งช่วงโค้ง</h4>
+        <p>จุดสี่จุดกับพารามิเตอร์ t เดียว ได้เส้นโค้งที่ผ่านสองปลายและถูกอีกสองจุดดึง</p></div>
+      <div class="pipe-step"><span class="k">t = 0 … 1</span><h4>วาดออกมาเป็นเส้น</h4>
+        <p>แทนค่า t แล้วต่อเส้นตรง หรือแบ่งครึ่งจนตรงพอ — จอกับเครื่องตัดรับได้แค่นี้</p></div>
+      <div class="pipe-step"><span class="k">C¹</span><h4>ต่อกันหลายช่วง</h4>
+        <p>ปลายช่วงหนึ่งเป็นต้นของช่วงถัดไป ถ้าก้านทั้งสองเรียงตรงกัน รอยต่อจะไม่เป็นหัก</p></div>
+      <div class="pipe-step"><span class="k">Q(s)</span><h4>ขอบจากรอยเท้าจริง</h4>
+        <p>ไล่เส้นระดับของแผนที่แรงกด ได้รูปหลายเหลี่ยมหยัก ๆ หลายร้อยจุด</p></div>
+      <div class="pipe-step"><span class="k">min Σ‖B(tᵢ)−Qᵢ‖²</span><h4>ฟิตจุดควบคุม</h4>
+        <p>ตรึงปลายกับทิศสัมผัสไว้ เหลือตัวไม่รู้ค่าสองตัวต่อช่วง แก้ตรง ๆ ได้เลย</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 1. one segment ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">1</span>
+      <h2>หนึ่งช่วงโค้ง — จุดสี่จุด</h2></div>
+    <p class="sec-sub">ลากจุดบนภาพได้ทุกจุด แล้วเลื่อน t เพื่อดูว่าเส้นโค้งถูกประกอบขึ้นมาอย่างไร</p>
+
+    <div class="sec-body">
+      <div class="eq" style="margin-bottom:20px">
+        B(<em>t</em>) = (1−<em>t</em>)<span class="sup">3</span><em>P</em><span class="sub">0</span>
+        + 3(1−<em>t</em>)<span class="sup">2</span><em>t</em> <em>P</em><span class="sub">1</span>
+        + 3(1−<em>t</em>)<em>t</em><span class="sup">2</span> <em>P</em><span class="sub">2</span>
+        + <em>t</em><span class="sup">3</span><em>P</em><span class="sub">3</span>
+        <span style="color:var(--muted); font-size:.8em">&nbsp;&nbsp;0 ≤ t ≤ 1</span>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">แบบจำลองเชิงโต้ตอบ · ลากจุดควบคุมได้</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="chip" id="b1Cast" aria-pressed="true">การแบ่งของเดอ กัสแตลโย</button>
+            <button class="chip" id="b1Tan" aria-pressed="false">เส้นสัมผัส B′(t)</button>
+            <button class="btn ghost sm" id="b1Reset">รีเซ็ต</button>
+          </div>
+        </div>
+        <div class="panel-body split">
+          <div class="rail">
+            <div class="field">
+              <div class="field-top"><label for="b1T">t — พารามิเตอร์เดินไปตามเส้น</label>
+                <span class="val" id="b1Tv">0.40</span></div>
+              <input type="range" id="b1T" min="0" max="1" step="0.005" value="0.4">
+            </div>
+            <p class="cap" style="margin:0">
+              ลากหัวจุด <b>P₀ P₁ P₂ P₃</b> บนภาพเพื่อเปลี่ยนรูปทรง —
+              เส้นโค้งผ่าน P₀ กับ P₃ เสมอ ส่วน P₁ P₂ แค่ดึงเท่านั้น ไม่ได้อยู่บนเส้น
+            </p>
+            <div class="tbl-wrap"><table><tbody id="b1Tbl"></tbody></table></div>
+          </div>
+          <div class="canvas-row" style="flex-direction:column">
+            <div class="canvas-cell">
+              <canvas id="b1C" width="700" height="430"></canvas>
+              <span class="cap"><b>เส้นทึบม่วง</b> = B(t) · <b>เส้นประเทา</b> = รูปหลายเหลี่ยมควบคุม ·
+                <b>เส้นส้ม</b> = การแบ่งซ้ำแบบเดอ กัสแตลโย ที่ค่า t ปัจจุบัน</span>
+            </div>
+            <div class="canvas-cell">
+              <canvas id="b1B" width="700" height="215"></canvas>
+              <span class="cap">น้ำหนักของจุดควบคุมแต่ละจุดเมื่อ t เดินจาก 0 ถึง 1 —
+                <b>ทั้งสี่เส้นบวกกันได้ 1 เสมอ</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <div class="eq" id="b1Eq" style="text-align:left; font-size:var(--step-0)"></div>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:22px">
+        <p><b>อ่านสมการทีละส่วน</b> สัมประสิทธิ์ทั้งสี่ตัวคือพหุนามแบร์นชไตน์
+          B₀ = (1−t)³, B₁ = 3(1−t)²t, B₂ = 3(1−t)t², B₃ = t³ ซึ่งมาจากการกระจาย
+          [(1−t) + t]³ = 1 ดังนั้น <b>ผลรวมของน้ำหนักเท่ากับ 1 ที่ทุกค่า t</b>
+          เส้นโค้งจึงเป็นค่าเฉลี่ยถ่วงน้ำหนักของจุดสี่จุดเสมอ และต้องอยู่ในกรอบนูน
+          (convex hull) ของจุดทั้งสี่ — ขอบแผ่นรองเท้าจะไม่มีทางเหวี่ยงออกไปไกลเกินจุดควบคุม</p>
+        <p><b>ปลายทั้งสองข้าง</b> ที่ t = 0 มีเพียง B₀ ที่ไม่เป็นศูนย์ ได้ B(0) = P₀
+          ที่ t = 1 ได้ B(1) = P₃ — เส้นโค้ง <b>ผ่าน</b> จุดปลายทั้งสองแน่นอน
+          ต่างจาก P₁ P₂ ที่โดยทั่วไปไม่ได้อยู่บนเส้น</p>
+        <p><b>อนุพันธ์บอกทิศ</b> B′(t) = 3(1−t)²(P₁−P₀) + 6(1−t)t(P₂−P₁) + 3t²(P₃−P₂)
+          จึงได้ B′(0) = 3(P₁−P₀) และ B′(1) = 3(P₃−P₂)
+          แปลว่า <b>ก้าน P₀→P₁ คือทิศที่เส้นออกจากจุดเริ่ม</b> และก้าน P₂→P₃ คือทิศที่เส้นเข้าจุดจบ
+          ความยาวของก้านคุมว่า "เส้นจะพุ่งไปทางนั้นนานแค่ไหน" ก่อนจะเลี้ยว
+          — ข้อนี้เป็นหัวใจของการต่อหลายช่วงในหัวข้อ 3</p>
+        <p><b>เดอ กัสแตลโย</b> คือวิธีคำนวณ B(t) โดยไม่ต้องแทนค่าในพหุนามเลย:
+          แบ่งด้านทั้งสามของรูปหลายเหลี่ยมควบคุมที่อัตราส่วน t ได้จุดใหม่สามจุด
+          แบ่งอีกรอบได้สองจุด แบ่งอีกรอบได้จุดเดียว — จุดนั้นคือ B(t)
+          วิธีนี้เสถียรเชิงตัวเลขกว่าและยังบอกเส้นสัมผัสให้ฟรี
+          (ส่วนของเส้นในชั้นรองสุดท้ายคือเส้นสัมผัสพอดี)</p>
+        <p><b>ทำไมต้องดีกรีสาม</b> ดีกรีสองยังโค้งกลับทิศไม่ได้ในช่วงเดียว
+          (ไม่มีจุดเปลี่ยนความโค้ง) ซึ่งขอบเท้าด้านในต้องการ เพราะเว้าที่อุ้งเท้าแล้วนูนที่ฝ่าเท้าหน้า
+          ส่วนดีกรีสูงกว่าสามทำให้จุดควบคุมหนึ่งจุดส่งผลไปทั้งเส้น แก้ตรงหนึ่งแล้วอีกที่ขยับตาม
+          — เหตุผลเดียวกับที่หน้าแผ่นรองเท้าเลือกผลรวมเกาส์เซียนแทนพหุนามดีกรีห้า</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 2. from the formula to a drawn curve ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">2</span>
+      <h2>จากสมการ ถึงเส้นที่วาดออกมาจริง</h2></div>
+    <p class="sec-sub">ไม่มีเครื่องไหนวาดเส้นโค้งได้ ทั้งจอ ทั้งเครื่องตัด ทั้งไฟล์ STL ล้วนรับได้แต่เส้นตรงสั้น ๆ ต่อกัน คำถามจึงเหลือแค่ว่ากี่ท่อนถึงพอ</p>
+
+    <div class="sec-body">
+      <div class="eq" style="margin-bottom:14px">
+        B(<em>t</em>) = ( <em>x</em>(<em>t</em>), <em>y</em>(<em>t</em>) )
+        &nbsp;&nbsp;·&nbsp;&nbsp;
+        <em>x</em>(<em>t</em>) = <em>a</em><span class="sub">x</span><em>t</em><span class="sup">3</span>
+        + <em>b</em><span class="sub">x</span><em>t</em><span class="sup">2</span>
+        + <em>c</em><span class="sub">x</span><em>t</em> + <em>d</em><span class="sub">x</span>
+        &nbsp;&nbsp;·&nbsp;&nbsp;
+        <em>y</em>(<em>t</em>) = <em>a</em><span class="sub">y</span><em>t</em><span class="sup">3</span>
+        + <em>b</em><span class="sub">y</span><em>t</em><span class="sup">2</span>
+        + <em>c</em><span class="sub">y</span><em>t</em> + <em>d</em><span class="sub">y</span>
+      </div>
+      <div class="eq" style="margin-bottom:20px; font-size:var(--step--1)">
+        <em>a</em> = −<em>P</em><span class="sub">0</span> + 3<em>P</em><span class="sub">1</span>
+        − 3<em>P</em><span class="sub">2</span> + <em>P</em><span class="sub">3</span>
+        &nbsp;·&nbsp;
+        <em>b</em> = 3<em>P</em><span class="sub">0</span> − 6<em>P</em><span class="sub">1</span>
+        + 3<em>P</em><span class="sub">2</span>
+        &nbsp;·&nbsp;
+        <em>c</em> = −3<em>P</em><span class="sub">0</span> + 3<em>P</em><span class="sub">1</span>
+        &nbsp;·&nbsp;
+        <em>d</em> = <em>P</em><span class="sub">0</span>
+        <span style="color:var(--muted)">&nbsp;&nbsp;(แกน x และ y ใช้สูตรเดียวกัน แยกกันคนละชุด)</span>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">แบบจำลองเชิงโต้ตอบ · กี่ท่อนถึงจะเนียน</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="chip" id="b4Dots" aria-pressed="true">จุดที่คำนวณ</button>
+            <button class="chip" id="b4Adp" aria-pressed="false">แบ่งครึ่งแบบปรับตัว</button>
+            <button class="chip" id="b4True" aria-pressed="true">เส้นโค้งจริงเทียบ</button>
+          </div>
+        </div>
+        <div class="panel-body split">
+          <div class="rail">
+            <div class="field">
+              <div class="field-top"><label for="b4N">N — จำนวนท่อนเมื่อแบ่ง t เท่า ๆ กัน</label>
+                <span class="val" id="b4Nv">6</span></div>
+              <input type="range" id="b4N" min="1" max="60" step="1" value="6">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b4Tol">ความคลาดที่ยอมให้ (สำหรับแบบปรับตัว)</label>
+                <span class="val" id="b4Tolv">0.50 px</span></div>
+              <input type="range" id="b4Tol" min="0.05" max="4" step="0.05" value="0.5">
+            </div>
+            <p class="cap" style="margin:0">
+              ใช้จุดควบคุมชุดเดียวกับหัวข้อ 1 — เลื่อนขึ้นไปลากจุดแล้วกลับลงมาดูได้
+              ค่าความคลาดวัดเป็นพิกเซลบนภาพนี้ ไม่ใช่หน่วยของแกน
+            </p>
+            <div class="tbl-wrap"><table><tbody id="b4Tbl"></tbody></table></div>
+          </div>
+          <div class="canvas-row">
+            <div class="canvas-cell">
+              <canvas id="b4C" width="700" height="430"></canvas>
+              <span class="cap"><b>เส้นทึบส้ม</b> = เส้นตรงต่อจุดที่แบ่ง t เท่า ๆ กัน ·
+                <b>เส้นฟ้า</b> = แบบแบ่งครึ่งปรับตัว · <b>เส้นบางม่วง</b> = เส้นโค้งจริง ·
+                <b>วงกลมแดง</b> = ตำแหน่งที่เพี้ยนมากที่สุด</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <div class="eq" id="b4Eq" style="text-align:left; font-size:var(--step--1)"></div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:22px">
+        <div class="panel-head">
+          <span class="panel-title">ตัวอย่างคำนวณ ทีละบรรทัด</span>
+          <span class="cap">ใช้จุดควบคุมและค่า t ที่ตั้งอยู่ตอนนี้ในหัวข้อ 1 · กด <b>รีเซ็ต</b> ที่หัวข้อ 1
+            เพื่อกลับมาที่ค่าตั้งต้น</span>
+        </div>
+        <div class="panel-body">
+          <p class="cap" style="margin:0 0 8px"><b>ขั้น 0 · จุดควบคุมที่ใช้</b></p>
+          <div class="tbl-wrap" style="margin-bottom:18px">
+            <table><tbody id="b5P"></tbody></table></div>
+
+          <p class="cap" style="margin:0 0 8px"><b>ขั้น 1 · กระจายวงเล็บ เก็บสัมประสิทธิ์</b>
+            — แทน P ลงในสูตร a, b, c, d ทีละแกน ทำครั้งเดียวต่อหนึ่งช่วงโค้ง
+            แล้วใช้ซ้ำได้กับทุกค่า t</p>
+          <div class="tbl-wrap" style="margin-bottom:18px">
+            <table><tbody id="b5C"></tbody></table></div>
+
+          <p class="cap" style="margin:0 0 8px"><b>ขั้น 2 · แทนค่า t หนึ่งค่า สามวิธี ต้องได้เท่ากัน</b>
+            — ถ้าสามบรรทัดล่างไม่ตรงกัน แปลว่าคำนวณผิด</p>
+          <div class="tbl-wrap" style="margin-bottom:18px">
+            <table><tbody id="b5T"></tbody></table></div>
+
+          <p class="cap" style="margin:0 0 8px"><b>ขั้น 3 · ทำซ้ำทุก t แล้วแปลงเป็นพิกเซล</b>
+            — แกน x ของภาพนี้คูณ <span id="b5Sx" class="cap"></span> ส่วนแกน y กลับหัวเพราะพิกเซลนับลงล่าง</p>
+          <div class="tbl-wrap" style="margin-bottom:14px">
+            <table><tbody id="b5N"></tbody></table></div>
+          <div class="pathbox" id="b5Cmd"></div>
+          <p class="cap" style="margin:10px 0 0" id="b5End"></p>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:22px">
+        <p><b>ขั้นแรก แยกเป็นสองสมการ</b> P₀…P₃ เป็นจุด แต่สมการบวกลบคูณจุดพวกนี้แบบทีละแกนอยู่แล้ว
+          จึงแตกออกได้เป็นพหุนามดีกรีสามสองอันที่ไม่เกี่ยวข้องกันเลย คือ x(t) กับ y(t)
+          ต่างคนต่างใช้แค่พิกัดของแกนตัวเอง สิ่งที่ผูกทั้งสองเข้าด้วยกันคือ <b>t ตัวเดียวกัน</b> เท่านั้น
+          พูดอีกอย่างคือ เส้นโค้งเบซิเยร์ไม่ใช่กราฟของ y เทียบ x (จึงย้อนกลับ วน หรือตั้งฉากได้)
+          แต่เป็น <b>ร่องรอยของจุดที่วิ่งตามเวลา t</b></p>
+        <p><b>ขั้นที่สอง แทนค่า t ทีละค่า</b> เลือก t = 0, 1/N, 2/N, …, 1 แทนลงไปได้ N+1 จุด
+          แล้วลากเส้นตรงต่อกัน — จบ นั่นคือ "เส้นโค้ง" ที่เห็นบนจอทุกเส้น
+          ที่เหลือเป็นเรื่องของ N เท่านั้น: N เล็กเห็นเป็นเหลี่ยม N ใหญ่เนียนแต่เปลืองแรงและเปลืองไฟล์
+          ลอง N = 2 ในภาพข้างบนแล้วค่อย ๆ เพิ่ม จะเห็นว่าความเพี้ยน<b>ลดลงราวหนึ่งในสี่เมื่อ N เพิ่มเป็นสองเท่า</b>
+          (คลาดเคลื่อน ∝ 1/N²) เพราะระหว่างจุดสองจุดที่อยู่ใกล้กัน เส้นโค้งเกือบเป็นพาราโบลา
+          และคอร์ดของพาราโบลาเบี่ยงจากเส้นเป็นสัดส่วนกับกำลังสองของช่วง</p>
+        <p><b>คิดเลขให้เร็ว</b> กระจายวงเล็บของสมการเดิมแล้วจัดตามกำลังของ t ได้สัมประสิทธิ์
+          a, b, c, d ตามกล่องสมการข้างบน (ค่าจริงของเส้นในภาพแสดงอยู่ใต้แผง)
+          (แผง <b>ตัวอย่างคำนวณ ทีละบรรทัด</b> ข้างบนแสดงการแทนค่าทุกบรรทัด)
+          ทีนี้แทนค่าด้วยวิธีของฮอร์เนอร์ x(t) = ((a·t + b)·t + c)·t + d
+          ใช้แค่ <b>คูณ 3 ครั้ง บวก 3 ครั้งต่อหนึ่งแกน</b> ไม่ต้องยกกำลังเลย
+          ข้อควรระวังคือ a กับ b มักเป็นตัวเลขใหญ่ที่หักล้างกันเกือบหมด
+          ถ้าความแม่นยำสำคัญมาก (เช่นตอนคำนวณจุดตัด) การใช้เดอ กัสแตลโยอย่างในหัวข้อ 1
+          เสถียรกว่า แม้จะช้ากว่าก็ตาม</p>
+        <p><b>t ไม่ใช่ระยะทาง</b> ข้อผิดพลาดที่พบบ่อยที่สุด — เดิน t ทีละ 0.1 เท่ากันสิบก้าว
+          ไม่ได้แปลว่าได้จุดที่ห่างกันเท่ากันบนเส้น ตรงที่โค้งแรงจุดจะกระจุก ตรงที่เกือบตรงจุดจะห่าง
+          (เปิดปุ่ม <b>จุดที่คำนวณ</b> แล้วดูระยะห่างของจุดส้มแต่ละคู่)
+          เรื่องนี้สำคัญสองที่ในโครงการนี้: ตอน<b>ฟิต</b>ในหัวข้อ 4 ต้องเดาค่า t ของแต่ละจุดข้อมูล
+          ก่อนแล้วค่อยแก้ทีหลัง และตอนส่ง<b>เส้นทางเดินหัวตัด</b>ถ้าเดิน t เป็นจังหวะเท่ากัน
+          ความเร็วหัวตัดจะไม่คงที่ ต้องสุ่มจุดใหม่ตามความยาวส่วนโค้งเสมอ
+          — ซึ่งเป็นสิ่งที่ฟังก์ชัน <code>resample</code> ในหัวข้อ 4 ทำ</p>
+        <p><b>วิธีที่ดีกว่า: แบ่งครึ่งจนกว่าจะตรงพอ</b> แทนที่จะเดาว่า N เท่าไรถึงพอ
+          ให้ถามเส้นโค้งเองว่า "ตอนนี้ตรงพอหรือยัง" ถ้ายัง ก็ใช้เดอ กัสแตลโยที่ t = 0.5
+          <b>ผ่าเส้นโค้งออกเป็นเบซิเยร์สองเส้นที่ต่อกันแล้วได้รูปเดิมเป๊ะ</b> แล้วถามคำถามเดิมกับแต่ละครึ่ง
+          ทำซ้ำจนตรงพอทุกชิ้น เกณฑ์ "ตรงพอ" ที่ใช้กันคือระยะจาก P₁ และ P₂ ถึงคอร์ด P₀P₃
+          ซึ่งพิสูจน์ได้ว่า<b>ค่าเบี่ยงจริงของเส้นโค้งไม่เกิน ¾ ของระยะนั้น</b>
+          จึงเป็นการรับประกันขอบบน ไม่ใช่การเดา</p>
+        <p><b>แล้วประหยัดกว่าจริงไหม</b> ตอบตามที่วัดได้: <b>กับเบซิเยร์เส้นเดียวแทบไม่ประหยัดเลย</b>
+          ตารางด้านซ้ายจะขึ้นราว 1.0–1.3× เท่านั้น เพราะเบซิเยร์ช่วงเดียวโค้งค่อนข้างสม่ำเสมอ
+          อยู่แล้ว ไม่มีช่วงไหน "ตรงจนไม่ต้องแบ่ง" ให้ไปประหยัด
+          (ลากจุดในหัวข้อ 1 ให้เป็นตะขอแคบต่อกับช่วงเกือบตรงดู อัตราส่วนก็ยังขยับไม่มาก)
+          คุณค่าจริงของวิธีนี้อยู่ที่อย่างอื่น: <b>ไม่ต้องเดา N</b> — บอกความคลาดที่ยอมได้ไปตัวเดียว
+          แล้วได้ขอบบนที่พิสูจน์ได้กลับมา · <b>ปรับตามมาตราส่วนเอง</b> — ซูมเข้าสิบเท่าก็แบ่งถี่ขึ้นเอง
+          ขณะที่ N ที่ตั้งค่าตายตัวจะกลายเป็นเหลี่ยมทันที · และที่สำคัญที่สุดสำหรับงานนี้
+          <b>เมื่อเป็นสายของหลายช่วงที่ยาวไม่เท่ากัน</b> N ค่าเดียวจะถูกบังคับด้วยช่วงที่ยาวที่สุดเสมอ
+          ช่วงสั้นก็เลยถูกซอยเกินจำเป็น ขอบแผ่นในหัวข้อ 4 มี 14 ช่วง คอร์ดตั้งแต่ 19 ถึง 56 มม.
+          ที่ความละเอียด 0.1 มม. แบบปรับตัวใช้ <b>136 ท่อน</b> ส่วน N ค่าเดียวที่ผ่านทุกช่วงต้องใช้
+          N = 15 รวมเป็น <b>210 ท่อน</b> — เปลืองกว่า 1.5 เท่าเพื่อความละเอียดเท่ากัน</p>
+        <p><b>ในหน้านี้ใช้อะไร</b> เส้นโค้งอ้างอิงในหัวข้อ 1 วาดด้วยการแบ่ง t เท่ากัน 160 ท่อน
+          (ง่ายและเกินพอสำหรับขนาดบนจอ) ส่วนขอบแผ่นในหัวข้อ 3 และ 4 ส่งให้
+          <code>ctx.bezierCurveTo</code> ซึ่งเบราว์เซอร์แบ่งครึ่งแบบปรับตัวให้เองอยู่แล้ว
+          เช่นเดียวกับ SVG และโปรแกรมวาดภาพทั่วไป
+          <b>แต่ตอนส่งออกเป็น STL หรือ G-code ต้องแบ่งเอง</b> เพราะสองรูปแบบนั้นไม่รู้จักเบซิเยร์
+          รู้จักแต่สามเหลี่ยมกับเส้นตรง — ค่าที่ยอมกันคือราว 0.05–0.1 มม.
+          ซึ่งละเอียดกว่าหัวฉีดของเครื่องพิมพ์สามมิติอยู่แล้ว</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 3. chaining ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">3</span>
+      <h2>ต่อหลายช่วงให้เป็นขอบปิด</h2></div>
+    <p class="sec-sub">ขอบเท้าหนึ่งเส้นทำด้วยช่วงเดียวไม่ได้ ต้องต่อกันเป็นวง แล้วบังคับให้รอยต่อเรียบ</p>
+
+    <div class="sec-body">
+      <div class="eq" style="margin-bottom:20px">
+        <span style="color:var(--muted); font-size:.78em">ต่อเนื่อง C⁰</span>&nbsp;
+        <em>P</em><span class="sub">3</span><span class="sup">(i)</span> =
+        <em>P</em><span class="sub">0</span><span class="sup">(i+1)</span>
+        &nbsp;&nbsp;·&nbsp;&nbsp;
+        <span style="color:var(--muted); font-size:.78em">เรียบ C¹</span>&nbsp;
+        <em>P</em><span class="sub">1</span><span class="sup">(i+1)</span> −
+        <em>P</em><span class="sub">3</span><span class="sup">(i)</span> =
+        <em>P</em><span class="sub">3</span><span class="sup">(i)</span> −
+        <em>P</em><span class="sub">2</span><span class="sup">(i)</span>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">แบบจำลองเชิงโต้ตอบ · ขอบแผ่นจากจุดยึด 9 จุด</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="chip" id="b2Ctrl" aria-pressed="true">จุดควบคุม</button>
+            <button class="chip" id="b2Comb" aria-pressed="false">หวีความโค้ง</button>
+            <button class="chip" id="b2Kink" aria-pressed="false">ตัด C¹ ที่ปลายเท้า</button>
+            <button class="chip" id="b2Mirror" aria-pressed="false">สลับซ้าย–ขวา</button>
+            <button class="btn ghost sm" id="b2Reset">รีเซ็ต</button>
+          </div>
+        </div>
+        <div class="panel-body split">
+          <div class="rail">
+            <div class="field">
+              <div class="field-top"><label for="b2Tau">τ — ความยาวก้านควบคุม</label>
+                <span class="val" id="b2Tauv">1.00</span></div>
+              <input type="range" id="b2Tau" min="0" max="1.6" step="0.02" value="1">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b2Len">ความยาวเท้า</label>
+                <span class="val" id="b2Lenv">262 mm</span></div>
+              <input type="range" id="b2Len" min="200" max="310" step="1" value="262">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b2Wid">ความกว้างที่ฝ่าเท้าหน้า</label>
+                <span class="val" id="b2Widv">99 mm</span></div>
+              <input type="range" id="b2Wid" min="72" max="126" step="1" value="99">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b2Arch">ความเว้าของอุ้งเท้าด้านใน</label>
+                <span class="val" id="b2Archv">0.55</span></div>
+              <input type="range" id="b2Arch" min="0" max="1" step="0.01" value="0.55">
+            </div>
+            <p class="cap" style="margin:0">
+              ลากจุดยึด (วงกลมทึบ) บนภาพได้โดยตรง สไลเดอร์ด้านบนคือการปรับทั้งชุดพร้อมกัน
+            </p>
+            <div class="tbl-wrap"><table><tbody id="b2Tbl"></tbody></table></div>
+          </div>
+          <div class="canvas-row">
+            <div class="canvas-cell">
+              <canvas id="b2C" width="430" height="640"></canvas>
+              <span class="cap" id="b2Cap"></span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <p class="cap" style="margin:0 0 8px"><b>เส้นทางที่ได้</b> — คัดลอกไปวางใน SVG,
+            Illustrator, หรือ CAD ได้ทันที (หน่วยมิลลิเมตร จุดกำเนิดที่กึ่งกลางส้น)</p>
+          <div class="pathbox" id="b2Path"></div>
+          <p style="margin:12px 0 0"><button class="btn ghost sm" id="b2Copy">คัดลอกเส้นทาง</button></p>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:22px">
+        <p><b>ทำไมต้องแบ่งเป็นช่วง</b> พหุนามดีกรีสามช่วงเดียวเลี้ยวได้จำกัด
+          ขอบเท้าหนึ่งรอบมีทั้งปลายนิ้วที่โค้งแคบ ฝ่าเท้าหน้าที่กว้างที่สุด
+          อุ้งเท้าที่เว้าเข้า และส้นที่เกือบเป็นครึ่งวงกลม — ต้องใช้หลายช่วงต่อกัน
+          หน้านี้ใช้ <b>จุดยึด 9 จุดวางตามจุดสังเกตทางกายวิภาค</b> จึงได้ 9 ช่วง
+          รวมจุดควบคุม 27 จุด หรือ <b>54 ตัวเลข</b> สำหรับขอบทั้งเส้น</p>
+        <p><b>รอยต่อเรียบต้องเป็นอย่างไร</b> แค่ให้ปลายชนกัน (C⁰) ยังไม่พอ
+          จะได้มุมหักเหมือนรอยพับ ต้องให้ <b>P₂ ของช่วงก่อน จุดยึด และ P₁ ของช่วงถัดไป
+          อยู่บนเส้นตรงเดียวกัน</b> เพราะ B′(1) ของช่วงก่อนคือ 3(P₃−P₂)
+          และ B′(0) ของช่วงถัดไปคือ 3(P₁−P₀) — สองเวกเตอร์นี้ต้องชี้ทางเดียวกัน
+          ถ้าให้ยาวเท่ากันด้วยจะได้ C¹ เต็ม ถ้าแค่ทางเดียวกันแต่ยาวไม่เท่าเรียกว่า G¹
+          ซึ่งตาก็มองว่าเรียบเหมือนกัน กดปุ่ม <b>ตัด C¹ ที่ปลายเท้า</b> เพื่อดูว่ามุมหักหน้าตาเป็นอย่างไร</p>
+        <p><b>ก้านมาจากไหน</b> หน้านี้ไม่ได้ให้ลากก้านเอง แต่คำนวณจากจุดยึดข้างเคียงด้วยสูตร
+          คาร์ทมูล–รอม: ทิศสัมผัสที่จุดยึด Aᵢ คือ (Aᵢ₊₁ − Aᵢ₋₁) แล้วได้
+          P₁ = Aᵢ + τ(Aᵢ₊₁ − Aᵢ₋₁)/6 กับ P₂ = Aᵢ₊₁ − τ(Aᵢ₊₂ − Aᵢ)/6
+          สูตรนี้ <b>รับประกัน C¹ โดยอัตโนมัติ</b> เพราะทิศสัมผัสที่จุดยึดถูกใช้ร่วมกันทั้งสองข้าง
+          ส่วน τ คือความยาวก้าน: τ = 0 ได้รูปหลายเหลี่ยมตรง ๆ, τ ราว 1 ได้เส้นโค้งพอดี ๆ,
+          τ มากเกินไปเส้นจะเหวี่ยงออกนอกจนย้อนกลับมาตัดตัวเอง</p>
+        <p><b>หวีความโค้ง</b> คือขนแปรงที่ยาวตามค่า κ = |B′ × B″| / ‖B′‖³ ปักตั้งฉากกับเส้น
+          ใช้ตรวจว่ารอยต่อเรียบจริงไหม — ถ้าปลายขนแปรงกระโดดตรงรอยต่อ แปลว่าความโค้งไม่ต่อเนื่อง
+          (เรียบระดับ C¹ แต่ไม่ถึง C²) สำหรับแผ่นรองเท้าระดับนี้เพียงพอ
+          เพราะเครื่อง CNC และเครื่องพิมพ์สามมิติเดินตามเส้นได้โดยไม่มีรอยสะดุด</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 4. fitting ═══════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">4</span>
+      <h2>ฟิตขอบจากรอยเท้าจริง</h2></div>
+    <p class="sec-sub">จากแผนที่แรงกด 15×37 พิกเซล ไปเป็นเส้นโค้งที่ส่งเข้าเครื่องตัดได้ — ด้วยการแก้สมการเชิงเส้น</p>
+
+    <div class="sec-body">
+      <div class="eq" style="margin-bottom:14px">
+        <em>P</em><span class="sub">1</span> = <em>P</em><span class="sub">0</span>
+        + <em>α</em><span class="sub">1</span> <em>t̂</em><span class="sub">1</span>
+        &nbsp;&nbsp;·&nbsp;&nbsp;
+        <em>P</em><span class="sub">2</span> = <em>P</em><span class="sub">3</span>
+        − <em>α</em><span class="sub">2</span> <em>t̂</em><span class="sub">2</span>
+        &nbsp;&nbsp;⟹&nbsp;&nbsp;
+        min <span style="font-size:1.15em">Σ</span><span class="sub">i</span>
+        ‖B(<em>t</em><span class="sub">i</span>) − <em>Q</em><span class="sub">i</span>‖<span class="sup">2</span>
+      </div>
+      <div class="eq" style="margin-bottom:20px; font-size:var(--step--1)">
+        <span style="color:var(--muted)">ปลายและทิศตรึงไว้ เหลือแค่ความยาวก้านสองตัว จึงได้ระบบ 2×2</span><br><br>
+        [ Σ<em>A</em><span class="sub">1</span>·<em>A</em><span class="sub">1</span>
+        &nbsp; Σ<em>A</em><span class="sub">1</span>·<em>A</em><span class="sub">2</span> ;
+        &nbsp; Σ<em>A</em><span class="sub">1</span>·<em>A</em><span class="sub">2</span>
+        &nbsp; Σ<em>A</em><span class="sub">2</span>·<em>A</em><span class="sub">2</span> ]
+        &nbsp;[ <em>α</em><span class="sub">1</span> ; <em>α</em><span class="sub">2</span> ] =
+        [ Σ<em>r</em>·<em>A</em><span class="sub">1</span> ;
+        Σ<em>r</em>·<em>A</em><span class="sub">2</span> ]<br><br>
+        <span style="color:var(--muted)">โดย</span>
+        <em>A</em><span class="sub">1</span> = <em>t̂</em><span class="sub">1</span>B<span class="sub">1</span>(<em>t</em><span class="sub">i</span>),
+        <em>A</em><span class="sub">2</span> = −<em>t̂</em><span class="sub">2</span>B<span class="sub">2</span>(<em>t</em><span class="sub">i</span>),
+        <em>r</em> = <em>Q</em><span class="sub">i</span> −
+        [B<span class="sub">0</span>+B<span class="sub">1</span>]<em>P</em><span class="sub">0</span> −
+        [B<span class="sub">2</span>+B<span class="sub">3</span>]<em>P</em><span class="sub">3</span>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">แบบจำลองเชิงโต้ตอบ · ฟิตขอบจากข้อมูลจริง</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="chip" id="b3Poly" aria-pressed="true">รูปหลายเหลี่ยมดิบ</button>
+            <button class="chip" id="b3Curv" aria-pressed="true">วางจุดยึดตามความโค้ง</button>
+            <button class="chip" id="b3Ctrl" aria-pressed="false">จุดควบคุม</button>
+          </div>
+        </div>
+        <div class="panel-body split">
+          <div class="rail">
+            <div class="chips" id="b3Chips" style="margin-bottom:2px"></div>
+            <div class="field">
+              <div class="field-top"><label for="b3N">จำนวนช่วงโค้ง</label>
+                <span class="val" id="b3Nv">14</span></div>
+              <input type="range" id="b3N" min="3" max="20" step="1" value="14">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b3Thr">เกณฑ์สัมผัส</label>
+                <span class="val" id="b3Thrv">20 kPa</span></div>
+              <input type="range" id="b3Thr" min="4" max="120" step="1" value="20">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b3Link">รัศมีเชื่อมช่วงที่เท้าไม่แตะ</label>
+                <span class="val" id="b3Linkv">30 mm</span></div>
+              <input type="range" id="b3Link" min="0" max="40" step="1" value="30">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b3Pad">ขยายขอบออกจากรอยเท้า</label>
+                <span class="val" id="b3Padv">6.0 mm</span></div>
+              <input type="range" id="b3Pad" min="0" max="14" step="0.5" value="6">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="b3Sm">ลบหยักของสนามระยะทาง</label>
+                <span class="val" id="b3Smv">3</span></div>
+              <input type="range" id="b3Sm" min="0" max="10" step="1" value="3">
+            </div>
+            <div class="tbl-wrap"><table><tbody id="b3Tbl"></tbody></table></div>
+            <p class="cap" id="b3Stat" style="margin:0"></p>
+          </div>
+          <div class="canvas-row" style="flex-direction:column">
+            <div class="canvas-cell">
+              <canvas id="b3C" width="400" height="640"></canvas>
+              <span class="cap"><b>ภาพพื้นหลัง</b> = แรงกดที่วัดได้ · <b>เส้นเทาบาง</b> = ขอบดิบจากเส้นระดับ ·
+                <b>เส้นม่วงหนา</b> = เบซิเยร์ที่ฟิตได้ · <b>วงกลม</b> = จุดยึด</span>
+            </div>
+            <div class="canvas-cell">
+              <canvas id="b3E" width="560" height="170"></canvas>
+              <span class="cap">ระยะห่างระหว่างเส้นโค้งกับขอบดิบ ตลอดความยาวเส้นรอบรูป —
+                เส้นประคือค่า RMS · เส้นแบ่งแนวตั้งคือรอยต่อระหว่างช่วง</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" style="border-top:1px solid var(--line)">
+          <p class="cap" style="margin:0 0 8px"><b>จุดควบคุมที่ฟิตได้</b> (มิลลิเมตร จุดกำเนิดที่กึ่งกลางรอยเท้า)</p>
+          <div class="pathbox" id="b3Path"></div>
+          <p style="margin:12px 0 0"><button class="btn ghost sm" id="b3Copy">คัดลอกเส้นทาง</button></p>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:22px">
+        <p><b>ขั้นที่ 1 — ได้จุดข้อมูลมาก่อน</b> ขยายภาพแรงกดด้วยการประมาณค่าเชิงเส้น
+          แล้วไล่เส้นระดับที่ค่าเกณฑ์ด้วย <b>marching squares</b>: ดูทีละสี่พิกเซล
+          ถ้าบางมุมอยู่เหนือเกณฑ์และบางมุมอยู่ใต้ ก็ลากเส้นตัดผ่านช่องนั้น
+          โดยหาตำแหน่งตัดด้วยการเทียบสัดส่วนบนขอบช่อง แล้วต่อเส้นสั้น ๆ เหล่านั้นเป็นวงปิด
+          ได้รูปหลายเหลี่ยม Q₀…Q_m — ยังหยักอยู่ เพราะเซนเซอร์กว้าง 5 มม. ต่อช่อง</p>
+        <p><b>ขั้นที่ 2 — เชื่อมและขยายเป็นขอบแผ่น</b> ปัญหาสองข้อพร้อมกัน:
+          เท้าอุ้งสูงไม่ได้แตะพื้นตรงกลาง พื้นที่สัมผัสจึงมาเป็นสองก้อนแยกกัน
+          และแผ่นต้องกว้างกว่ารอยเท้าราว 5–8 มม. ทั้งสองข้อแก้ได้ด้วยของชิ้นเดียวคือ
+          <b>สนามระยะทางมีเครื่องหมาย</b> (signed distance field) ซึ่งบอกว่าแต่ละจุดห่างจากขอบสัมผัสเท่าไร
+          เป็นลบเมื่ออยู่ข้างใน — ขยายรัศมี r จนสองก้อนมาชนกัน แล้วหดกลับ r − pad
+          สุดท้ายขอบแผ่นก็คือ <b>เส้นระดับหนึ่งเส้น</b> ของสนามนั้น
+          วิธีนี้ไม่มีทางพับทับตัวเองเหมือนการเลื่อนจุดออกทีละจุด
+          และเป็นวิธีเดียวกับที่ CAD ใช้ทำ offset จริง ๆ
+          ลากสไลเดอร์ <b>รัศมีเชื่อม</b> ลงไปที่ 0 แล้วดูรอยเท้าที่อุ้งสูง จะเห็นแผ่นขาดเป็นสองท่อนทันที</p>
+        <p><b>ขั้นที่ 3 — เลือกจุดยึด</b> วางจุดยึดให้ห่างเท่ากันตามความยาวส่วนโค้งก่อน
+          แล้วเลื่อนแต่ละจุด<b>ไปเกาะมุมที่โค้งที่สุดในละแวกใกล้ ๆ</b>
+          (ความโค้งประมาณจากสามจุดติดกันด้วยสูตรของเมงเงอร์ κ = 4·พื้นที่สามเหลี่ยม ⁄ ผลคูณของด้านทั้งสาม)
+          เหตุที่ไม่เลือก N มุมที่แหลมที่สุดตรง ๆ เพราะมุมแหลมกระจุกอยู่แถวนิ้วเท้า
+          พอเอาไปหมด จะเหลือช่วงยาวมากช่วงหนึ่งพาดตลอดขอบด้านนอกที่เรียบ ซึ่งเบซิเยร์ช่วงเดียวตามไม่ไหว
+          ความคลาดเคลื่อนตรงนั้นกลบทุกอย่างที่ได้มาจากมุม</p>
+        <p><b>ขั้นที่ 4 — แก้สมการ</b> เมื่อตรึง P₀ P₃ ไว้ที่จุดยึด และตรึงทิศ t̂₁ t̂₂
+          ไว้ตามทิศสัมผัสที่คำนวณจากข้อมูล (จุดยึดใช้ทิศเดียวกันทั้งสองข้าง จึงได้ G¹ ฟรี)
+          เหลือตัวไม่รู้ค่าแค่ความยาวก้าน α₁ α₂ และ B(t) เป็น <b>เชิงเส้น</b> ใน α ทั้งคู่
+          กำลังสองของความคลาดเคลื่อนจึงเป็นพาราโบลา อนุพันธ์เท่าศูนย์ได้ระบบ 2×2 ข้างบน
+          แก้ด้วยกฎของคราเมอร์บรรทัดเดียว ไม่ต้องวนซ้ำ ไม่ต้องเดาค่าเริ่มต้น</p>
+        <p><b>ขั้นที่ 5 — ขยับ t แล้วแก้ใหม่</b> ค่า t ที่ใช้ครั้งแรกมาจากความยาวคอร์ด
+          ซึ่งเป็นแค่การประมาณ หลังฟิตเสร็จจึงหาค่า t ที่ใกล้จุดข้อมูลจริงที่สุดด้วยนิวตัน–ราฟสัน
+          t ← t − (B−Q)·B′ ⁄ (‖B′‖² + (B−Q)·B″) แล้ววนแก้ระบบ 2×2 ใหม่อีกสองรอบ
+          ปกติความคลาดเคลื่อนจะลดลงอีกราว 20–40%</p>
+        <div class="note" style="margin-bottom:1em">
+          <b>ตัวเลขที่ควรดู</b> ตารางด้านซ้ายเทียบจำนวนตัวเลขของรูปหลายเหลี่ยมดิบกับของเบซิเยร์
+          — เรื่องเดียวกับที่หน้าแผ่นรองเท้าย่อ 3,000 พิกเซลเหลือ 15 ตัวเลข
+          ต่างกันแค่คราวนี้ย่อ <i>ขอบ</i> ไม่ใช่ <i>ผิว</i>
+        </div>
+        <p><b>ข้อควรระวัง</b> สองอย่าง อย่างแรก การขยายแล้วหดกลับทำให้มุมเว้าถูกลบทิ้งเสมอ
+          รัศมีเชื่อมยิ่งมาก อุ้งเท้ายิ่งตื้น — ค่าที่ใช้จึงควรพอดีที่ทำให้แผ่นติดกันเท่านั้น
+          ไม่ใช่มากที่สุด อย่างที่สอง ความคลาดเคลื่อนที่รายงานคือระยะจาก
+          <i>ขอบดิบ</i> ไม่ใช่จากขอบเท้าจริง ขอบดิบเองก็มาจากเซนเซอร์ที่กว้าง 5 มม. ต่อช่อง
+          และจากเกณฑ์สัมผัสที่เราเลือกเอง — เลื่อนเกณฑ์ไป 10 kPa แล้วดู
+          จะเห็นว่าขอบขยับมากกว่าความคลาดเคลื่อนของการฟิตหลายเท่า
+          <b>ตัวเลือกเกณฑ์จึงสำคัญกว่าจำนวนช่วงโค้ง</b></p>
+        <p><b>ภาพถูกตัดชิดขอบ</b> ภาพตัวอย่างในชุดข้อมูลถูกครอปพอดีกรอบของพื้นที่สัมผัส
+          จึงมีพิกเซลที่แตะเกณฑ์ติดอยู่กับขอบภาพทั้งสี่ด้าน ขอบแผ่นตรงนั้นจึงถูกตัดเป็นเส้นตรง
+          ไม่ใช่รูปทรงจริงของนิ้วเท้าหรือส้น ถ้าจะเอาไปผลิตจริงต้องกลับไปตัดภาพใหม่
+          ให้มีขอบว่างรอบด้านอย่างน้อยเท่ากับระยะขยายที่จะใช้</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="prose">
+    <h3>เอาไปต่อกับส่วนอื่นอย่างไร</h3>
+    <ul>
+      <li><b>แทนหน้ากากพิกเซล</b> — ตอนนี้ <code>insole_3d.py</code> ใช้
+        <code>binary_dilation</code> ขยายพื้นที่สัมผัสเป็นขอบแผ่น ได้ขอบเป็นขั้นบันไดกว้าง 5 มม.
+        ขอบเบซิเยร์ให้เส้นเรียบที่ทดสอบว่า “จุดนี้อยู่ในแผ่นไหม” ได้ด้วยการนับจำนวนครั้งที่รังสีตัดเส้น</li>
+      <li><b>ผนังข้างของ STL</b> — mesh ปัจจุบันสร้างผนังตามขอบพิกเซล จึงเป็นฟันเลื่อย
+        ถ้าเดินตามเส้นเบซิเยร์แทน จะได้ผนังเรียบและไฟล์เล็กลงมาก</li>
+      <li><b>ระบบพิกัด u, v</b> — <a href="gaussian.html">เกาส์เซียนแต่ละก้อน</a> วางอยู่บนพิกัดที่
+        normalize ด้วยกรอบของรอยเท้า ขอบเบซิเยร์ให้กรอบที่นิ่งกว่าและไม่กระโดดตามพิกเซลเดียวที่หลุดมา</li>
+      <li><b>ไปสามมิติ</b> — พื้นผิวเบซิเยร์ (Bézier patch) คือสมการเดียวกันนี้ที่มีสองพารามิเตอร์
+        แต่สำหรับงานนี้ไม่จำเป็น เพราะ <i>ขอบ</i> ใช้เบซิเยร์ ส่วน <i>ผิว</i> ใช้ผลรวมเกาส์เซียน
+        ซึ่งผูกกับความหมายทางกายภาพ (แรงกดหารความแข็ง) ตรง ๆ อยู่แล้ว</li>
+      <li>หน้านี้เป็นคณิตศาสตร์และข้อมูลตัวอย่างจากชุด StepUP-P150 เท่านั้น
+        ไม่ใช่คำแนะนำหรือการสั่งจ่ายทางการแพทย์</li>
+    </ul>
+  </div>
+</footer>
+</main>
+
+<script>
+"use strict";
+
+/* ══════════════ small helpers ══════════════ */
+const $  = id => document.getElementById(id);
+const cssv = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+const fmt = (v,d) => (Math.abs(v)<5e-9?0:v).toFixed(d===undefined?2:d).replace('-','−');
+const clamp = (v,a,b) => v<a?a:(v>b?b:v);
+
+// points are plain [x, y] arrays throughout
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1]];
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1]];
+const mul=(a,k)=>[a[0]*k,a[1]*k];
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1];
+const crs=(a,b)=>a[0]*b[1]-a[1]*b[0];
+const len=a=>Math.hypot(a[0],a[1]);
+const unit=a=>{const l=Math.hypot(a[0],a[1])||1; return [a[0]/l,a[1]/l];};
+const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+
+/* ══════════════ the equation itself ══════════════
+   B(t) = (1-t)^3 P0 + 3(1-t)^2 t P1 + 3(1-t) t^2 P2 + t^3 P3
+   Everything on this page - the interactive curve, the closed outline, the
+   least-squares fit - calls these four functions and nothing else. */
+const bw = t => { const s=1-t; return [s*s*s, 3*s*s*t, 3*s*t*t, t*t*t]; };
+function bez(P,t){
+  const w=bw(t);
+  return [P[0][0]*w[0]+P[1][0]*w[1]+P[2][0]*w[2]+P[3][0]*w[3],
+          P[0][1]*w[0]+P[1][1]*w[1]+P[2][1]*w[2]+P[3][1]*w[3]];
+}
+// B'(t) = 3[(1-t)^2 (P1-P0) + 2(1-t)t (P2-P1) + t^2 (P3-P2)]
+function bezD(P,t){
+  const s=1-t, a=sub(P[1],P[0]), b=sub(P[2],P[1]), c=sub(P[3],P[2]);
+  return [3*(s*s*a[0]+2*s*t*b[0]+t*t*c[0]), 3*(s*s*a[1]+2*s*t*b[1]+t*t*c[1])];
+}
+// B''(t) = 6[(1-t)(P2-2P1+P0) + t(P3-2P2+P1)]
+function bezDD(P,t){
+  const s=1-t;
+  const a=[P[2][0]-2*P[1][0]+P[0][0], P[2][1]-2*P[1][1]+P[0][1]];
+  const b=[P[3][0]-2*P[2][0]+P[1][0], P[3][1]-2*P[2][1]+P[1][1]];
+  return [6*(s*a[0]+t*b[0]), 6*(s*a[1]+t*b[1])];
+}
+// kappa = |B' x B''| / |B'|^3
+function bezK(P,t){
+  const d=bezD(P,t), dd=bezDD(P,t), l=Math.hypot(d[0],d[1]);
+  return l<1e-9 ? 0 : Math.abs(crs(d,dd))/(l*l*l);
+}
+function bezPts(P,n){
+  const out=[]; for(let i=0;i<=n;i++) out.push(bez(P,i/n)); return out;
+}
+
+/* ══════════════ canvas plumbing ══════════════ */
+function cpos(cv,e){
+  const r=cv.getBoundingClientRect();
+  return [(e.clientX-r.left)*cv.width/r.width, (e.clientY-r.top)*cv.height/r.height];
+}
+function line(ctx,pts,col,w,dash){
+  if(pts.length<2) return;
+  ctx.strokeStyle=col; ctx.lineWidth=w||1.5; ctx.setLineDash(dash||[]);
+  ctx.lineJoin='round'; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.stroke(); ctx.setLineDash([]);
+}
+function dot2(ctx,p,r,fill,stroke){
+  ctx.beginPath(); ctx.arc(p[0],p[1],r,0,7);
+  ctx.fillStyle=fill; ctx.fill();
+  if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=1.6; ctx.stroke(); }
+}
+function label(ctx,p,txt,col,dx,dy){
+  ctx.font='600 12px "IBM Plex Mono", monospace';
+  ctx.fillStyle=col; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(txt, p[0]+(dx||0), p[1]+(dy||0));
+}
+// drag whatever getPts() returns; onDrop(i, [x,y]) writes it back
+function draggable(cv, getPts, onDrop, radius){
+  let active=-1;
+  const hit=q=>{ const P=getPts(); let best=-1, bd=radius||14;
+    for(let i=0;i<P.length;i++){ const d=dist(P[i],q); if(d<bd){ bd=d; best=i; } }
+    return best; };
+  cv.style.touchAction='none';
+  cv.addEventListener('pointerdown',e=>{
+    const q=cpos(cv,e), i=hit(q);
+    if(i<0) return;
+    active=i; cv.setPointerCapture(e.pointerId); cv.style.cursor='grabbing';
+    e.preventDefault();
+  });
+  cv.addEventListener('pointermove',e=>{
+    const q=cpos(cv,e);
+    if(active<0){ cv.style.cursor = hit(q)>=0 ? 'grab' : 'default'; return; }
+    onDrop(active,q); e.preventDefault();
+  });
+  const stop=()=>{ active=-1; cv.style.cursor='default'; };
+  cv.addEventListener('pointerup',stop);
+  cv.addEventListener('pointercancel',stop);
+}
+function toggle(id, init, onChange){
+  const el=$(id); let on=init;
+  el.setAttribute('aria-pressed', on?'true':'false');
+  el.onclick=()=>{ on=!on; el.setAttribute('aria-pressed',on?'true':'false'); onChange(on); };
+  return ()=>on;
+}
+function copyBtn(id, get){
+  $(id).onclick=async ()=>{
+    try{ await navigator.clipboard.writeText(get()); $(id).textContent='คัดลอกแล้ว'; }
+    catch(err){ $(id).textContent='คัดลอกไม่สำเร็จ'; }
+    setTimeout(()=>{ $(id).textContent='คัดลอกเส้นทาง'; }, 1600);
+  };
+}
+// "M x,y C x1,y1 x2,y2 x,y ..." from a list of segments, each 4 control points
+function svgPath(segs, d){
+  d = d===undefined?1:d;
+  const f=v=>v.toFixed(d);
+  let s='M '+f(segs[0][0][0])+','+f(segs[0][0][1]);
+  for(const P of segs)
+    s+='\nC '+f(P[1][0])+','+f(P[1][1])+' '+f(P[2][0])+','+f(P[2][1])+' '+f(P[3][0])+','+f(P[3][1]);
+  return s+'\nZ';
+}
+function polyStats(pts){
+  let per=0, area=0;
+  for(let i=0;i<pts.length;i++){
+    const a=pts[i], b=pts[(i+1)%pts.length];
+    per+=dist(a,b); area+=a[0]*b[1]-b[0]*a[1];
+  }
+  return {per, area:Math.abs(area)/2};
+}
+
+/* the four control points keep the same colour everywhere they appear */
+const PCOL = ()=>[cssv('--accent'), cssv('--hot'), cssv('--cool'), '#8a6d1f'];
+
+/* ══════════════════════════════════════════════════════════════════
+   1 - one cubic segment
+   World units run 0..10 across; the canvas is just a window onto them.
+   ══════════════════════════════════════════════════════════════════ */
+const B1_DEF = [[1.0,1.0],[2.4,5.0],[7.3,4.7],[9.2,1.3]];
+let b1P = B1_DEF.map(p=>p.slice());
+
+const b1C=$('b1C'), b1Ctx=b1C.getContext('2d');
+const B1_PAD=32, B1_S=(b1C.width-2*B1_PAD)/10;
+const b1X = x => B1_PAD + x*B1_S;
+const b1Y = y => b1C.height - B1_PAD - y*B1_S;
+const b1toW = q => [(q[0]-B1_PAD)/B1_S, (b1C.height-B1_PAD-q[1])/B1_S];
+const b1toS = p => [b1X(p[0]), b1Y(p[1])];
+
+const b1Cast = toggle('b1Cast', true,  ()=>b1Draw());
+const b1Tan  = toggle('b1Tan',  false, ()=>b1Draw());
+
+function b1Draw(){
+  const ctx=b1Ctx, W=b1C.width, H=b1C.height, t=+$('b1T').value;
+  const col=PCOL(), grid=cssv('--line-2'), muted=cssv('--muted'),
+        ink=cssv('--ink'), accent=cssv('--accent'), hot=cssv('--hot');
+  ctx.clearRect(0,0,W,H);
+
+  // faint unit grid so the numbers in the table mean something on screen
+  ctx.strokeStyle=grid; ctx.globalAlpha=.45; ctx.lineWidth=1;
+  for(let x=0;x<=10;x++){ ctx.beginPath(); ctx.moveTo(b1X(x),B1_PAD*0.4);
+    ctx.lineTo(b1X(x),H-B1_PAD*0.4); ctx.stroke(); }
+  for(let y=0;y<=5;y++){ ctx.beginPath(); ctx.moveTo(B1_PAD*0.4,b1Y(y));
+    ctx.lineTo(W-B1_PAD*0.4,b1Y(y)); ctx.stroke(); }
+  ctx.globalAlpha=1;
+
+  const S=b1P.map(b1toS);
+  line(ctx,S,grid,1.6,[6,5]);                                  // control polygon
+  line(ctx,bezPts(b1P,160).map(b1toS),accent,3.2);             // the curve
+
+  if(b1Cast()){                                                // de Casteljau
+    const l1=[0,1,2].map(i=>add(b1P[i],mul(sub(b1P[i+1],b1P[i]),t)));
+    const l2=[0,1].map(i=>add(l1[i],mul(sub(l1[i+1],l1[i]),t)));
+    line(ctx,l1.map(b1toS),hot,1.7);
+    line(ctx,l2.map(b1toS),hot,2.4);
+    for(const p of l1) dot2(ctx,b1toS(p),3.6,hot);
+    for(const p of l2) dot2(ctx,b1toS(p),3.6,hot);
+  }
+  if(b1Tan()){
+    const p=bez(b1P,t), d=unit(bezD(b1P,t));
+    line(ctx,[b1toS(sub(p,mul(d,2.1))), b1toS(add(p,mul(d,2.1)))], cssv('--cool'),1.8,[7,5]);
+  }
+  const bt=bez(b1P,t);
+  dot2(ctx,b1toS(bt),7,accent,cssv('--surface'));
+  label(ctx,b1toS(bt),'B(t)',ink,0,-19);
+
+  for(let i=0;i<4;i++){
+    dot2(ctx,S[i],8,col[i],cssv('--surface'));
+    label(ctx,S[i],'P'+i,col[i],0,-20);
+  }
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=muted;
+  ctx.textAlign='left'; ctx.textBaseline='bottom';
+  ctx.fillText('ลากจุดควบคุมได้', B1_PAD*0.4+4, H-6);
+}
+
+function b1Basis(){
+  const cv=$('b1B'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+  const pl=44, pr=16, pt=14, pb=30, t=+$('b1T').value, col=PCOL();
+  const X=x=>pl+(W-pl-pr)*x, Y=y=>H-pb-(H-pt-pb)*y;
+  const grid=cssv('--line-2'), muted=cssv('--muted'), ink=cssv('--ink');
+  ctx.clearRect(0,0,W,H);
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=muted;
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  for(let k=0;k<=5;k++){ const x=k/5;
+    line(ctx,[[X(x),pt],[X(x),H-pb]],grid,1);
+    ctx.fillText(x.toFixed(1), X(x), H-pb+6); }
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  for(let k=0;k<=4;k++){ const y=k/4;
+    line(ctx,[[pl,Y(y)],[W-pr,Y(y)]],grid,1);
+    ctx.fillText(y.toFixed(2), pl-8, Y(y)); }
+  line(ctx,[[pl,H-pb],[W-pr,H-pb]],ink,1.4);
+  line(ctx,[[pl,pt],[pl,H-pb]],ink,1.4);
+
+  for(let i=0;i<4;i++){
+    const pts=[];
+    for(let k=0;k<=180;k++){ const x=k/180; pts.push([X(x),Y(bw(x)[i])]); }
+    line(ctx,pts,col[i],2.4);
+  }
+  line(ctx,[[X(t),pt],[X(t),H-pb]],cssv('--ink-2'),1.4,[5,4]);
+  const w=bw(t);
+  for(let i=0;i<4;i++) dot2(ctx,[X(t),Y(w[i])],4.6,col[i],cssv('--surface'));
+  ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillStyle=muted;
+  ctx.fillText('B₀', X(.02), Y(.99));
+  ctx.fillText('t', W-pr-8, H-pb+6);
+}
+
+function b1Sync(){
+  const t=+$('b1T').value, w=bw(t), col=PCOL(), bt=bez(b1P,t), d=bezD(b1P,t);
+  $('b1Tv').textContent=t.toFixed(2);
+  let rows='';
+  for(let i=0;i<4;i++)
+    rows+=`<tr><td><span class="swatch" style="background:${col[i]}"></span>P<sub>${i}</sub></td>`+
+          `<td class="n">(${fmt(b1P[i][0])}, ${fmt(b1P[i][1])})</td>`+
+          `<td class="n">${w[i].toFixed(3)}</td></tr>`;
+  rows+=`<tr><td><b>B(t)</b></td><td class="n">(${fmt(bt[0])}, ${fmt(bt[1])})</td>`+
+        `<td class="n">Σw = ${(w[0]+w[1]+w[2]+w[3]).toFixed(3)}</td></tr>`;
+  rows+=`<tr><td>B′(t)</td><td class="n">(${fmt(d[0])}, ${fmt(d[1])})</td>`+
+        `<td class="n">‖B′‖ = ${fmt(len(d))}</td></tr>`;
+  rows+=`<tr><td>ความโค้ง κ</td><td class="n">${fmt(bezK(b1P,t),4)}</td>`+
+        `<td class="n">R = ${bezK(b1P,t)>1e-6?fmt(1/bezK(b1P,t)):'∞'}</td></tr>`;
+  $('b1Tbl').innerHTML=rows;
+  $('b1Eq').innerHTML =
+    `B(${t.toFixed(2)}) = <em>${w[0].toFixed(3)}</em>·P<span class="sub">0</span> + `+
+    `<em>${w[1].toFixed(3)}</em>·P<span class="sub">1</span> + `+
+    `<em>${w[2].toFixed(3)}</em>·P<span class="sub">2</span> + `+
+    `<em>${w[3].toFixed(3)}</em>·P<span class="sub">3</span> = `+
+    `(${fmt(bt[0])}, ${fmt(bt[1])})`;
+}
+let b4Refresh=()=>{};      // section 2 draws the same control points
+const b1All=()=>{ b1Sync(); b1Draw(); b1Basis(); b4Refresh(); };
+$('b1T').oninput=b1All;
+$('b1Reset').onclick=()=>{ b1P=B1_DEF.map(p=>p.slice()); $('b1T').value=0.4; b1All(); };
+draggable(b1C, ()=>b1P.map(b1toS), (i,q)=>{
+  const w=b1toW(q);
+  b1P[i]=[clamp(w[0],0,10), clamp(w[1],0,(b1C.height-2*B1_PAD)/B1_S)];
+  b1All();
+});
+
+/* ══════════════════════════════════════════════════════════════════
+   2 - turning the formula into something a screen can draw
+   Same control points as section 1, so dragging up there moves this too.
+   ══════════════════════════════════════════════════════════════════ */
+// power basis: x(t) = a t^3 + b t^2 + c t + d, one set of coefficients per axis
+function powerBasis(P){
+  return {
+    a: [-P[0][0]+3*P[1][0]-3*P[2][0]+P[3][0], -P[0][1]+3*P[1][1]-3*P[2][1]+P[3][1]],
+    b: [ 3*P[0][0]-6*P[1][0]+3*P[2][0],        3*P[0][1]-6*P[1][1]+3*P[2][1]],
+    c: [-3*P[0][0]+3*P[1][0],                 -3*P[0][1]+3*P[1][1]],
+    d: [P[0][0], P[0][1]]
+  };
+}
+// de Casteljau split: two cubics whose union is exactly the original curve
+function splitBez(P,t){
+  const l1=[0,1,2].map(i=>add(P[i],mul(sub(P[i+1],P[i]),t)));
+  const l2=[0,1].map(i=>add(l1[i],mul(sub(l1[i+1],l1[i]),t)));
+  const m=add(l2[0],mul(sub(l2[1],l2[0]),t));
+  return [[P[0],l1[0],l2[0],m],[m,l2[1],l1[2],P[3]]];
+}
+// P1 and P2 sit at most tol off the chord => the curve sits at most 3/4 tol off
+function flatEnough(P,tol){
+  const ch=sub(P[3],P[0]), l=len(ch);
+  if(l<1e-9) return len(sub(P[1],P[0]))<tol && len(sub(P[2],P[0]))<tol;
+  return Math.max(Math.abs(crs(sub(P[1],P[0]),ch)),
+                  Math.abs(crs(sub(P[2],P[0]),ch)))/l <= tol;
+}
+function flatten(P,tol){
+  const out=[P[0]], rec=(Q,dep)=>{
+    if(dep>17 || flatEnough(Q,tol)){ out.push(Q[3]); return; }
+    const h=splitBez(Q,0.5); rec(h[0],dep+1); rec(h[1],dep+1);
+  };
+  rec(P,0); return out;
+}
+const distSeg=(p,a,b)=>{
+  const ab=sub(b,a), dd=dot(ab,ab);
+  return dist(p, dd<1e-12 ? a : add(a,mul(ab,clamp(dot(sub(p,a),ab)/dd,0,1))));
+};
+// worst gap between the real curve and a polyline standing in for it
+function maxDev(P,poly,n){
+  let m=-1, at=null;
+  for(let k=0;k<=(n||400);k++){
+    const p=bez(P,k/(n||400));
+    let d=Infinity;
+    for(let i=0;i<poly.length-1;i++) d=Math.min(d,distSeg(p,poly[i],poly[i+1]));
+    if(d>m){ m=d; at=p; }
+  }
+  return {dev:m, at};
+}
+const evenPoly=(P,N)=>Array.from({length:N+1},(_,i)=>bez(P,i/N));
+// smallest N whose even split meets tol - double until it fits, then bisect
+function needN(P,tol){
+  const ok=N=>maxDev(P,evenPoly(P,N),120).dev<=tol;
+  let hi=1;
+  while(hi<4096 && !ok(hi)) hi*=2;
+  let lo=hi/2;
+  while(hi-lo>1){ const mid=Math.floor((lo+hi)/2); if(ok(mid)) hi=mid; else lo=mid; }
+  return hi;
+}
+
+const b4C=$('b4C'), b4Ctx=b4C.getContext('2d');
+const b4Dots = toggle('b4Dots', true,  ()=>b4All());
+const b4Adp  = toggle('b4Adp',  false, ()=>b4All());
+const b4True = toggle('b4True', true,  ()=>b4All());
+
+function b4Draw(){
+  const ctx=b4Ctx, W=b4C.width, H=b4C.height;
+  const N=+$('b4N').value, tol=(+$('b4Tol').value)/B1_S;   // px -> world units
+  const grid=cssv('--line-2'), accent=cssv('--accent'),
+        hot=cssv('--hot'), cool=cssv('--cool'), muted=cssv('--muted');
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle=grid; ctx.globalAlpha=.45; ctx.lineWidth=1;
+  for(let x=0;x<=10;x++){ ctx.beginPath(); ctx.moveTo(b1X(x),B1_PAD*0.4);
+    ctx.lineTo(b1X(x),H-B1_PAD*0.4); ctx.stroke(); }
+  for(let y=0;y<=5;y++){ ctx.beginPath(); ctx.moveTo(B1_PAD*0.4,b1Y(y));
+    ctx.lineTo(W-B1_PAD*0.4,b1Y(y)); ctx.stroke(); }
+  ctx.globalAlpha=1;
+
+  if(b4True()) line(ctx,bezPts(b1P,300).map(b1toS),accent,1.3);
+  const ev=evenPoly(b1P,N), evD=maxDev(b1P,ev);
+  const ad=flatten(b1P,tol),  adD=maxDev(b1P,ad);
+
+  if(b4Adp()){
+    line(ctx,ad.map(b1toS),cool,2.6);
+    if(b4Dots()) for(const p of ad) dot2(ctx,b1toS(p),3,cool);
+  }
+  line(ctx,ev.map(b1toS),hot,2.6);
+  if(b4Dots()) for(const p of ev) dot2(ctx,b1toS(p),4.2,hot,cssv('--surface'));
+  for(let i=0;i<4;i++) dot2(ctx,b1toS(b1P[i]),4.5,grid);
+
+  const worst=(b4Adp() && adD.dev>evD.dev) ? adD : evD;
+  if(worst.at){
+    const s=b1toS(worst.at);
+    ctx.strokeStyle=hot; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.arc(s[0],s[1],10,0,7); ctx.stroke();
+  }
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=muted;
+  ctx.textAlign='left'; ctx.textBaseline='bottom';
+  ctx.fillText(`N = ${N} → ${N+1} จุด`, B1_PAD*0.4+4, H-6);
+  return {ev,evD,ad,adD};
+}
+function b4Sync(r){
+  const N=+$('b4N').value, tolPx=+$('b4Tol').value;
+  $('b4Nv').textContent=N;
+  $('b4Tolv').textContent=tolPx.toFixed(2)+' px';
+  const evPx=r.evD.dev*B1_S, adPx=r.adD.dev*B1_S;
+  const dbl=maxDev(b1P,evenPoly(b1P,N*2)).dev;
+  const same=needN(b1P,r.adD.dev||1e-9);
+  $('b4Tbl').innerHTML=
+    `<tr><td>แบ่ง t เท่ากัน</td><td class="n">${N} ท่อน · ${N+1} จุด</td>`+
+      `<td class="n">เพี้ยน ${evPx.toFixed(2)} px</td></tr>`+
+    `<tr><td>แบ่งครึ่งปรับตัว</td><td class="n">${r.ad.length-1} ท่อน · ${r.ad.length} จุด</td>`+
+      `<td class="n">เพี้ยน ${adPx.toFixed(2)} px</td></tr>`+
+    `<tr><td>ถ้าแบ่งเท่ากันให้ละเอียดเท่าแบบปรับตัว</td>`+
+      `<td class="n">${same} ท่อน</td>`+
+      `<td class="n">อัตราส่วน ${(same/Math.max(1,r.ad.length-1)).toFixed(2)}×</td></tr>`+
+    `<tr><td>เพิ่ม N เป็นสองเท่า (${N*2})</td>`+
+      `<td class="n">เพี้ยน ${(dbl*B1_S).toFixed(2)} px</td>`+
+      `<td class="n">ดีขึ้น ${(r.evD.dev/Math.max(dbl,1e-9)).toFixed(1)}× (ทฤษฎี 4×)</td></tr>`;
+  const {a,b,c,d}=powerBasis(b1P);
+  const pol=(k)=>`<em>${fmt(a[k],3)}</em>·t<span class="sup">3</span> `+
+    `${b[k]<0?'−':'+'} <em>${fmt(Math.abs(b[k]),3)}</em>·t<span class="sup">2</span> `+
+    `${c[k]<0?'−':'+'} <em>${fmt(Math.abs(c[k]),3)}</em>·t `+
+    `${d[k]<0?'−':'+'} <em>${fmt(Math.abs(d[k]),3)}</em>`;
+  $('b4Eq').innerHTML=`<em>x</em>(t) = ${pol(0)}<br><em>y</em>(t) = ${pol(1)}`+
+    `<br><span style="color:var(--muted)">แบบฮอร์เนอร์: x(t) = ((`+
+    `${fmt(a[0],3)}·t ${b[0]<0?'−':'+'} ${fmt(Math.abs(b[0]),3)})·t `+
+    `${c[0]<0?'−':'+'} ${fmt(Math.abs(c[0]),3)})·t ${d[0]<0?'−':'+'} ${fmt(Math.abs(d[0]),3)}</span>`;
+}
+
+/* ---- the same numbers written out longhand, so the formula and the
+        polyline on screen can be checked against each other by hand ---- */
+const n2=v=>fmt(v,2), n3=v=>fmt(v,3), n4=v=>fmt(v,4);
+const row=(...c)=>'<tr>'+c.map((v,i)=>`<td${i?' class="n"':''}>${v}</td>`).join('')+'</tr>';
+
+function b5Sync(){
+  const P=b1P, t=+$('b1T').value, N=+$('b4N').value, {a,b,c,d}=powerBasis(P);
+  const px=k=>n2(P[k][0]), py=k=>n2(P[k][1]);
+
+  $('b5P').innerHTML =
+    row('','x','y') +
+    [0,1,2,3].map(k=>row(`P<sub>${k}</sub>`, px(k), py(k))).join('');
+
+  const coefRows=(k)=>[
+    [`a = −P<sub>0</sub> + 3P<sub>1</sub> − 3P<sub>2</sub> + P<sub>3</sub>`,
+     `−(${n2(P[0][k])}) + 3(${n2(P[1][k])}) − 3(${n2(P[2][k])}) + (${n2(P[3][k])})`, n3(a[k])],
+    [`b = 3P<sub>0</sub> − 6P<sub>1</sub> + 3P<sub>2</sub>`,
+     `3(${n2(P[0][k])}) − 6(${n2(P[1][k])}) + 3(${n2(P[2][k])})`, n3(b[k])],
+    [`c = −3P<sub>0</sub> + 3P<sub>1</sub>`,
+     `−3(${n2(P[0][k])}) + 3(${n2(P[1][k])})`, n3(c[k])],
+    [`d = P<sub>0</sub>`, `${n2(P[0][k])}`, n3(d[k])]
+  ];
+  $('b5C').innerHTML =
+    row('<b>แกน x</b>','การแทนค่า','ได้') +
+    coefRows(0).map(r=>row(...r)).join('') +
+    row('<b>แกน y</b>','การแทนค่า','ได้') +
+    coefRows(1).map(r=>row(...r)).join('') +
+    row('<b>สมการที่ได้</b>',
+        `x(t) = ${n3(a[0])}t³ ${b[0]<0?'−':'+'} ${n3(Math.abs(b[0]))}t² ${c[0]<0?'−':'+'} ${n3(Math.abs(c[0]))}t ${d[0]<0?'−':'+'} ${n3(Math.abs(d[0]))}`,
+        `y(t) = ${n3(a[1])}t³ ${b[1]<0?'−':'+'} ${n3(Math.abs(b[1]))}t² ${c[1]<0?'−':'+'} ${n3(Math.abs(c[1]))}t ${d[1]<0?'−':'+'} ${n3(Math.abs(d[1]))}`);
+
+  // route 1 - Bernstein weights straight from the original form
+  const w=bw(t), pt=bez(P,t);
+  // route 2 - Horner on the power basis, showing each nesting level
+  const u=k=>{ const u1=a[k]*t+b[k], u2=u1*t+c[k], u3=u2*t+d[k]; return [u1,u2,u3]; };
+  const ux=u(0), uy=u(1);
+  // route 3 - de Casteljau, the construction drawn in section 1
+  const l1=[0,1,2].map(i=>add(P[i],mul(sub(P[i+1],P[i]),t)));
+  const l2=[0,1].map(i=>add(l1[i],mul(sub(l1[i+1],l1[i]),t)));
+  const l3=add(l2[0],mul(sub(l2[1],l2[0]),t));
+
+  $('b5T').innerHTML =
+    row(`<b>ที่ t = ${t.toFixed(2)}</b>`,'การแทนค่า','ได้') +
+    row('น้ำหนัก B<sub>0</sub> = (1−t)³', `(${n2(1-t)})³`, n4(w[0])) +
+    row('น้ำหนัก B<sub>1</sub> = 3(1−t)²t', `3(${n2(1-t)})²(${n2(t)})`, n4(w[1])) +
+    row('น้ำหนัก B<sub>2</sub> = 3(1−t)t²', `3(${n2(1-t)})(${n2(t)})²`, n4(w[2])) +
+    row('น้ำหนัก B<sub>3</sub> = t³', `(${n2(t)})³`, n4(w[3])) +
+    row('ผลรวมน้ำหนัก', `${n4(w[0])} + ${n4(w[1])} + ${n4(w[2])} + ${n4(w[3])}`,
+        n4(w[0]+w[1]+w[2]+w[3])) +
+    row('<b>วิธี 1</b> ถ่วงน้ำหนัก x',
+        `${n4(w[0])}(${px(0)}) + ${n4(w[1])}(${px(1)}) + ${n4(w[2])}(${px(2)}) + ${n4(w[3])}(${px(3)})`,
+        n4(pt[0])) +
+    row('<b>วิธี 1</b> ถ่วงน้ำหนัก y',
+        `${n4(w[0])}(${py(0)}) + ${n4(w[1])}(${py(1)}) + ${n4(w[2])}(${py(2)}) + ${n4(w[3])}(${py(3)})`,
+        n4(pt[1])) +
+    row('<b>วิธี 2</b> ฮอร์เนอร์ x',
+        `((${n3(a[0])}·${n2(t)} ${b[0]<0?'−':'+'} ${n3(Math.abs(b[0]))} = ${n4(ux[0])})·${n2(t)} `+
+        `${c[0]<0?'−':'+'} ${n3(Math.abs(c[0]))} = ${n4(ux[1])})·${n2(t)} `+
+        `${d[0]<0?'−':'+'} ${n3(Math.abs(d[0]))}`, n4(ux[2])) +
+    row('<b>วิธี 2</b> ฮอร์เนอร์ y',
+        `((${n3(a[1])}·${n2(t)} ${b[1]<0?'−':'+'} ${n3(Math.abs(b[1]))} = ${n4(uy[0])})·${n2(t)} `+
+        `${c[1]<0?'−':'+'} ${n3(Math.abs(c[1]))} = ${n4(uy[1])})·${n2(t)} `+
+        `${d[1]<0?'−':'+'} ${n3(Math.abs(d[1]))}`, n4(uy[2])) +
+    row('<b>วิธี 3</b> เดอ กัสแตลโย ชั้น 1',
+        l1.map(p=>`(${n3(p[0])}, ${n3(p[1])})`).join('  '), '') +
+    row('<b>วิธี 3</b> ชั้น 2',
+        l2.map(p=>`(${n3(p[0])}, ${n3(p[1])})`).join('  '), '') +
+    row('<b>วิธี 3</b> ชั้น 3 = คำตอบ',
+        `(${n4(l3[0])}, ${n4(l3[1])})`, '');
+
+  // step 3 - every t, then the pixels the canvas is actually told to visit
+  $('b5Sx').textContent=`${B1_S.toFixed(1)} px ต่อหนึ่งหน่วย`;
+  const rows=[];
+  for(let i=0;i<=N;i++){
+    const tt=i/N, p=bez(P,tt), s=b1toS(p);
+    rows.push([`t = ${tt.toFixed(4)}`, n4(p[0]), n4(p[1]),
+               `(${s[0].toFixed(1)}, ${s[1].toFixed(1)})`]);
+  }
+  const show = rows.length<=9 ? rows
+    : rows.slice(0,4).concat([['⋮','⋮','⋮','⋮']]).concat(rows.slice(-3));
+  $('b5N').innerHTML = row('','x(t)','y(t)','พิกเซลบนภาพ') +
+    show.map(r=>row(...r)).join('');
+  const cmd=rows.map((r,i)=>{
+    const s=b1toS(bez(P,i/N));
+    return `${i?'lineTo':'moveTo'}(${s[0].toFixed(1)}, ${s[1].toFixed(1)})`;
+  });
+  $('b5Cmd').textContent = (cmd.length<=10 ? cmd
+      : cmd.slice(0,5).concat(['…'],cmd.slice(-3))).join('\n');
+  const e0=dist(bez(P,0),P[0]), e1=dist(bez(P,1),P[3]);
+  $('b5End').innerHTML=`<b>ตรวจปลายทั้งสอง</b> t = 0 ได้ `+
+    `(${n4(bez(P,0)[0])}, ${n4(bez(P,0)[1])}) เทียบกับ P<sub>0</sub> = (${px(0)}, ${py(0)}) `+
+    `ห่างกัน ${e0.toExponential(1)} · t = 1 ได้ (${n4(bez(P,1)[0])}, ${n4(bez(P,1)[1])}) `+
+    `เทียบกับ P<sub>3</sub> = (${px(3)}, ${py(3)}) ห่างกัน ${e1.toExponential(1)} `+
+    `— ตรงตามที่สมการรับประกันไว้ในหัวข้อ 1`;
+}
+const b4All=()=>{ b4Sync(b4Draw()); b5Sync(); };
+$('b4N').oninput=b4All;
+$('b4Tol').oninput=b4All;
+b4Refresh=b4All;
+
+/* ══════════════════════════════════════════════════════════════════
+   3 - a closed outline out of nine segments
+   Anchors live in the same normalised (u, v) frame the rest of the
+   project uses: u across the foot, v from heel (-1) to toe (+1).
+   Millimetres come from the two size sliders, so the shape and the
+   size stay independent of each other.
+   ══════════════════════════════════════════════════════════════════ */
+const B2_NAMES = ['ปลายหัวแม่เท้า','ปลายนิ้วก้อย','MTH5 ฝ่าเท้าหน้าด้านนอก',
+                  'กลางเท้าด้านนอก','ส้นด้านนอก','ปลายส้น','ส้นด้านใน',
+                  'อุ้งเท้าด้านใน','MTH1 ฝ่าเท้าหน้าด้านใน'];
+const B2_DEF = [[-0.36,1.00],[0.52,0.80],[0.95,0.36],[0.80,-0.14],[0.58,-0.66],
+                [0.00,-1.00],[-0.60,-0.66],[-0.50,-0.06],[-0.92,0.40]];
+const B2_ARCH = 7;                       // the anchor the arch slider owns
+let b2A = B2_DEF.map(p=>p.slice());
+
+const b2C=$('b2C'), b2Ctx=b2C.getContext('2d'), B2_PAD=34;
+const b2Ctrl   = toggle('b2Ctrl',  true,  ()=>b2All());
+const b2Comb   = toggle('b2Comb',  false, ()=>b2All());
+const b2Kink   = toggle('b2Kink',  false, ()=>b2All());
+const b2Mirror = toggle('b2Mirror',false, ()=>b2All());
+
+// normalised anchors -> millimetres, origin at the centre of the heel
+function b2mm(){
+  const L=+$('b2Len').value, Wd=+$('b2Wid').value, mir=b2Mirror()?-1:1;
+  let uMax=1e-6, vMin=1e9, vMax=-1e9;
+  for(const a of b2A){ uMax=Math.max(uMax,Math.abs(a[0]));
+    vMin=Math.min(vMin,a[1]); vMax=Math.max(vMax,a[1]); }
+  const sv=L/Math.max(1e-6,vMax-vMin), su=(Wd/2)/uMax;
+  return b2A.map(a=>[mir*a[0]*su, (a[1]-vMin)*sv]);
+}
+// Catmull-Rom -> Bezier: the tangent at an anchor is shared by both segments
+// that touch it, which is exactly the C1 condition written as a formula.
+function b2segs(){
+  const A=b2mm(), n=A.length, tau=+$('b2Tau').value, kink=b2Kink(), segs=[];
+  const at=i=>A[(i%n+n)%n];
+  for(let i=0;i<n;i++){
+    const P0=at(i), P3=at(i+1);
+    let P1=add(P0, mul(sub(at(i+1),at(i-1)), tau/6));
+    let P2=sub(P3, mul(sub(at(i+2),at(i)),   tau/6));
+    if(kink){                       // break the shared tangent at anchor 0
+      if(i===0)   P1=add(P0, mul(sub(at(1),at(0)), tau/3));
+      if(i===n-1) P2=sub(P3, mul(sub(at(0),at(n-1)), tau/3));
+    }
+    segs.push([P0,P1,P2,P3]);
+  }
+  return segs;
+}
+function b2view(segs){
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+  for(const P of segs) for(const p of P){
+    x0=Math.min(x0,p[0]); x1=Math.max(x1,p[0]);
+    y0=Math.min(y0,p[1]); y1=Math.max(y1,p[1]); }
+  const s=Math.min((b2C.width-2*B2_PAD)/Math.max(1,x1-x0),
+                   (b2C.height-2*B2_PAD)/Math.max(1,y1-y0));
+  const cx=(x0+x1)/2, cy=(y0+y1)/2;
+  return p=>[b2C.width/2+(p[0]-cx)*s, b2C.height/2-(p[1]-cy)*s];
+}
+function b2Draw(){
+  const ctx=b2Ctx, W=b2C.width, H=b2C.height;
+  const segs=b2segs(), A=b2mm(), T=b2view(segs);
+  const accent=cssv('--accent'), grid=cssv('--line-2'), hot=cssv('--hot'),
+        ink=cssv('--ink'), muted=cssv('--muted');
+  ctx.clearRect(0,0,W,H);
+
+  // filled body first, so the outline reads as the edge of a plate
+  ctx.beginPath();
+  const s0=T(segs[0][0]); ctx.moveTo(s0[0],s0[1]);
+  for(const P of segs){ const a=T(P[1]),b=T(P[2]),c=T(P[3]);
+    ctx.bezierCurveTo(a[0],a[1],b[0],b[1],c[0],c[1]); }
+  ctx.closePath();
+  ctx.fillStyle=cssv('--accent-soft'); ctx.fill();
+  ctx.strokeStyle=accent; ctx.lineWidth=3; ctx.stroke();
+
+  if(b2Comb()){
+    const tips=[];
+    for(const P of segs) for(let k=0;k<=24;k++){
+      const t=k/24, p=T(bez(P,t)), d=bezD(P,t);
+      // screen y points down, so the mm tangent (dx, dy) is (dx, -dy) on screen
+      // and its normal is (dy, dx) - no extra sign juggling needed
+      const n=unit([d[1],d[0]]), l=Math.min(70, bezK(P,t)*1000);
+      const tip=[p[0]+n[0]*l, p[1]+n[1]*l];
+      line(ctx,[p,tip],hot,1); tips.push(tip);
+    }
+    ctx.globalAlpha=.75; line(ctx,tips.concat([tips[0]]),hot,1.2); ctx.globalAlpha=1;
+  }
+  if(b2Ctrl()) for(const P of segs){
+    line(ctx,[T(P[0]),T(P[1])],grid,1.4,[4,4]);
+    line(ctx,[T(P[3]),T(P[2])],grid,1.4,[4,4]);
+    dot2(ctx,T(P[1]),3.2,grid); dot2(ctx,T(P[2]),3.2,grid);
+  }
+  for(let i=0;i<A.length;i++){
+    dot2(ctx,T(A[i]),6.5,accent,cssv('--surface'));
+    label(ctx,T(A[i]),String(i),cssv('--surface'),0,0);
+  }
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=muted;
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText(b2Mirror()?'ด้านนอก ←   → ด้านใน':'ด้านใน ←   → ด้านนอก', W/2, H-16);
+}
+function b2Sync(){
+  const segs=b2segs(), A=b2mm();
+  $('b2Tauv').textContent=(+$('b2Tau').value).toFixed(2);
+  $('b2Lenv').textContent=$('b2Len').value+' mm';
+  $('b2Widv').textContent=$('b2Wid').value+' mm';
+  $('b2Archv').textContent=(+$('b2Arch').value).toFixed(2);
+
+  let pts=[]; for(const P of segs) for(let k=0;k<40;k++) pts.push(bez(P,k/40));
+  const st=polyStats(pts);
+  $('b2Cap').innerHTML=`<b>${segs.length}</b> ช่วงโค้ง · จุดควบคุม <b>${segs.length*3}</b> จุด `+
+    `= <b>${segs.length*6}</b> ตัวเลข · เส้นรอบรูป <b>${st.per.toFixed(0)} mm</b> · `+
+    `พื้นที่ <b>${(st.area/100).toFixed(1)} cm²</b>`+
+    (b2Kink()?' · <b style="color:var(--hot)">รอยต่อที่จุด 0 เป็นมุมหัก</b>':'');
+
+  let rows='<tr><td>จุดยึด</td><td>u, v</td><td>x, y (mm)</td></tr>';
+  for(let i=0;i<A.length;i++)
+    rows+=`<tr><td>${i} · ${B2_NAMES[i]}</td>`+
+          `<td class="n">${fmt(b2A[i][0])}, ${fmt(b2A[i][1])}</td>`+
+          `<td class="n">${A[i][0].toFixed(1)}, ${A[i][1].toFixed(1)}</td></tr>`;
+  $('b2Tbl').innerHTML=rows;
+  $('b2Path').textContent=svgPath(segs);
+}
+const b2All=()=>{ b2Sync(); b2Draw(); };
+for(const id of ['b2Tau','b2Len','b2Wid']) $(id).oninput=b2All;
+$('b2Arch').oninput=()=>{ b2A[B2_ARCH][0] = -0.72 + (+$('b2Arch').value)*0.42; b2All(); };
+$('b2Reset').onclick=()=>{
+  b2A=B2_DEF.map(p=>p.slice());
+  $('b2Tau').value=1; $('b2Len').value=262; $('b2Wid').value=99; $('b2Arch').value=0.55;
+  b2All();
+};
+copyBtn('b2Copy', ()=>$('b2Path').textContent);
+draggable(b2C, ()=>{ const T=b2view(b2segs()); return b2mm().map(T); }, (i,q)=>{
+  // screen -> mm -> normalised, inverting exactly what b2mm and b2view did
+  const segs=b2segs(), T=b2view(segs), o=T([0,0]), e=T([1,1]);
+  const sx=e[0]-o[0], sy=o[1]-e[1];
+  const mm=[(q[0]-o[0])/sx, (o[1]-q[1])/sy];
+  const L=+$('b2Len').value, Wd=+$('b2Wid').value, mir=b2Mirror()?-1:1;
+  let uMax=1e-6, vMin=1e9, vMax=-1e9;
+  for(const a of b2A){ uMax=Math.max(uMax,Math.abs(a[0]));
+    vMin=Math.min(vMin,a[1]); vMax=Math.max(vMax,a[1]); }
+  const u=mir*mm[0]*uMax/(Wd/2), v=vMin+mm[1]*(vMax-vMin)/L;
+  b2A[i]=[clamp(u,-1.15,1.15), clamp(v,-1.15,1.15)];
+  b2All();
+});
+
+/* ══════════════════════════════════════════════════════════════════
+   4 - fitting the outline to a real footprint
+   ══════════════════════════════════════════════════════════════════ */
+const B3_SAMPLES = [{"name": "P083 - heel dominant (flat foot)", "side": "Left", "w": 15, "h": 37, "peak": 767.0, "px_mm": 5.0, "data": "AAAAAAAAAAAKCwsNDwoAAAAAAAAACB8bDxIQHSAKAAAAAAAAETEaDA0PGCgkAAAAABEXERMUDQAAEhYaAAAAAC8bEw0JDAsJDA8OAAAACCkvHQsKCg0AAAkAAAAADBkYEw8PAAAAAAAAAAAADQ8KCwAAAAAAAAAAAA4LCwoICAAAAAAAAAAAACEMDAAAAAAAAAAAAAAADRMQCQgAAAAAAAAAAAAACBMSDAAAAAAAAAAAAAAAABgaDAgAAAAAAAAAAAAAABEYDgAAAAAAAAAAAAAAABAUDwgAAAAAAAAAAAAAABAUDw0AAAAAAAAAAAAAABAWFw0AAAAAAAAAAAAAAAsWDAsIBwAAAAAAAAAAAAwTFQ0KBwAAAAAAAAAAAAAKEwAJCAAAAAAAAAAAAAAADgsAAAgAAAAAAAAAAAAACgcHDQwPAAAAAAAAAAAAAAAMDgoHAAAAAAAAAAAAAAoMDAsMBwAAAAAAAAAAAAoRExQPCwAAAAAAAAAACBMRKTUpHBIAAAAAAAAPER1JNTw2NhsMAAAAAAALGz9KXlkwKhgIAAAAAAoMJi1jX1NLLiMOAAAAAAATLUxerl9oSi8UAAAAAAAOJ06FjJVxTSoVCQAAAAANH0J9//a5UiwiAAAAAAAAGUdzj6p8Px8MAAAAAAAADSVBPEMqGxkHAAAAAAAABxAPFwwWEwoAAAAAAAAAAAAHCQkKCQAAAAAAAAAAAAAAAAgAAAAAAAAA"}, {"name": "P053 - forefoot dominant", "side": "Right", "w": 17, "h": 41, "peak": 443.0, "px_mm": 5.0, "data": "AAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAAAAAAAA0ZMxY3AAAAAAAAAAAAAAASGhsjIhURAAAAAAAAAAAAAAAAFS80KC8oEwAAAAAAAAAAABEZKzAcHxsaExAAAAAAABIWDyA0NzwfJCcYIA0AAAARDQAMDhQdGDU2JzQhHAAAAAAAAAAAERooNSozNisAAAAAAAAAAAAAABUaJisaECESAAAAAAAAAAANAA8fMAwRIxEAAAAAAAAAAAAADRUaKiwUFQAAAAAAAAAAAAAODRQVERYWDQAAAAAAAAAAAAAADw4AEhYTAAAAAAAAAAAAAAAPEA0gEAAAAAAAAAAAAAAAABcQEBMAAAAAAAAAAAAAAAAQEBcRAA4AAAAAAAAAAAAAAA0AGxIAAAAAAAAAAAAAAAAAABETFAAAAAAAAAAAAAAAAAAAFgwRAAAAAAAAAAAAAAAADRcPFAAAAAAAAAAAAAAAAAASFQ8WAAAAAAAAAAAAAAAAABARHhQNAAAAAAAAAAAAAAAADg4QIA0AAAAAAAAAAAAAABAOGRYQAAAAAAAAAAAAABAAGhgSHxAAAAAAAAAAAA8bKxQhIB0eDgAAAAAAAAAuQyw3JyElIxcAAAAAAAAAAC4jQ04uLTYnFQAAAAAAAA4cM1VGQDArLSEcAAAAAAAAEj48U25pTUdKGAAAAAAAABIhTU2Nwai0r2hLGgAAAAAAABhov7iy2JyXclIlAAAAAAAAYpnP0uDgf56SSiEAAAAAAABu8P+o75DVo2QwAAAAAAAAEWmizarJ5bmdbDYNAAAAAAAWorbWsJuojW1TFgAAAAAAAA1txLOp0qhwZxkAAAAAAAAAACS0qoFxWIIyAAAAAAAAAAAAAB1pFSccEAAAAAAAAAAAAA=="}, {"name": "P012 - balanced", "side": "Left", "w": 15, "h": 43, "peak": 534.0, "px_mm": 5.0, "data": "AAAAAAAAAAAAAAAAFRIAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAAAAAGhIPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAoAAAAAAAAAACokFhQbFAAAAAAAAAAaMDYlKiAvKT0NAAAPFSQhOikwNCAgLhwRAAAgKzkpKUA7LR47LBYAAA0XGx4rNi0qFicbJBIAABYkGEA1KSAsJxUbJgsAAA8aEh8cIRkTFBUXKRIAEQ4SFw8WIw0cCxIUGBAAHA0SEwALDgANAAAMCwAAAAsAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAANCwAAAAAAAAAAAAAAAAAAAAAPDQAAAAAAAAAAABUeEhkYKAoAAAAAAAAAAA0OHBcfKBQKAAAAAAAAAAApJyo5RjYPAAAAAAAAABQiLipNXzoeAAAAAAAACx9OVWqamjUVDQAAAAAAEDVEdH3qx2A1KgAAAAAAACpHcI+w0L82MAAAAAAAABdJXoK9/7t2bwAAAAAAAAstNVW6xZuxgwAAAAAAAAoYRnOX1HeOagAAAAAAAAALOF16nX41HAAAAAAAAAAACzUuKFQRDAAAAAAAAAAAAAAAERcAAAAA"}];
+
+function ramp(stops){
+  const lut=new Uint8Array(256*3);
+  for(let i=0;i<256;i++){
+    const t=i/255, x=t*(stops.length-1), j=Math.min(stops.length-2,Math.floor(x)), f=x-j;
+    for(let c=0;c<3;c++) lut[i*3+c]=Math.round(255*(stops[j][c]+(stops[j+1][c]-stops[j][c])*f));
+  }
+  return lut;
+}
+const JET = (()=>{ const a=ramp([[0,0,.5],[0,0,1],[0,.5,1],[0,1,1],[.5,1,.5],
+  [1,1,0],[1,.5,0],[1,0,0],[.5,0,0]]); a[0]=a[1]=a[2]=0; return a; })();
+
+function decodeSample(s){
+  const bin=atob(s.data), n=s.w*s.h, g=new Float32Array(n);
+  for(let i=0;i<n;i++) g[i]=bin.charCodeAt(i)/255*s.peak;      // kPa
+  return {w:s.w, h:s.h, p:g, peak:s.peak, name:s.name, px:s.px_mm};
+}
+
+/* ---- step 1a: bilinear upsample, with a ring of zeros so the contour
+        can never run off the edge of the grid and stay open ---- */
+const B3_S=4, B3_R=26;
+function upsample(sm){
+  const {w,h,p}=sm;
+  const nx=(w-1)*B3_S+1, ny=(h-1)*B3_S+1;
+  const NX=nx+2*B3_R, NY=ny+2*B3_R, F=new Float32Array(NX*NY);
+  for(let i=0;i<ny;i++){
+    const fy=i/B3_S, i0=Math.min(h-2,Math.floor(fy)), ty=fy-i0;
+    for(let j=0;j<nx;j++){
+      const fx=j/B3_S, j0=Math.min(w-2,Math.floor(fx)), tx=fx-j0;
+      const a=p[i0*w+j0], b=p[i0*w+j0+1], c=p[(i0+1)*w+j0], d=p[(i0+1)*w+j0+1];
+      F[(i+B3_R)*NX+(j+B3_R)] = a*(1-tx)*(1-ty)+b*tx*(1-ty)+c*(1-tx)*ty+d*tx*ty;
+    }
+  }
+  return {F,NX,NY,cell:sm.px/B3_S};
+}
+function blurF(F,NX,NY,n){
+  let A=F;
+  for(let k=0;k<n;k++){
+    const B=new Float32Array(NX*NY);
+    for(let i=0;i<NY;i++) for(let j=0;j<NX;j++){
+      let s=0,c=0;
+      for(let di=-1;di<=1;di++) for(let dj=-1;dj<=1;dj++){
+        const y=i+di, x=j+dj;
+        if(y<0||y>=NY||x<0||x>=NX) continue;
+        s+=A[y*NX+x]; c++;
+      }
+      B[i*NX+j]=s/c;
+    }
+    A=B;
+  }
+  return A;
+}
+
+/* ---- signed distance to the contact boundary, negative inside.
+        Two chamfer sweeps each way; at a 1.25 mm cell the error is well
+        under the 5 mm sensor pitch we are trying to smooth out anyway.
+        Everything downstream - closing the gaps between the heel and the
+        forefoot, and growing the outline into a plate - is then just a
+        different level set of this one field, which is why it can never
+        fold over on itself the way a per-vertex offset can. ---- */
+function chamfer(m,NX,NY){
+  const INF=1e9, D=new Float32Array(NX*NY), a=1, b=Math.SQRT2;
+  for(let i=0;i<NX*NY;i++) D[i]=m[i]?0:INF;
+  for(let y=0;y<NY;y++) for(let x=0;x<NX;x++){
+    const i=y*NX+x; let v=D[i];
+    if(x>0)             v=Math.min(v,D[i-1]+a);
+    if(y>0)             v=Math.min(v,D[i-NX]+a);
+    if(x>0&&y>0)        v=Math.min(v,D[i-NX-1]+b);
+    if(x<NX-1&&y>0)     v=Math.min(v,D[i-NX+1]+b);
+    D[i]=v;
+  }
+  for(let y=NY-1;y>=0;y--) for(let x=NX-1;x>=0;x--){
+    const i=y*NX+x; let v=D[i];
+    if(x<NX-1)          v=Math.min(v,D[i+1]+a);
+    if(y<NY-1)          v=Math.min(v,D[i+NX]+a);
+    if(x<NX-1&&y<NY-1)  v=Math.min(v,D[i+NX+1]+b);
+    if(x>0&&y<NY-1)     v=Math.min(v,D[i+NX-1]+b);
+    D[i]=v;
+  }
+  return D;
+}
+function sdf(mask,NX,NY,cell){
+  const n=NX*NY, inv=new Uint8Array(n);
+  for(let i=0;i<n;i++) inv[i]=mask[i]?0:1;
+  const out=chamfer(mask,NX,NY), ins=chamfer(inv,NX,NY), S=new Float32Array(n);
+  for(let i=0;i<n;i++) S[i]=(mask[i] ? -(ins[i]-0.5) : (out[i]-0.5))*cell;
+  return S;
+}
+
+/* ---- step 1b: marching squares. Every case is oriented so the region
+        above the level sits on the LEFT of the segment, which is what
+        makes the loops link up and the outward normal well defined. ---- */
+function marching(g, lev){
+  const {F,NX,NY}=g, segs=[];
+  const ip=(a,b)=>{ const d=b-a; return Math.abs(d)<1e-12?0.5:clamp((lev-a)/d,0,1); };
+  for(let i=0;i<NY-1;i++) for(let j=0;j<NX-1;j++){
+    const v0=F[i*NX+j], v1=F[i*NX+j+1], v2=F[(i+1)*NX+j+1], v3=F[(i+1)*NX+j];
+    const code=(v0>lev?1:0)|(v1>lev?2:0)|(v2>lev?4:0)|(v3>lev?8:0);
+    if(code===0||code===15) continue;
+    const eT=[j+ip(v0,v1), i], eR=[j+1, i+ip(v1,v2)],
+          eB=[j+ip(v3,v2), i+1], eL=[j, i+ip(v0,v3)];
+    const push=(a,b)=>segs.push([a,b]);
+    switch(code){
+      case 1:  push(eL,eT); break;
+      case 2:  push(eT,eR); break;
+      case 3:  push(eL,eR); break;
+      case 4:  push(eR,eB); break;
+      case 6:  push(eT,eB); break;
+      case 7:  push(eL,eB); break;
+      case 8:  push(eB,eL); break;
+      case 9:  push(eB,eT); break;
+      case 11: push(eB,eR); break;
+      case 12: push(eR,eL); break;
+      case 13: push(eR,eT); break;
+      case 14: push(eT,eL); break;
+      case 5:  if((v0+v1+v2+v3)/4>lev){ push(eT,eR); push(eB,eL); }
+               else { push(eL,eT); push(eR,eB); } break;
+      case 10: if((v0+v1+v2+v3)/4>lev){ push(eT,eL); push(eB,eR); }
+               else { push(eT,eR); push(eB,eL); } break;
+    }
+  }
+  // chain the little segments end to end into closed loops
+  const key=p=>p[0].toFixed(5)+'|'+p[1].toFixed(5);
+  const starts=new Map();
+  segs.forEach((s,i)=>{ const k=key(s[0]);
+    if(!starts.has(k)) starts.set(k,[]); starts.get(k).push(i); });
+  const used=new Array(segs.length).fill(false), loops=[];
+  for(let i=0;i<segs.length;i++){
+    if(used[i]) continue;
+    const loop=[segs[i][0]]; let cur=i, guard=0;
+    while(guard++<segs.length+2){
+      used[cur]=true; loop.push(segs[cur][1]);
+      const nxt=(starts.get(key(segs[cur][1]))||[]).find(k=>!used[k]);
+      if(nxt===undefined) break;
+      cur=nxt;
+    }
+    if(loop.length>8) loops.push(loop);
+  }
+  // node indices -> millimetres
+  const c=g.cell;
+  return loops.map(L=>L.map(p=>[(p[0]-B3_R)*c, (p[1]-B3_R)*c]));
+}
+
+function resample(pts,M){
+  const n=pts.length, cum=[0];
+  for(let i=1;i<=n;i++) cum.push(cum[i-1]+dist(pts[i-1],pts[i%n]));
+  const total=cum[n], out=[];
+  let k=0;
+  for(let i=0;i<M;i++){
+    const s=total*i/M;
+    while(k<n-1 && cum[k+1]<s) k++;
+    const seg=cum[k+1]-cum[k], f=seg<1e-9?0:(s-cum[k])/seg;
+    out.push(add(pts[k], mul(sub(pts[(k+1)%n],pts[k]),f)));
+  }
+  return out;
+}
+// Menger curvature over a small window, then smoothed
+function curvature(Q,w){
+  const M=Q.length, k=new Float64Array(M);
+  for(let i=0;i<M;i++){
+    const a=Q[(i-w+M)%M], b=Q[i], c=Q[(i+w)%M];
+    const A=dist(a,b), B=dist(b,c), C=dist(a,c);
+    k[i] = A*B*C<1e-9 ? 0 : 2*Math.abs(crs(sub(b,a),sub(c,b)))/(A*B*C);
+  }
+  const s=new Float64Array(M);
+  for(let i=0;i<M;i++){ let a=0;
+    for(let d=-2;d<=2;d++) a+=k[(i+d+M)%M];
+    s[i]=a/5; }
+  return s;
+}
+// Evenly spaced anchors, each then slid onto the sharpest corner nearby.
+// Picking the N sharpest corners outright reads better on paper but leaves
+// one enormous segment along the smooth side of the foot, and a single cubic
+// cannot follow that - the error there swamps everything the corners gained.
+function pickAnchors(Q,N,byCurv){
+  const M=Q.length;
+  const even=Array.from({length:N},(_,i)=>Math.round(i*M/N)%M);
+  if(!byCurv) return even;
+  const k=curvature(Q,Math.max(2,Math.round(M/60)));
+  const win=Math.max(1,Math.floor(M/(3*N))), used=new Set(), out=[];
+  for(const e of even){
+    let best=e, bv=-1;
+    for(let d=-win;d<=win;d++){
+      const i=(e+d+M)%M;
+      if(used.has(i)) continue;
+      if(k[i]>bv){ bv=k[i]; best=i; }
+    }
+    used.add(best); out.push(best);
+  }
+  return out.sort((a,b)=>a-b);
+}
+
+/* ---- step 4: the 2x2 least-squares solve, one segment at a time ---- */
+function solveAlpha(data,ts,P0,P3,t1,t2){
+  let c11=0,c12=0,c22=0,x1=0,x2=0;
+  for(let i=0;i<data.length;i++){
+    const w=bw(ts[i]);
+    const A1=mul(t1,w[1]), A2=mul(t2,-w[2]);
+    const base=[P0[0]*(w[0]+w[1])+P3[0]*(w[2]+w[3]),
+                P0[1]*(w[0]+w[1])+P3[1]*(w[2]+w[3])];
+    const r=sub(data[i],base);
+    c11+=dot(A1,A1); c12+=dot(A1,A2); c22+=dot(A2,A2);
+    x1+=dot(r,A1);   x2+=dot(r,A2);
+  }
+  const det=c11*c22-c12*c12, chord=dist(P0,P3);
+  let a1,a2;
+  if(Math.abs(det)<1e-12){ a1=a2=chord/3; }
+  else { a1=(x1*c22-c12*x2)/det; a2=(c11*x2-x1*c12)/det; }
+  const lo=chord*0.02, hi=chord*1.6;
+  if(!(a1>lo&&a1<hi)) a1=chord/3;
+  if(!(a2>lo&&a2<hi)) a2=chord/3;
+  return [P0, add(P0,mul(t1,a1)), sub(P3,mul(t2,a2)), P3];
+}
+/* ---- step 5: Newton-Raphson on t, then solve again.
+        Each t is kept between its two neighbours: an unbounded Newton step
+        can drive a whole run of points onto t = 0, and then the "error" is
+        just the distance to P0 and the fit looks catastrophic. ---- */
+function reparam(P,data,ts){
+  const out=ts.slice();
+  for(let i=1;i<ts.length-1;i++){
+    const t=ts[i], d=bezD(P,t), dd=bezDD(P,t), r=sub(bez(P,t),data[i]);
+    const den=dot(d,d)+dot(r,dd);
+    if(Math.abs(den)<1e-12) continue;
+    out[i]=clamp(t-dot(r,d)/den, (ts[i-1]+t)/2, (t+ts[i+1])/2);
+  }
+  return out;
+}
+const sse=(P,data,ts)=>data.reduce((s,q,i)=>{
+  const d=sub(bez(P,ts[i]),q); return s+dot(d,d); },0);
+function fitSeg(data,t1,t2){
+  const cum=[0];
+  for(let i=1;i<data.length;i++) cum.push(cum[i-1]+dist(data[i-1],data[i]));
+  const tot=cum[cum.length-1]||1;
+  const P0=data[0], P3=data[data.length-1];
+  let ts=cum.map(c=>c/tot);
+  let P=solveAlpha(data,ts,P0,P3,t1,t2);
+  let bP=P, bT=ts, bE=sse(P,data,ts);
+  for(let it=0;it<3;it++){
+    ts=reparam(P,data,ts);
+    P=solveAlpha(data,ts,P0,P3,t1,t2);
+    const e=sse(P,data,ts);
+    if(e<bE){ bE=e; bP=P; bT=ts.slice(); }      // reparameterising can overshoot
+  }
+  return {P:bP, err:data.map((q,i)=>dist(bez(bP,bT[i]),q))};
+}
+
+/* ---- put it together ---- */
+let b3Sel=0;
+const b3Poly = toggle('b3Poly', true,  ()=>b3All());
+const b3Curv = toggle('b3Curv', true,  ()=>b3All());
+const b3Ctrl = toggle('b3Ctrl', false, ()=>b3All());
+
+function b3Build(){
+  const sm=decodeSample(B3_SAMPLES[b3Sel]);
+  const g=upsample(sm), NX=g.NX, NY=g.NY, cell=g.cell, n=NX*NY;
+  const thr=+$('b3Thr').value, r=+$('b3Link').value, pad=+$('b3Pad').value;
+
+  const mask=new Uint8Array(n);
+  let hit=0;
+  for(let i=0;i<n;i++){ mask[i]=g.F[i]>thr?1:0; hit+=mask[i]; }
+  if(hit<8) return {sm,fail:true};
+  let S=sdf(mask,NX,NY,cell);
+  const blobs=marching({F:S.map(v=>-v),NX,NY,cell},0)
+                .filter(L=>polyStats(L).area>200).length;
+  // The arch of a high-arched foot never touches the plate, so the contact
+  // area arrives in two pieces. Grow by r until they meet, then shrink back
+  // by r - pad, which leaves one plate sitting pad mm outside the contact.
+  let lev=-pad;
+  if(r>0){
+    const md=new Uint8Array(n);
+    for(let i=0;i<n;i++) md[i]=S[i]<=r?1:0;
+    const S2=sdf(md,NX,NY,cell), mc=new Uint8Array(n);
+    let any=0;
+    for(let i=0;i<n;i++){ mc[i]=S2[i]<=-Math.max(0,r-pad)?1:0; any+=mc[i]; }
+    if(any>20){ S=sdf(mc,NX,NY,cell); lev=0; }
+  }
+  // the plate edge is one level set of that field, so growing the outline is
+  // never a separate step and can never fold over on itself
+  const Gs=blurF(S,NX,NY,+$('b3Sm').value), Gn=new Float32Array(n);
+  for(let i=0;i<n;i++) Gn[i]=-Gs[i];
+  const loops=marching({F:Gn,NX,NY,cell}, -lev);
+  if(!loops.length) return {sm,fail:true};
+  let raw=loops[0], best=-1;
+  for(const L of loops){ const a=polyStats(L).area; if(a>best){ best=a; raw=L; } }
+  raw=raw.slice(0,-1);                                   // drop the repeated end
+  const per=polyStats(raw).per;
+  const M=clamp(Math.round(per/1.5),90,420);
+  const Q=resample(raw,M);
+  const N=+$('b3N').value;
+  const anc=pickAnchors(Q,N,b3Curv());
+  const wT=Math.max(2,Math.floor(M/(6*N)));
+  const tan=anc.map(a=>unit(sub(Q[(a+wT)%M],Q[(a-wT+M)%M])));
+  const segs=[], errs=[];
+  for(let s=0;s<N;s++){
+    const a=anc[s], b=anc[(s+1)%N];
+    let cnt=((b-a)%M+M)%M; if(cnt===0) cnt=M;
+    const data=[];
+    for(let i=0;i<=cnt;i++) data.push(Q[(a+i)%M]);
+    const f=fitSeg(data,tan[s],tan[(s+1)%N]);
+    segs.push(f.P); errs.push(f.err);
+  }
+  const flat=errs.flat();
+  const rms=Math.sqrt(flat.reduce((s,e)=>s+e*e,0)/flat.length);
+  return {sm,raw,Q,anc,segs,errs,rms,max:Math.max(...flat),M,N,per,blobs,
+          parts:loops.filter(L=>polyStats(L).area>200).length,
+          area:polyStats(Q).area};
+}
+
+function b3View(sm){
+  const px=sm.px, x0=-px/2, x1=(sm.w-0.5)*px, y0=-px/2, y1=(sm.h-0.5)*px;
+  const cv=$('b3C'), pad=16;
+  const s=Math.min((cv.width-2*pad)/(x1-x0),(cv.height-2*pad)/(y1-y0));
+  const ox=(cv.width-(x1-x0)*s)/2-x0*s, oy=(cv.height-(y1-y0)*s)/2-y0*s;
+  const T=p=>[ox+p[0]*s, oy+p[1]*s];
+  T.rect=[ox+x0*s, oy+y0*s, (x1-x0)*s, (y1-y0)*s];
+  return T;
+}
+function b3Draw(R){
+  const cv=$('b3C'), ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  const sm=R.sm, T=b3View(sm);
+  // the measured pressure underneath everything
+  const img=ctx.createImageData(sm.w,sm.h);
+  for(let i=0;i<sm.w*sm.h;i++){
+    const t=clamp(sm.p[i]/sm.peak,0,1)*255|0;
+    img.data[i*4]=JET[t*3]; img.data[i*4+1]=JET[t*3+1];
+    img.data[i*4+2]=JET[t*3+2]; img.data[i*4+3]=255;
+  }
+  const tmp=document.createElement('canvas');
+  tmp.width=sm.w; tmp.height=sm.h; tmp.getContext('2d').putImageData(img,0,0);
+  ctx.imageSmoothingEnabled=true;
+  ctx.globalAlpha=.85; ctx.drawImage(tmp,...T.rect); ctx.globalAlpha=1;
+  if(R.fail){
+    ctx.fillStyle=cssv('--ink'); ctx.font='13px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('ไม่พบเส้นระดับที่เกณฑ์นี้', cv.width/2, cv.height/2);
+    return;
+  }
+  if(b3Poly()) line(ctx, R.raw.map(T).concat([T(R.raw[0])]), cssv('--line-2'), 1.4);
+  if(b3Ctrl()) for(const P of R.segs){
+    line(ctx,[T(P[0]),T(P[1])],cssv('--muted'),1,[3,3]);
+    line(ctx,[T(P[3]),T(P[2])],cssv('--muted'),1,[3,3]);
+    dot2(ctx,T(P[1]),2.6,cssv('--muted')); dot2(ctx,T(P[2]),2.6,cssv('--muted'));
+  }
+  ctx.beginPath();
+  const s0=T(R.segs[0][0]); ctx.moveTo(s0[0],s0[1]);
+  for(const P of R.segs){ const a=T(P[1]),b=T(P[2]),c=T(P[3]);
+    ctx.bezierCurveTo(a[0],a[1],b[0],b[1],c[0],c[1]); }
+  ctx.closePath();
+  ctx.strokeStyle=cssv('--accent'); ctx.lineWidth=2.8; ctx.stroke();
+  for(const P of R.segs) dot2(ctx,T(P[0]),5,cssv('--accent'),cssv('--surface'));
+}
+function b3DrawErr(R){
+  const cv=$('b3E'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  if(R.fail) return;
+  const pl=42,pr=14,pt=12,pb=26;
+  const flat=R.errs.flat(), n=flat.length;
+  const top=Math.max(R.max*1.15,0.4);
+  const X=i=>pl+(W-pl-pr)*i/(n-1), Y=e=>H-pb-(H-pt-pb)*e/top;
+  const grid=cssv('--line-2'), muted=cssv('--muted');
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=muted;
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  for(let k=0;k<=3;k++){ const e=top*k/3;
+    line(ctx,[[pl,Y(e)],[W-pr,Y(e)]],grid,1);
+    ctx.fillText(e.toFixed(2), pl-7, Y(e)); }
+  let acc=0;
+  for(const e of R.errs){ acc+=e.length;
+    line(ctx,[[X(acc-1),pt],[X(acc-1),H-pb]],grid,1,[3,3]); }
+  line(ctx, flat.map((e,i)=>[X(i),Y(e)]), cssv('--accent'), 1.8);
+  line(ctx,[[pl,Y(R.rms)],[W-pr,Y(R.rms)]],cssv('--hot'),1.5,[6,4]);
+  ctx.textAlign='left'; ctx.textBaseline='bottom'; ctx.fillStyle=cssv('--hot');
+  ctx.fillText('RMS '+R.rms.toFixed(2)+' mm', pl+5, Y(R.rms)-4);
+  ctx.fillStyle=muted; ctx.textBaseline='top';
+  ctx.fillText('ตำแหน่งตามเส้นรอบรูป →', pl, H-pb+6);
+  ctx.textAlign='right'; ctx.fillText('mm', pl-7, pt-2);
+}
+function b3Sync(R){
+  $('b3Nv').textContent=$('b3N').value;
+  $('b3Thrv').textContent=$('b3Thr').value+' kPa';
+  $('b3Linkv').textContent=$('b3Link').value+' mm';
+  $('b3Padv').textContent=(+$('b3Pad').value).toFixed(1)+' mm';
+  $('b3Smv').textContent=$('b3Sm').value;
+  if(R.fail){
+    $('b3Tbl').innerHTML='<tr><td>ไม่พบเส้นระดับ — ลองลดเกณฑ์สัมผัส</td></tr>';
+    $('b3Stat').textContent=''; $('b3Path').textContent=''; return;
+  }
+  const rawN=R.M*2, bezN=R.N*6;
+  $('b3Tbl').innerHTML=
+    `<tr><td>ขอบดิบ</td><td class="n">${R.M} จุด = ${rawN} ตัวเลข</td></tr>`+
+    `<tr><td>เบซิเยร์</td><td class="n">${R.N} ช่วง = ${bezN} ตัวเลข</td></tr>`+
+    `<tr><td>ย่อได้</td><td class="n">${(rawN/bezN).toFixed(1)}×</td></tr>`+
+    `<tr><td>คลาดเคลื่อน RMS</td><td class="n">${R.rms.toFixed(3)} mm</td></tr>`+
+    `<tr><td>คลาดเคลื่อนสูงสุด</td><td class="n">${R.max.toFixed(3)} mm</td></tr>`+
+    `<tr><td>เส้นรอบรูป</td><td class="n">${R.per.toFixed(0)} mm</td></tr>`+
+    `<tr><td>พื้นที่แผ่น</td><td class="n">${(R.area/100).toFixed(1)} cm²</td></tr>`;
+  $('b3Stat').innerHTML=`ครึ่งหนึ่งของความคลาดเคลื่อนอยู่ต่ำกว่า `+
+    `<b>${median(R.errs.flat()).toFixed(2)} mm</b> — เทียบกับเซนเซอร์ที่กว้าง `+
+    `<b>${R.sm.px} mm</b> ต่อช่อง · ที่เกณฑ์นี้พื้นที่สัมผัสแยกเป็น `+
+    `<b>${R.blobs}</b> ส่วน` + (R.parts>1
+      ? ` และหลังเชื่อมแล้วยังเหลือ <b style="color:var(--hot)">${R.parts}</b> ส่วน `+
+        `— เพิ่มระยะเชื่อมหรือลดเกณฑ์`
+      : ` และเชื่อมเป็นแผ่นเดียวได้แล้ว`);
+  // origin at the middle of the footprint, +y toward the toes
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+  for(const P of R.segs) for(const p of P){
+    x0=Math.min(x0,p[0]); x1=Math.max(x1,p[0]);
+    y0=Math.min(y0,p[1]); y1=Math.max(y1,p[1]); }
+  const cx=(x0+x1)/2, cy=(y0+y1)/2;
+  const out=R.segs.map(P=>P.map(p=>[p[0]-cx, cy-p[1]]));
+  $('b3Path').textContent=svgPath(out,2);
+}
+const median = a => { const s=a.slice().sort((x,y)=>x-y);
+  return s.length%2 ? s[(s.length-1)/2] : (s[s.length/2-1]+s[s.length/2])/2; };
+
+let b3R=null;
+function b3All(){ b3R=b3Build(); b3Sync(b3R); b3Draw(b3R); b3DrawErr(b3R); }
+for(const id of ['b3N','b3Thr','b3Link','b3Pad','b3Sm']) $(id).oninput=b3All;
+copyBtn('b3Copy', ()=>$('b3Path').textContent);
+
+$('b3Chips').innerHTML=B3_SAMPLES.map((s,i)=>
+  `<button class="chip" data-i="${i}" aria-pressed="${i===0}">${s.name.split(' - ')[0]} · ${s.name.split(' - ')[1]||''}</button>`
+).join('');
+for(const b of $('b3Chips').querySelectorAll('.chip'))
+  b.onclick=()=>{
+    b3Sel=+b.dataset.i;
+    for(const o of $('b3Chips').querySelectorAll('.chip'))
+      o.setAttribute('aria-pressed', o===b?'true':'false');
+    b3All();
+  };
+
+/* ══════════════ theme ══════════════ */
+$('themeBtn').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const dark=cur ? cur==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark?'light':'dark');
+  b1All(); b2All(); if(b3R){ b3Draw(b3R); b3DrawErr(b3R); }
+};
+
+/* ══════════════ go ══════════════ */
+b1All(); b2All(); b3All();
+</script>
